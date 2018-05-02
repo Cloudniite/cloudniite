@@ -2,43 +2,43 @@
     "StackResourceSummaries": [
         {
             "ResourceType": "AWS::Lambda::Function", 
-            "PhysicalResourceId": "testApp-TestFunction1-NYLUG5B6NN7A", 
-            "LastUpdatedTimestamp": "2018-05-02T18:41:56.330Z", 
+            "PhysicalResourceId": "testApp-TestFunction1-1B01SP7S7OE9Y", 
+            "LastUpdatedTimestamp": "2018-05-02T19:38:34.149Z", 
             "ResourceStatus": "UPDATE_COMPLETE", 
             "LogicalResourceId": "TestFunction1"
         }, 
         {
             "ResourceType": "AWS::IAM::Role", 
-            "PhysicalResourceId": "testApp-TestFunction1Role-19FSK939G9051", 
-            "LastUpdatedTimestamp": "2018-05-02T17:50:21.958Z", 
+            "PhysicalResourceId": "testApp-TestFunction1Role-1UETX55Z62TT3", 
+            "LastUpdatedTimestamp": "2018-05-02T19:28:18.579Z", 
             "ResourceStatus": "CREATE_COMPLETE", 
             "LogicalResourceId": "TestFunction1Role"
         }, 
         {
             "ResourceType": "AWS::Lambda::Function", 
-            "PhysicalResourceId": "testApp-TestFunction2-1NULO983VL3UG", 
-            "LastUpdatedTimestamp": "2018-05-02T18:41:56.351Z", 
+            "PhysicalResourceId": "testApp-TestFunction2-1A0TZGFVW8UUM", 
+            "LastUpdatedTimestamp": "2018-05-02T19:38:32.829Z", 
             "ResourceStatus": "UPDATE_COMPLETE", 
             "LogicalResourceId": "TestFunction2"
         }, 
         {
             "ResourceType": "AWS::IAM::Role", 
-            "PhysicalResourceId": "testApp-TestFunction2Role-1AA4WC5H46D03", 
-            "LastUpdatedTimestamp": "2018-05-02T17:50:22.624Z", 
+            "PhysicalResourceId": "testApp-TestFunction2Role-1HSOVVP1AF7WH", 
+            "LastUpdatedTimestamp": "2018-05-02T19:28:19.020Z", 
             "ResourceStatus": "CREATE_COMPLETE", 
             "LogicalResourceId": "TestFunction2Role"
         }, 
         {
             "ResourceType": "AWS::Lambda::Function", 
-            "PhysicalResourceId": "testApp-TestFunction3-1P8KXKC5OCY0P", 
-            "LastUpdatedTimestamp": "2018-05-02T18:41:56.268Z", 
+            "PhysicalResourceId": "testApp-TestFunction3-3JISX2P4LXGP", 
+            "LastUpdatedTimestamp": "2018-05-02T19:38:32.818Z", 
             "ResourceStatus": "UPDATE_COMPLETE", 
             "LogicalResourceId": "TestFunction3"
         }, 
         {
             "ResourceType": "AWS::IAM::Role", 
-            "PhysicalResourceId": "testApp-TestFunction3Role-1WIVZ3AOFLNEC", 
-            "LastUpdatedTimestamp": "2018-05-02T17:50:21.500Z", 
+            "PhysicalResourceId": "testApp-TestFunction3Role-1EIA97YD9K7ZL", 
+            "LastUpdatedTimestamp": "2018-05-02T19:28:21.005Z", 
             "ResourceStatus": "CREATE_COMPLETE", 
             "LogicalResourceId": "TestFunction3Role"
         }

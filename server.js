@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 lambdaController.createTagGroup("#HelloWorld", "TestFunction1", "TestFunction2");
-lambdaController.createTagGroup("#HelloWorld1", "TestFunction1", "TestFunction2");
+lambdaController.createTagGroup("#HelloWorld1", "TestFunction3");
 lambdaController.warmupTagGroup("#HelloWorld");
 
 app.get('/warmUp', lambda.warmUp);

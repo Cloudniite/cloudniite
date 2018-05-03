@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "aws-all": "npm run aws-pkg && npm run aws-deploy && npm run aws-stack-resources",
+    "aws-all": "npm run aws-pkg && npm run aws-deploy && npm run aws-list-functions",
     "aws-pkg": "aws cloudformation package --template-file C4/test.yaml --output-template-file serverless-output.yaml --s3-bucket test-bucket-codesmith",
     "aws-deploy": "aws cloudformation deploy --template-file serverless-output.yaml --stack-name testApp --capabilities CAPABILITY_IAM",
-    "aws-stack-resources": "aws cloudformation list-stack-resources --stack-name testApp > C4/aws-stack-resources.json"
+    "aws-list-functions": "aws lambda list-functions > C4/listFunction.json"
   },
   "author": "",
   "license": "ISC",

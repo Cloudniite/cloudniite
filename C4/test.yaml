@@ -4,6 +4,10 @@ Resources:
   TestFunction1:
     Type: AWS::Serverless::Function
     Properties:
+      Tags: 
+          Key: "Category"
+          Value: "HelloWorld"
+
       Handler: lambda.handler1
       Runtime: nodejs8.10
       Environment:

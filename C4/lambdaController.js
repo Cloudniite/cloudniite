@@ -1,8 +1,7 @@
 const resources = require('./aws-stack-resources');
 const AWS = require('aws-sdk');
-AWS.config.update({ region: 'us-east-1' });
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: 'us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e' });
-var lambda = new AWS.Lambda({ region: 'us-east-1', apiVersion: '2015-03-31' });
+
+var lambda;
 
 const lambdaController = {};
 const tagGroups = {};
@@ -13,6 +12,11 @@ function pullParams(funcName) {
     this.LogType = 'None',
     this.Payload = '{"source" : "C4-serverless"}'
 };
+
+lambdaController.configure = (IdentityPoolId, apiVersion = '2015-03-31') => {
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
+    lambda = new AWS.Lambda({ apiVersion: apiVersion });
+}
 
 lambdaController.createTagGroup = (tagGroup, ...rest) => {
     const functionsArr = [];
@@ -27,12 +31,12 @@ lambdaController.createTagGroup = (tagGroup, ...rest) => {
 
 lambdaController.warmupTagGroup = (tagGroup) => {
     const functions = tagGroups[tagGroup];
-    
-        var newFunctions = functions.map((func) => {
-            console.log('Running this function: ', func);
 
-           return new Promise((resolve) => {
-            
+    var newFunctions = functions.map((func) => {
+        console.log('Running this function: ', func);
+
+        return new Promise((resolve) => {
+
             lambda.invoke(new pullParams(func), (error, data) => {
                 if (error) {
                     console.log("ERROR: ", error);
@@ -42,13 +46,13 @@ lambdaController.warmupTagGroup = (tagGroup) => {
                     resolve();
                 }
             });
-           })
-        });
+        })
+    });
 
-       Promise.all(newFunctions).then(() => console.log('done'));
-    }
+    Promise.all(newFunctions).then(() => console.log('done'));
+}
 
-lambdaController.pullParamsBuild = 
+lambdaController.pullParamsBuild =
 
 
-module.exports = lambdaController;
+    module.exports = lambdaController;

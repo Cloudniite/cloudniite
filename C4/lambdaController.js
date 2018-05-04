@@ -76,7 +76,7 @@ lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
     const promiseCall = () => {
         Promise.all(createFunc())
             .then(() => console.log(`Warmup of category ${tagGroup} complete`))
-            .catch((error) => { console.error(`FAILED: Warmup of category ${tagGroup} failed: ${error}`) });
+            .catch((error) => { console.error(`FAILED: Warmup of category ${tagGroup} failed, ${error}`) });
     }
 
     promiseCall();

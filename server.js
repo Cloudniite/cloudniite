@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const body = require('body-parser');
-const lambdaController = require('./C4/lambdaController.js');
+const lambdaController = require('./C4/index.js');
 const functionList = require('./awsLambda/listFunction.json');
 const app = express();
 

@@ -1,9 +1,6 @@
-const resources = require('./aws-stack-resources');
 const AWS = require('aws-sdk');
-const functionList = require('./listFunction');
-
 var lambda;
-const lambdaController = {};
+const lambdaController = {functionList : ""};
 const tagGroups = {};
 
 function pullParams(funcName) {
@@ -21,7 +18,7 @@ lambdaController.configure = (region, IdentityPoolId, apiVersion = '2015-03-31')
 
 lambdaController.getAwsFunctions = function (...rest) {
     const awsFunctionNames = [];
-    functionList.Functions.forEach(func => {
+    this.functionList.Functions.forEach(func => {
         if (rest.includes(func.FunctionName.split('-')[1])) awsFunctionNames.push(func.FunctionName);
     })
     return awsFunctionNames;

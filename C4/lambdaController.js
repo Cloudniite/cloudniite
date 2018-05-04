@@ -29,7 +29,7 @@ lambdaController.getAwsFunctions = function (...rest) {
 }
 
 lambdaController.warmupFunctions = function (timer = null, ...rest) {
-
+    if(typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupFunctions: First argument should be a number specifying the timer or null for single execution`);
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
         var newFunctions = functions.map((func) => {
@@ -46,21 +46,26 @@ lambdaController.warmupFunctions = function (timer = null, ...rest) {
         });
         return newFunctions;
     }
-
+    
     var promiseCall = () => {
         Promise.all(createfunc())
-            .then(() => console.log(`Warmup of function/s ${rest} complete`))
-            .catch((error) => { console.error(`FAILED: Warmup of function/s ${rest} failed, ${error}`) });
+        .then(() => console.log(`Warmup of function/s ${rest} complete`))
+        .catch((error) => { console.error(`FAILED: Warmup of function/s ${rest} failed, ${error}`) });
     }
+    
     promiseCall();
-    if (timer !== null) setInterval(() => { promiseCall(); }, (timer * 60000));
+    if (timer !== null && timer > 0) setInterval(() => { promiseCall(); }, (timer * 60000));
 }
 
 lambdaController.createTagGroup = function (tagGroup, ...rest) {
+    if(typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
     tagGroups[tagGroup] = this.getAwsFunctions(...rest);
 };
 
 lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
+    if(typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupTagGroup: First argument should be a number specifying the timer or null for single execution`);
+    if(typeof tagGroup !== 'string') return console.error('FAILED at warmupTagGroup: First argument should be a string specifying the category');
+    if(!(tagGroup in tagGroups)) return console.error(`FAILED at warmupTagGroup: ${tagGroup} is invalid`);
     const functions = tagGroups[tagGroup];
     const createFunc = () => {
         var newFunctions = functions.map((func) => {
@@ -84,7 +89,7 @@ lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
     }
 
     promiseCall();
-    if (timer !== null) setInterval(() => { promiseCall() }, (timer * 60000));
+    if (timer !== null && timer > 0) setInterval(() => { promiseCall() }, (timer * 60000));
 }
 
 module.exports = lambdaController;

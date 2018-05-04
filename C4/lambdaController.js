@@ -16,6 +16,10 @@ lambdaController.configure = (region, IdentityPoolId, apiVersion = '2015-03-31')
     lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
 }
 
+lambdaController.setFunctionList = function (functionList) {
+    this.functionList = functionList;
+}
+
 lambdaController.getAwsFunctions = function (...rest) {
     const awsFunctionNames = [];
     this.functionList.Functions.forEach(func => {

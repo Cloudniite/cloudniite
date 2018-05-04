@@ -6,7 +6,7 @@ const functionList = require('./awsLambda/listFunction.json');
 const app = express();
 
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e');
-lambdaController.functionList = functionList;
+lambdaController.setFunctionList(functionList);
 
 app.get('/index.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.js'));

@@ -28,35 +28,57 @@ var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-
 var params = {
     EndTime: new Date, /* required */
     MetricDataQueries: [ /* required */
-      {
-        Id: 'testMetric', /* required */
-        MetricStat: {
-          Metric: { /* required */
-            Dimensions: [
-              {
-                Name: 'FunctionName', /* required */
-                Value: 'testApp-TestFunction3-T5R31NF3BZ9F' /* required */
-              },
-              /* more items */
-            ],
-            MetricName: 'Duration',
-            Namespace: 'AWS/Lambda'
-          },
-          Period: 30, /* required */
-          Stat: 'Sum', /* required */
+        {
+            Id: 'testMetric', /* required */
+            MetricStat: {
+                Metric: { /* required */
+                    Dimensions: [
+                        {
+                            Name: 'FunctionName', /* required */
+                            Value: 'testApp-TestFunction2-5WSJTFXYOOO0' /* required */
+                        },
+                        /* more items */
+                    ],
+                    MetricName: 'Duration',
+                    Namespace: 'AWS/Lambda'
+                },
+                Period: 10, /* required */
+                Stat: 'Sum', /* required */
+                Unit: 'Milliseconds'
+            },
+            ReturnData: true || false
         },
-        ReturnData: true || false
-      },
-      /* more items */
+        /* more items */
     ],
     StartTime: 0, /* required */
-    MaxDatapoints: 10,
-  };
+    MaxDatapoints: 10000,
+    ScanBy: 'TimestampDescending'
+};
 
-  cloudwatch.getMetricData(params, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data.MetricDataResults[0]);           // successful response
-  });
+cloudwatch.getMetricData(params, function (err, data) {
+    if (err) {
+        console.log(err, err.stack)
+    } else {
+        console.log(data.MetricDataResults[0])
+        lambdaController.timeToColdAI(data)
+    };
+});
+
+
+lambdaController.timeToColdAI = function (data) {
+    console.log('this is data inside time to cold: ', data)
+    let timeline = data.MetricDataResults[0].Timestamps;
+    let invokeDuration = data.MetricDataResults[0].Values;
+
+    console.log('Timestamps', timeline, "Durations: ", invokeDuration)
+
+    let matchedTimeline = [];
+    for (let i = 0; i < timeline.length; i += 1){
+        matchedTimeline[timeline[i]] = invokeDuration[i];
+    }
+
+    console.log('Matched time: ', matchedTimeline)
+}
 
 
 function pullParams(funcName) {

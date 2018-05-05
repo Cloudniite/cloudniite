@@ -20,10 +20,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-lambdaController.createTagGroup("#HelloWorld", "TestFunction1", "TestFunction2");
-lambdaController.createTagGroup("#HelloWorld1", "TestFunction3");
-lambdaController.warmupFunctions(0.1,"TestFunction1");
-lambdaController.warmupTagGroup(0.1, "#HelloWorld1");
+// lambdaController.createTagGroup("#HelloWorld", "TestFunction1", "TestFunction2");
+// lambdaController.createTagGroup("#HelloWorld1", "TestFunction3");
+// lambdaController.warmupFunctions(0.1,"TestFunction4");
+// lambdaController.warmupTagGroup(0.1, "#HelloWorld1");
 
 app.listen(3000, () => {
     console.log("Listening on PORT");

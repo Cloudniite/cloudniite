@@ -2,6 +2,52 @@ const AWS = require('aws-sdk');
 var lambda;
 const lambdaController = {functionList : ""};
 const tagGroups = {};
+const timeAndDuration = {};
+const autoIntervalValue = 0;
+
+var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
+
+var params = {
+    EndTime: new Date, /* required */
+    MetricDataQueries: [ /* required */
+      {
+        Id: 'testMetric', /* required */
+        MetricStat: {
+          Metric: { /* required */
+            Dimensions: [
+              {
+                Name: 'FunctionName', /* required */
+                Value: 'testApp-TestFunction4-1LPS6WA57I0WJ' /* required */
+              },
+              /* more items */
+            ],
+            MetricName: 'Duration',
+            Namespace: 'AWS/Lambda'
+          },
+          Period: 10, /* required */
+          Stat: 'Average', /* required */
+        },
+        ReturnData: true || false
+      },
+      /* more items */
+    ],
+    StartTime: 0, /* required */
+  };
+
+// setInterval(() => {
+    cloudwatch.getMetricData(params, function(err, data) {
+        if (err) {
+            console.log(err, err.stack); // an error occurred
+        } else {
+            for(var i =  data.MetricDataResults[0].Timestamps.length - 1; i >= 0; i--) {
+                var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime()/1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime()/1000 : 0;
+                timeAndDuration[`${data.MetricDataResults[0].Timestamps.length - 1 - i} : ${Math.abs(time)/60} minutes since last invocation`] = data.MetricDataResults[0].Values[i]; // successful response
+            }
+            console.log(timeAndDuration);
+        }
+      });
+// }, 1000);  
+
 
 function pullParams(funcName) {
     this.FunctionName = funcName,
@@ -9,6 +55,12 @@ function pullParams(funcName) {
         this.LogType = 'None',
         this.Payload = '{"source" : "C4-serverless"}'
 };
+
+lambdaController.autoInterval = function() {
+    setInterval(() => {
+        
+    },autoIntervalValue);
+}
 
 lambdaController.configure = (region, IdentityPoolId, apiVersion = '2015-03-31') => {
     AWS.config.update({ region: region });
@@ -28,7 +80,7 @@ lambdaController.getAwsFunctions = function (...rest) {
     return awsFunctionNames;
 }
 
-lambdaController.warmupFunctions = function (timer = null, ...rest) {
+lambdaController.warmupFunctions = function (timer, ...rest) {
     if(typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupFunctions: First argument should be a number specifying the timer or null for single execution`);
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
@@ -38,7 +90,6 @@ lambdaController.warmupFunctions = function (timer = null, ...rest) {
                     if (error) {
                         throw error;
                     } else {
-                        console.log(data);
                         resolve();
                     }
                 });

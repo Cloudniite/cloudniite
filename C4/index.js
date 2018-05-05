@@ -137,13 +137,8 @@ lambdaController.getAwsFunctions = function (...rest) {
     return awsFunctionNames;
 }
 
-<<<<<<< HEAD
 lambdaController.warmupFunctions = function (timer, ...rest) {
     if(typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupFunctions: First argument should be a number specifying the timer or null for single execution`);
-=======
-lambdaController.warmupFunctions = function (timer = null, ...rest) {
-    if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupFunctions: First argument should be a number specifying the timer or null for single execution`);
->>>>>>> 0007fba22845acc4769d9c1c68a2e0791dc27dc3
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
         var newFunctions = functions.map((func) => {

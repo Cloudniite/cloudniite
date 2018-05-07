@@ -1,12 +1,35 @@
 const AWS = require('aws-sdk');
+const Mustache = require('mustache');
+var fs = require("fs");
+const path = require('path');
+
 var lambda;
 const lambdaController = { functionList: "" };
 const tagGroups = {};
 
+function renderTemplate(functionList){
+    var view = {
+        functionName: functionList.Functions[0].FunctionName,
+        runEnv: '',
+    };
+    
+    
+    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
+        if (err) throw err;
+        var output = Mustache.to_html(data, view);
+        console.log(output);
+        this.htmlViz = output;
+    });
+}
+
+lambdaController.getHtmlViz = function(req, res){
+    res.send(this.htmlViz);
+}
+
+
 
 //CloudWatch Module
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
-
 
 //LISTING METRICS HERE WORKING 
 // var params = {
@@ -25,6 +48,12 @@ var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-
 //     else     console.log(data);           // successful response
 //   });
 
+
+
+
+
+
+
 var params = {
     EndTime: new Date, /* required */
     MetricDataQueries: [ /* required */
@@ -35,15 +64,15 @@ var params = {
                     Dimensions: [
                         {
                             Name: 'FunctionName', /* required */
-                            Value: 'testApp-TestFunction2-5WSJTFXYOOO0' /* required */
+                            Value: 'testApp-TestFunction1-1JD804ZBPYFEB' /* required */
                         },
                         /* more items */
                     ],
                     MetricName: 'Duration',
                     Namespace: 'AWS/Lambda'
                 },
-                Period: 10, /* required */
-                Stat: 'Sum', /* required */
+                Period: 60, /* required */
+                Stat: 'Average', /* required */
                 Unit: 'Milliseconds'
             },
             ReturnData: true || false
@@ -51,7 +80,6 @@ var params = {
         /* more items */
     ],
     StartTime: 0, /* required */
-    MaxDatapoints: 10000,
     ScanBy: 'TimestampDescending'
 };
 
@@ -59,26 +87,26 @@ cloudwatch.getMetricData(params, function (err, data) {
     if (err) {
         console.log(err, err.stack)
     } else {
-        console.log(data.MetricDataResults[0])
-        lambdaController.timeToColdAI(data)
+        // console.log(data.MetricDataResults[0])
+        // lambdaController.timeToColdAI(data)
     };
 });
 
 
-lambdaController.timeToColdAI = function (data) {
-    console.log('this is data inside time to cold: ', data)
-    let timeline = data.MetricDataResults[0].Timestamps;
-    let invokeDuration = data.MetricDataResults[0].Values;
+// lambdaController.timeToColdAI = function (data) {
+//     console.log('this is data inside time to cold: ', data)
+//     let timeline = data.MetricDataResults[0].Timestamps;
+//     let invokeDuration = data.MetricDataResults[0].Values;
 
-    console.log('Timestamps', timeline, "Durations: ", invokeDuration)
+//     console.log('Timestamps', timeline, "Durations: ", invokeDuration)
 
-    let matchedTimeline = [];
-    for (let i = 0; i < timeline.length; i += 1){
-        matchedTimeline[timeline[i]] = invokeDuration[i];
-    }
+//     let matchedTimeline = [];
+//     for (let i = 0; i < timeline.length; i += 1){
+//         matchedTimeline[timeline[i]] = invokeDuration[i];
+//     }
 
-    console.log('Matched time: ', matchedTimeline)
-}
+//     console.log('Matched time: ', matchedTimeline)
+// }
 
 
 function pullParams(funcName) {
@@ -97,6 +125,7 @@ lambdaController.configure = (region, IdentityPoolId, apiVersion = '2015-03-31')
 
 lambdaController.setFunctionList = function (functionList) {
     this.functionList = functionList;
+    renderTemplate(functionList)
 }
 
 lambdaController.getAwsFunctions = function (...rest) {

@@ -2,7 +2,10 @@ const aws = require('aws-sdk');
 
 exports.handler1 = function(event, context, callback) {
     if (event.source === "C4-serverless") {
-        callback(null, "In serverless");
+        for (var i = 0; i < 4000; i += 1){
+            console.log('hi')
+        }
+        callback(null, 'In server')
     } else {
         callback(null, "What the f***");
     }

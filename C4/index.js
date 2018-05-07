@@ -3,23 +3,28 @@ const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
 
+
 var lambda;
 const lambdaController = { functionList: "" };
 const tagGroups = {};
 
 function renderTemplate(functionList){
-    var view = {
-        functionName: functionList.Functions[0].FunctionName,
-        runEnv: '',
-    };
+
+    for(let i = 0; i < functionList.Functions; i += 1){
+        console.log(functionList.Functions[0])
+    }
+    // var view = {
+    //     functionList: [functionList.Functions],
+    //     runEnv: '',
+    // };
     
     
-    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
-        if (err) throw err;
-        var output = Mustache.to_html(data, view);
-        console.log(output);
-        this.htmlViz = output;
-    });
+    // fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
+    //     if (err) throw err;
+    //     var output = Mustache.to_html(data, view);
+    //     console.log(output);
+    //     this.htmlViz = output;
+    // });
 }
 
 lambdaController.getHtmlViz = function(req, res){

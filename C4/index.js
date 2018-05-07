@@ -1,6 +1,35 @@
 const AWS = require('aws-sdk');
+const Mustache = require('mustache');
+var fs = require("fs");
+const path = require('path');
+
+
 var lambda;
 const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
+
+
+function renderTemplate(functionList){
+    lambdaController.getAllFuncInfo();
+    console.log('In render tmep', functionList.Functions[0].FunctionName)
+
+    var view = {
+        functionName1: functionList.Functions[0].FunctionName,
+        runEnv: '',
+        timeAndDuration: JSON.stringify(lambdaController.timeAndDuration),
+    };
+    
+    
+    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
+        if (err) throw err;
+        var output = Mustache.to_html(data, view);
+        console.log(output);
+        this.htmlViz = output;
+    });
+}
+
+lambdaController.getHtmlViz = function(req, res){
+    res.send(this.htmlViz);
+}
 
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
@@ -70,6 +99,7 @@ function pullParams(funcName) {
 
 lambdaController.setFunctionList = function (functionList) {
     this.functionList = functionList;
+    renderTemplate(this.functionList)
 }
 
 lambdaController.getAwsFunctions = function (...rest) {

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "aws-all": "npm run aws-pkg && npm run aws-deploy && npm run aws-list-functions",
-    "aws-pkg": "aws cloudformation package --template-file awsLambda/test.yaml --output-template-file awsLambda/serverless-output.yaml --s3-bucket test-codesmith-bucket1",
+    "aws-pkg": "aws cloudformation package --template-file awsLambda/test.yaml --output-template-file awsLambda/serverless-output.yaml --s3-bucket test-codesmith-bucket2",
     "aws-deploy": "aws cloudformation deploy --template-file awsLambda/serverless-output.yaml --stack-name testApp --capabilities CAPABILITY_IAM",
     "aws-list-functions": "aws lambda list-functions > awsLambda/listFunction.json"
   },

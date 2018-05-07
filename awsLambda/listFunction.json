@@ -1,85 +1,73 @@
 {
     "Functions": [
         {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
-            "FunctionName": "testApp-TestFunction4-1LPS6WA57I0WJ", 
-            "MemorySize": 128, 
-            "RevisionId": "3b1c0ef6-aaf2-49f5-a077-7be87a81c424", 
-            "CodeSize": 754, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction4-1LPS6WA57I0WJ", 
-            "Environment": {
-                "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
-                }
-            }, 
-            "Handler": "lambda.handler1", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction4Role-KP607BUYDVHP", 
-            "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:08.368+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
-        }, 
-        {
-            "FunctionName": "aws-nodejs-dev-hello",
-            "FunctionArn": "arn:aws:lambda:us-east-1:162001867187:function:aws-nodejs-dev-hello",
-            "Runtime": "nodejs6.10",
-            "Role": "arn:aws:iam::162001867187:role/aws-nodejs-dev-us-east-1-lambdaRole",
-            "Handler": "handler.hello",
-            "CodeSize": 1861,
+            "FunctionName": "testApp-TestFunction5-ZN0OO5CD1QCR",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction5-ZN0OO5CD1QCR",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction5Role-6SZMSXWEUIQE",
+            "Handler": "lambda.handler2",
+            "CodeSize": 733,
             "Description": "",
-            "Timeout": 6,
-            "MemorySize": 1024,
-            "LastModified": "2018-04-27T17:40:49.969+0000",
-            "CodeSha256": "AJeD/4Ncdgg9bl4ApY514bVDLtGqwyENF93kOz8Ep1s=",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-07T20:12:25.136+0000",
+            "CodeSha256": "3eYADjAvxFIgD06WtuD9L6H/ZNkfg5UCPmlwIRbd+ak=",
             "Version": "$LATEST",
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
-            "FunctionName": "testApp-TestFunction5-6H67G6EFI5PK", 
-            "MemorySize": 128, 
-            "RevisionId": "65b82732-80f7-428b-99d6-1c7407e263fb", 
-            "CodeSize": 754, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction5-6H67G6EFI5PK", 
             "Environment": {
                 "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
+                    "S3_BUCKET": "test-codesmith-bucket2"
                 }
-            }, 
-            "Handler": "lambda.handler2", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction5Role-10C4913RHT67K", 
-            "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:08.610+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
-        }, 
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "c7faafff-d8e3-4f4f-8230-c1a338e1c03e"
+        },
         {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
-            "FunctionName": "testApp-TestFunction6-D72ZQPHTWE3W", 
-            "MemorySize": 128, 
-            "RevisionId": "adaa61b4-8252-4564-bc2b-5fe066cdc62e", 
-            "CodeSize": 754, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction6-D72ZQPHTWE3W", 
+            "FunctionName": "testApp-TestFunction6-121AOY34E0OM3",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction6-121AOY34E0OM3",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction6Role-1XG6R0CEK19E6",
+            "Handler": "lambda.handler3",
+            "CodeSize": 733,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-07T20:12:25.832+0000",
+            "CodeSha256": "3eYADjAvxFIgD06WtuD9L6H/ZNkfg5UCPmlwIRbd+ak=",
+            "Version": "$LATEST",
             "Environment": {
                 "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
+                    "S3_BUCKET": "test-codesmith-bucket2"
                 }
-            }, 
-            "Handler": "lambda.handler3", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction6Role-X3QJQ5NW6Z99", 
-            "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:09.334+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "32ee9f17-6087-4c5c-b64e-99b7ec017092"
+        },
+        {
+            "FunctionName": "testApp-TestFunction4-1N4H400FICAKY",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction4-1N4H400FICAKY",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction4Role-CYM9XO7VYS25",
+            "Handler": "lambda.handler1",
+            "CodeSize": 733,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-07T20:12:25.425+0000",
+            "CodeSha256": "3eYADjAvxFIgD06WtuD9L6H/ZNkfg5UCPmlwIRbd+ak=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "S3_BUCKET": "test-codesmith-bucket2"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "f0896204-88d3-4e7a-a9b1-cdc414fa8fa0"
         }
     ]
 }

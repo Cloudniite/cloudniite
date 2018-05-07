@@ -5,56 +5,44 @@
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
+            "CodeSha256": "gTn4Zo9bhEqXeW45qjjee292mWj8r0ENiCBLzOG30Fw=", 
             "FunctionName": "testApp-TestFunction4-1LPS6WA57I0WJ", 
             "MemorySize": 128, 
-            "RevisionId": "3b1c0ef6-aaf2-49f5-a077-7be87a81c424", 
-            "CodeSize": 754, 
+            "RevisionId": "cfc3b6a0-aff7-482f-8a44-d8e297e4168b", 
+            "CodeSize": 753, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction4-1LPS6WA57I0WJ", 
             "Environment": {
                 "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
+                    "S3_BUCKET": "test-bucket-codesmith"
                 }
             }, 
             "Handler": "lambda.handler1", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction4Role-KP607BUYDVHP", 
             "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:08.368+0000", 
+            "LastModified": "2018-05-07T15:50:31.680+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }, 
         {
-            "FunctionName": "aws-nodejs-dev-hello",
-            "FunctionArn": "arn:aws:lambda:us-east-1:162001867187:function:aws-nodejs-dev-hello",
-            "Runtime": "nodejs6.10",
-            "Role": "arn:aws:iam::162001867187:role/aws-nodejs-dev-us-east-1-lambdaRole",
-            "Handler": "handler.hello",
-            "CodeSize": 1861,
-            "Description": "",
-            "Timeout": 6,
-            "MemorySize": 1024,
-            "LastModified": "2018-04-27T17:40:49.969+0000",
-            "CodeSha256": "AJeD/4Ncdgg9bl4ApY514bVDLtGqwyENF93kOz8Ep1s=",
-            "Version": "$LATEST",
             "TracingConfig": {
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
+            "CodeSha256": "gTn4Zo9bhEqXeW45qjjee292mWj8r0ENiCBLzOG30Fw=", 
             "FunctionName": "testApp-TestFunction5-6H67G6EFI5PK", 
             "MemorySize": 128, 
-            "RevisionId": "65b82732-80f7-428b-99d6-1c7407e263fb", 
-            "CodeSize": 754, 
+            "RevisionId": "2e670284-f148-415d-8d0a-7205b8378996", 
+            "CodeSize": 753, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction5-6H67G6EFI5PK", 
             "Environment": {
                 "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
+                    "S3_BUCKET": "test-bucket-codesmith"
                 }
             }, 
             "Handler": "lambda.handler2", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction5Role-10C4913RHT67K", 
             "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:08.610+0000", 
+            "LastModified": "2018-05-07T15:50:33.557+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }, 
@@ -63,21 +51,21 @@
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "POPjn3p8U8bE/XozIKLqcn4vMTqGV4w1TIe3LV+VOeU=", 
+            "CodeSha256": "gTn4Zo9bhEqXeW45qjjee292mWj8r0ENiCBLzOG30Fw=", 
             "FunctionName": "testApp-TestFunction6-D72ZQPHTWE3W", 
             "MemorySize": 128, 
-            "RevisionId": "adaa61b4-8252-4564-bc2b-5fe066cdc62e", 
-            "CodeSize": 754, 
+            "RevisionId": "2f015942-a36d-486e-91ef-86c2813fef71", 
+            "CodeSize": 753, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction6-D72ZQPHTWE3W", 
             "Environment": {
                 "Variables": {
-                    "S3_BUCKET": "test-codesmith-bucket1"
+                    "S3_BUCKET": "test-bucket-codesmith"
                 }
             }, 
             "Handler": "lambda.handler3", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction6Role-X3QJQ5NW6Z99", 
             "Timeout": 3, 
-            "LastModified": "2018-05-05T14:33:09.334+0000", 
+            "LastModified": "2018-05-07T15:50:33.030+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }

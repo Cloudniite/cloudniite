@@ -6,7 +6,7 @@ exports.handler1 = function(event, context, callback) {
             if(n === 1 || n === 2) return 1;
             return Hello(n - 1) + Hello(n - 2);
         }
-        callback(null, Hello(45));
+        callback(null, Hello(10));
     } else {
         callback(null, "What the f***");
     }
@@ -18,7 +18,7 @@ exports.handler2 = function(event, context, callback) {
             if(n === 1 || n === 2) return 1;
             return Hello(n - 1) + Hello(n - 2);
         }
-        callback(null, Hello(45));
+        callback(null, Hello(10));
     } else {
         callback(null, "What the f***");
     }

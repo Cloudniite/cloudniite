@@ -27,4 +27,4 @@ Resources:
       Runtime: nodejs8.10
       Environment:
         Variables:
-          S3_BUCKET: test-codesmith-bucket1
+          S3_BUCKET: test-bucket-codesmith

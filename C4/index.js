@@ -8,7 +8,8 @@ var lambda;
 const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
 
 
-function renderTemplate(functionList){
+function renderTemplate(functionList, env = "production"){
+    if(env === "production") return;
     lambdaController.getAllFuncInfo();
     var arr = [];
     functionList.Functions.forEach((func) => {

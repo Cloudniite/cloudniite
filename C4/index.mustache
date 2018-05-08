@@ -43,43 +43,55 @@ body {
 .menu button.active {
     background-color: #ccc;
 }
+.p {
+    float: right;
+}
+
+.content {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+}
 
 </style>
 </head>
 <body>
   <div class="menu"> 
-    <button class="menu-links" onclick=>Tags</button>
+    <button class="menu-links" onclick= >Tags</button>
     <button class="menu-links" onclick=>Functions</button>
     <button class="menu-links" onclick=>Stats</button>
-  <div>
+  </div>
       
-  <div class="div-tags">
-        {{#tags}}
-          {{{.}}}
-        {{/tags}}
-  </div>   
-  <div class="div-func">
+  <div class="content" id="div-func">
         {{#function}}
           {{{.}}}
         {{/function}}
-  </div>
-
-  <div class="div-stats">
-        {{#stats}}
+  </div> 
+  
+  <div class="content" id="timeAndDuration">
+        {{#timeAndDuration}}
           {{{.}}}
-        {{/stats}}
+        {{/timeAndDuration}}
   </div>
 
-  
-
-  
-
+  <div class="content" id="tagsOnly">
+        {{#tagsOnly}}
+          {{{.}}}
+        {{/tagsOnly}}
+  </div>
 
 <script id="template" type="x-tmpl-mustache">
   
 </script>
 <script>
-  function findFuncs()
+
+function open(event, menuItem) {
+
+}
+
 </script>
 </body>
 </html>

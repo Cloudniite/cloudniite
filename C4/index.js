@@ -9,8 +9,10 @@ const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} 
 
 
 
-function renderTemplate(){
+function renderTemplate(env = "production"){
+    if(env === "production") return;
     lambdaController.getAllFuncInfo().then(() => {
+        
     var arr = [];
     var tagsOnly = [];
     var tagsWFunc = [];

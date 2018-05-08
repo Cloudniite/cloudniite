@@ -2,19 +2,16 @@ AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   TestFunction4:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/ee00d30d6b22703d0a71f2aabe85480b
+      CodeUri: s3://test-bucket-codesmith/d742a204e36d370b35372f6644244af9
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith
       Handler: lambda.handler1
       Runtime: nodejs8.10
-      Tags:
-        Key: Category
-        Value: HelloWorld
     Type: AWS::Serverless::Function
   TestFunction5:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/ee00d30d6b22703d0a71f2aabe85480b
+      CodeUri: s3://test-bucket-codesmith/d742a204e36d370b35372f6644244af9
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith
@@ -23,7 +20,7 @@ Resources:
     Type: AWS::Serverless::Function
   TestFunction6:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/ee00d30d6b22703d0a71f2aabe85480b
+      CodeUri: s3://test-bucket-codesmith/d742a204e36d370b35372f6644244af9
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith

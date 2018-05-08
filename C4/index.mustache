@@ -1,14 +1,100 @@
 <!DOCTYPE HTML>
+
 <html>
+<head>
+<style>
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0px;
+}
+.menu {
+  background-color: lightgray;
+  float: left;
+  width: 250px;
+  height: 100%;
+  border: 1px solid darkgray;
+}
+
+.menu button {
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 22px;
+  color: black;
+  padding: 18px 12px;
+  width: 100%;
+  background-color: inherit;
+}
+.menu-links {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 70%;
+}
+
+.menu button:hover {
+    background-color: #ddd;
+}
+
+.menu button.active {
+    background-color: #ccc;
+}
+.p {
+    float: right;
+}
+
+.content {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+}
+
+</style>
+</head>
 <body>
-<ul>
-  {{#function}}
-  <li style="color:blue; font-size:24px">{{.}}</li>
-  {{/function}}
-</ul>
-<p>{{JSON.parse(timeAndDuration)}}</p>
+  <div class="menu"> 
+    <button class="menu-links" onclick= >Tags</button>
+    <button class="menu-links" onclick=>Functions</button>
+    <button class="menu-links" onclick=>Stats</button>
+  </div>
+      
+  <div class="content" id="div-func">
+        {{#function}}
+          {{{.}}}
+        {{/function}}
+  </div> 
+  
+  <div class="content" id="timeAndDuration">
+        {{#timeAndDuration}}
+          {{{.}}}
+        {{/timeAndDuration}}
+  </div>
+
+  <div class="content" id="tagsOnly">
+        {{#tagsOnly}}
+          {{{.}}}
+        {{/tagsOnly}}
+  </div>
+
 <script id="template" type="x-tmpl-mustache">
+  
+</script>
+<script>
+
+function open(event, menuItem) {
+
+}
 
 </script>
 </body>
 </html>
+
+
+

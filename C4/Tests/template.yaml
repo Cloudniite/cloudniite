@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  TestFunction4:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags: 
+          Key: "Category"
+          Value: "HelloWorld"
+      Handler: lambda.handler1
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          S3_BUCKET: test-bucket-codesmith
+  TestFunction5:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.handler2
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          S3_BUCKET: test-bucket-codesmith
+  TestFunction6:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.handler3
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          S3_BUCKET: test-bucket-codesmith

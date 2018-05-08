@@ -10,21 +10,28 @@ const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} 
 
 function renderTemplate(functionList){
     lambdaController.getAllFuncInfo();
-    console.log('In render tmep', functionList.Functions[0].FunctionName)
-
+    var arr = [];
+    functionList.Functions.forEach((func) => {
+        arr.push(`<button>${func.FunctionName.split('-')[1]} </button>`);
+    });
     var view = {
-        functionName1: functionList.Functions[0].FunctionName,
+        function: arr,
         runEnv: '',
         timeAndDuration: JSON.stringify(lambdaController.timeAndDuration),
     };
+
     
     
-    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
+    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, html) {
         if (err) throw err;
-        var output = Mustache.to_html(data, view);
+        var output = Mustache.to_html(html, view);
         console.log(output);
         this.htmlViz = output;
     });
+}
+
+function findTags () {
+    
 }
 
 lambdaController.getHtmlViz = function(req, res){

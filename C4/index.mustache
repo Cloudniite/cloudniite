@@ -1,10 +1,88 @@
 <!DOCTYPE HTML>
-<html>
-<body>
-<h1>First function name here {{ functionList }}!</h1>
-<p>{{JSON.parse(timeAndDuration)}}</p>
-<script id="template" type="x-tmpl-mustache">
 
+<html>
+<head>
+<style>
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0px;
+}
+.menu {
+  background-color: lightgray;
+  float: left;
+  width: 250px;
+  height: 100%;
+  border: 1px solid darkgray;
+}
+
+.menu button {
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 22px;
+  color: black;
+  padding: 18px 12px;
+  width: 100%;
+  background-color: inherit;
+}
+.menu-links {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 70%;
+}
+
+.menu button:hover {
+    background-color: #ddd;
+}
+
+.menu button.active {
+    background-color: #ccc;
+}
+
+</style>
+</head>
+<body>
+  <div class="menu"> 
+    <button class="menu-links" onclick=>Tags</button>
+    <button class="menu-links" onclick=>Functions</button>
+    <button class="menu-links" onclick=>Stats</button>
+  <div>
+      
+  <div class="div-tags">
+        {{#tags}}
+          {{{.}}}
+        {{/tags}}
+  </div>   
+  <div class="div-func">
+        {{#function}}
+          {{{.}}}
+        {{/function}}
+  </div>
+
+  <div class="div-stats">
+        {{#stats}}
+          {{{.}}}
+        {{/stats}}
+  </div>
+
+  
+
+  
+
+
+<script id="template" type="x-tmpl-mustache">
+  
+</script>
+<script>
+  function findFuncs()
 </script>
 </body>
 </html>
+
+
+

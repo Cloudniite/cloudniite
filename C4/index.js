@@ -8,26 +8,63 @@ var lambda;
 const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
 
 
-function renderTemplate(functionList, env = "production"){
+
+function renderTemplate(env = "production"){
     if(env === "production") return;
-    lambdaController.getAllFuncInfo();
+    lambdaController.getAllFuncInfo().then(() => {
+        
     var arr = [];
-    functionList.Functions.forEach((func) => {
-        arr.push(func.FunctionName.split('-')[1]);
+    var tagsOnly = [];
+    var tagsWFunc = [];
+    var timeAndDur = [];
+
+    lambdaController.functionList.Functions.forEach((func) => {
+        var shortHandFunc = func.FunctionName.split('-')[1]
+        arr.push(`<button class="functions ${shortHandFunc}">${shortHandFunc} </button>`);
+        var timeDurObj = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
+         for (var key in timeDurObj) {
+            timeAndDur.push(`<p class="timeAndDur ${shortHandFunc}"> ${key.split(": ")[1]} with a ${precisionRound(timeDurObj[key],3)} milliseconds delay </p>`)
+        };
     });
+
+    Object.keys(lambdaController.tagGroups).forEach((tag) => {
+        tagsOnly.push(`<button class="tag ${tag}">${tag} </button>`);
+    })
+//    functions rendered in HTML
+
+//    tagsOnly.forEach((tags) => {
+//         tagsWFunc.push(`<button class="tags">${tags} </button>`)
+//         tagsWFunc.push(`<button class="tagsWFunc">${lambdaController.tagGroups[tags]} </button>`)
+//     });
+    //  tags rendered in HTML
+
+    //  lambdaController.tagGroups.forEach((tagsFunc) => {
+    //     tagsWFunc.push(`<button class="tagsWFunc">${tagsFunc} </button>`)
+    // });
+    //tags rendered in HTML with func
+
     var view = {
         function: arr,
         runEnv: '',
-        timeAndDuration: JSON.stringify(lambdaController.timeAndDuration),
+        tagsOnly: tagsOnly,
+        tagsWFunc: tagsWFunc,
+        timeAndDuration: timeAndDur,
     };
+
     
     
-    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, data) {
+    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, html) {
         if (err) throw err;
-        var output = Mustache.to_html(data, view);
-        console.log(output);
+        var output = Mustache.to_html(html, view);
         this.htmlViz = output;
     });
+    }).catch((error) => { console.error(`FAILED: add to html failed, ${error}`) });
+    
+}
+
+function precisionRound(number, precision) {
+    var factor = Math.pow(10, precision);
+    return Math.round(number * factor) / factor;
 }
 
 lambdaController.getHtmlViz = function(req, res){
@@ -69,7 +106,7 @@ function cloudWatchParams(funcName) {
     this.StartTime = 0 /* required */
 }
 
-lambdaController.getAllFuncInfo = function () {
+lambdaController.getAllFuncInfo = function (req,res) {
     var newFunctions = this.functionList.Functions.map(func => {
         this.timeAndDuration[func.FunctionName.split('-')[1]] = {timeAndDuration : {}, MemorySize : func.MemorySize, codeSize : func.CodeSize, runTimeEnv : func.Runtime, lastModified: func.LastModified};
         return new Promise((resolve) => {
@@ -87,8 +124,8 @@ lambdaController.getAllFuncInfo = function () {
         })
     });
 
-    Promise.all(newFunctions)
-        .then(() => console.log(this.timeAndDuration))
+    return Promise.all(newFunctions)
+        .then(() => {})
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
@@ -99,10 +136,9 @@ function pullParams(funcName) {
         this.Payload = '{"source" : "C4-serverless"}'
 };
 
-
 lambdaController.setFunctionList = function (functionList) {
     this.functionList = functionList;
-    renderTemplate(this.functionList)
+    renderTemplate();
 }
 
 lambdaController.getAwsFunctions = function (...rest) {
@@ -118,7 +154,6 @@ lambdaController.warmupFunctions = function (timer, ...rest) {
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
         var newFunctions = functions.map((func) => {
-            console.log(func);
             return new Promise((resolve) => {
                 lambda.invoke(new pullParams(func), (error, data) => {
                     if (error) {
@@ -147,7 +182,7 @@ lambdaController.createTagGroup = function (tagGroup, ...rest) {
     this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
 };
 
-lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
+lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
     if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupTagGroup: First argument should be a number specifying the timer or null for single execution`);
     if (typeof tagGroup !== 'string') return console.error('FAILED at warmupTagGroup: First argument should be a string specifying the category');
     if (!(tagGroup in this.tagGroups)) return console.error(`FAILED at warmupTagGroup: ${tagGroup} is invalid`);
@@ -169,7 +204,9 @@ lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
 
     const promiseCall = () => {
         Promise.all(createFunc())
-            .then(() => console.log(`Warmup of category ${tagGroup} complete`))
+            .then(() => {
+                console.log(`Warmup of category ${tagGroup} complete`)
+            })
             .catch((error) => { console.error(`FAILED: Warmup of category ${tagGroup} failed, ${error}`) });
     }
 

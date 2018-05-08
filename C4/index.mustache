@@ -14,7 +14,7 @@ body {
 .menu {
   background-color: lightgray;
   float: left;
-  width: 250px;
+  width: 20%;
   height: 100%;
   border: 1px solid darkgray;
 }
@@ -51,7 +51,7 @@ body {
     float: left;
     padding: 0px 12px;
     border: 1px solid #ccc;
-    width: 70%;
+    width: 75%;
     border-left: none;
     height: 300px;
 }
@@ -60,7 +60,7 @@ body {
 </head>
 <body>
   <div class="menu"> 
-    <button class="menu-links" onclick= >Tags</button>
+    <button class="menu-links" onclick="open(event, 'tagsOnly')" id="defaultOpen">Tags</button>
     <button class="menu-links" onclick=>Functions</button>
     <button class="menu-links" onclick=>Stats</button>
   </div>
@@ -89,9 +89,10 @@ body {
 <script>
 
 function open(event, menuItem) {
-
+  document.getElementByClassName
 }
 
+document.getElementById("defaultOpen").click();
 </script>
 </body>
 </html>

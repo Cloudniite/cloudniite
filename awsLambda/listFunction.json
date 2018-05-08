@@ -1,0 +1,73 @@
+{
+    "Functions": [
+        {
+            "FunctionName": "testApp-TestFunction5-ZN0OO5CD1QCR",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction5-ZN0OO5CD1QCR",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction5Role-6SZMSXWEUIQE",
+            "Handler": "lambda.handler2",
+            "CodeSize": 1352,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-08T21:21:16.333+0000",
+            "CodeSha256": "RkB3l5dELUqVhZOyq1PchFDr7sGsB08QRYvEnR7814w=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "S3_BUCKET": "test-codesmith-bucket2"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "2e774baa-2021-4fee-99f0-e34a5f533dcf"
+        },
+        {
+            "FunctionName": "testApp-TestFunction6-121AOY34E0OM3",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction6-121AOY34E0OM3",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction6Role-1XG6R0CEK19E6",
+            "Handler": "lambda.handler3",
+            "CodeSize": 1352,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-08T21:21:16.296+0000",
+            "CodeSha256": "RkB3l5dELUqVhZOyq1PchFDr7sGsB08QRYvEnR7814w=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "S3_BUCKET": "test-codesmith-bucket2"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "e123ec2e-de77-4526-a0e5-d11c9a25b22b"
+        },
+        {
+            "FunctionName": "testApp-TestFunction4-1N4H400FICAKY",
+            "FunctionArn": "arn:aws:lambda:us-east-1:697711228425:function:testApp-TestFunction4-1N4H400FICAKY",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::697711228425:role/testApp-TestFunction4Role-CYM9XO7VYS25",
+            "Handler": "lambda.handler1",
+            "CodeSize": 1352,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-08T21:21:16.755+0000",
+            "CodeSha256": "RkB3l5dELUqVhZOyq1PchFDr7sGsB08QRYvEnR7814w=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "S3_BUCKET": "test-codesmith-bucket2"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "100712b8-0573-4801-9fc3-4cd26096a776"
+        }
+    ]
+}

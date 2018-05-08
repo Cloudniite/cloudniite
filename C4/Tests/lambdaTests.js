@@ -34,8 +34,9 @@ describe('warmupTagGroup test/s', () => {
     });
 });
 
-    
+
 describe("getAwsFunctions test/s", () => {
+
     before(() => {
         lambdaController.functionList = { Functions: [{ FunctionName: 'testApp-TestFunction4-1LPS6WA57I0WJ' }, { FunctionName: 'testApp-TestFunction5-6H67G6EFI5PK' }, { FunctionName: 'testApp-TestFunction6-D72ZQPHTWE3W' }] };
     });
@@ -51,9 +52,11 @@ describe("getAwsFunctions test/s", () => {
     it('Check if return value matches the AWS function name', () => {
         expect(lambdaController.getAwsFunctions('TestFunction4')[0]).toEqual("testApp-TestFunction4-1LPS6WA57I0WJ");
     });
+
 });
 
 describe("setFunctionList test/s", () => {
+
     before(() => {
         lambdaController.setFunctionList({ Functions: [{ FunctionName: 'testApp-TestFunction4-1LPS6WA57I0WJ' }, { FunctionName: 'testApp-TestFunction5-6H67G6EFI5PK' }, { FunctionName: 'testApp-TestFunction6-D72ZQPHTWE3W' }] });
     });
@@ -69,6 +72,7 @@ describe("setFunctionList test/s", () => {
     it('Check if functionList has function name', () => {
         expect(lambdaController.functionList.Functions[1].FunctionName).toEqual('testApp-TestFunction5-6H67G6EFI5PK');
     });
+
 });
 
 
@@ -85,7 +89,7 @@ describe("createTagGroup test/s", () => {
     it('Check if tagGroups has property', () => {
         expect(lambdaController.tagGroups.hasOwnProperty("#HelloWorld1")).toEqual(true);
     });
-    
+
     it('Check if a Tag Group has an Array as a value', () => {
         expect(Array.isArray(lambdaController.tagGroups['#HelloWorld1'])).toEqual(true);
     });
@@ -93,6 +97,5 @@ describe("createTagGroup test/s", () => {
     it("Check if a Tag Group's value contains the correct function name", () => {
         expect(lambdaController.tagGroups['#HelloWorld1'][0]).toEqual('testApp-TestFunction6-D72ZQPHTWE3W');
     });
-
 
 });

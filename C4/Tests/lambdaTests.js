@@ -2,24 +2,7 @@ const expect = require('expect');
 const lambdaController = require('./../index.js');
 
 describe('Lamba Controller Tests', () => {
-    it('Check if type of property is a function', () => {
-        expect(typeof lambdaController.getAllFuncInfo).toEqual('function');
-        expect(typeof lambdaController.configure).toEqual('function');
-        expect(typeof lambdaController.setFunctionList).toEqual('function');
-        expect(typeof lambdaController.getAwsFunctions).toEqual('function');
-        expect(typeof lambdaController.warmupFunctions).toEqual('function');
-        expect(typeof lambdaController.createTagGroup).toEqual('function');
-        expect(typeof lambdaController.warmupTagGroup).toEqual('function');
-    });
-
-    it('Check if function has property', () => {
-        expect(lambdaController.hasOwnProperty('functionList')).toEqual(true);
-        expect(lambdaController.hasOwnProperty('tagGroups')).toEqual(true);
-        expect(lambdaController.hasOwnProperty('timeAndDuration')).toEqual(true);
-        expect(lambdaController.hasOwnProperty('htmlViz')).toEqual(true);
-    });
-
-    it('Check if typeOf return value of getAWsFunctions is an array', () => {
+    it('Check if controller has property', () => {
         expect(lambdaController.hasOwnProperty('functionList')).toEqual(true);
         expect(lambdaController.hasOwnProperty('tagGroups')).toEqual(true);
         expect(lambdaController.hasOwnProperty('timeAndDuration')).toEqual(true);
@@ -27,9 +10,38 @@ describe('Lamba Controller Tests', () => {
     });
 });
 
+describe('getAllFuncInfo test/s', () => {
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.getAllFuncInfo).toEqual('function');
+    });
+});
+
+describe('configure test/s', () => {
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.configure).toEqual('function');
+    });
+});
+
+describe('warmupFunctions test/s', () => {
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.warmupFunctions).toEqual('function');
+    });
+});
+
+describe('warmupTagGroup test/s', () => {
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.warmupTagGroup).toEqual('function');
+    });
+});
+
+    
 describe("getAwsFunctions test/s", () => {
     before(() => {
         lambdaController.functionList = { Functions: [{ FunctionName: 'testApp-TestFunction4-1LPS6WA57I0WJ' }, { FunctionName: 'testApp-TestFunction5-6H67G6EFI5PK' }, { FunctionName: 'testApp-TestFunction6-D72ZQPHTWE3W' }] };
+    });
+
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.getAwsFunctions).toEqual('function');
     });
 
     it('Check if typeOf return value of getAWsFunctions is an array', () => {
@@ -46,6 +58,10 @@ describe("setFunctionList test/s", () => {
         lambdaController.setFunctionList({ Functions: [{ FunctionName: 'testApp-TestFunction4-1LPS6WA57I0WJ' }, { FunctionName: 'testApp-TestFunction5-6H67G6EFI5PK' }, { FunctionName: 'testApp-TestFunction6-D72ZQPHTWE3W' }] });
     });
 
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.setFunctionList).toEqual('function');
+    });
+
     it('Check if function list has property', () => {
         expect(lambdaController.functionList.hasOwnProperty("Functions")).toEqual(true);
     });
@@ -56,10 +72,14 @@ describe("setFunctionList test/s", () => {
 });
 
 
-describe("setFunctionList test/s", () => {
+describe("createTagGroup test/s", () => {
     before(() => {
         lambdaController.setFunctionList({ Functions: [{ FunctionName: 'testApp-TestFunction4-1LPS6WA57I0WJ' }, { FunctionName: 'testApp-TestFunction5-6H67G6EFI5PK' }, { FunctionName: 'testApp-TestFunction6-D72ZQPHTWE3W' }] });
         lambdaController.createTagGroup("#HelloWorld1", "TestFunction6");
+    });
+
+    it('Check if type of property is a function', () => {
+        expect(typeof lambdaController.createTagGroup).toEqual('function');
     });
 
     it('Check if tagGroups has property', () => {

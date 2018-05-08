@@ -8,12 +8,15 @@ var lambda;
 const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
 
 
-function renderTemplate(functionList){
+function renderTemplate(functionList, env = "production"){
+    if(env === "production") return;
     lambdaController.getAllFuncInfo();
-    console.log('In render tmep', functionList.Functions[0].FunctionName)
-
+    var arr = [];
+    functionList.Functions.forEach((func) => {
+        arr.push(func.FunctionName.split('-')[1]);
+    });
     var view = {
-        functionName1: functionList.Functions[0].FunctionName,
+        function: arr,
         runEnv: '',
         timeAndDuration: JSON.stringify(lambdaController.timeAndDuration),
     };

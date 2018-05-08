@@ -5,7 +5,7 @@ const path = require('path');
 
 
 var lambda;
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
+const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz : ""};
 
 
 function renderTemplate(functionList, env = "production"){
@@ -147,7 +147,7 @@ lambdaController.createTagGroup = function (tagGroup, ...rest) {
     this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
 };
 
-lambdaController.warmupTagGroup = (timer = null, tagGroup) => {
+lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
     if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupTagGroup: First argument should be a number specifying the timer or null for single execution`);
     if (typeof tagGroup !== 'string') return console.error('FAILED at warmupTagGroup: First argument should be a string specifying the category');
     if (!(tagGroup in this.tagGroups)) return console.error(`FAILED at warmupTagGroup: ${tagGroup} is invalid`);

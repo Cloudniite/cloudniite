@@ -10,11 +10,6 @@ lambdaController.setFunctionList(functionList);
 
 app.get('/getHtmlViz', lambdaController.getHtmlViz);
 
-
-// console.log('Fucntion List: ', lambdaController.getHtmlViz)
-
-
-
 app.get('/index.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.js'));
 });

@@ -6,7 +6,7 @@ const lambdaController = require('./C4/index.js');
 const app = express();
 
 lambdaController.configure('us-east-1','us-east-1:e9013370-61d4-42ae-af82-ede66d14f6db');
-lambdaController.setFunctionList(functionList);
+lambdaController.setFunctionList(functionList, "dev");
 app.get('/getHtmlViz', lambdaController.getHtmlViz);
 
 

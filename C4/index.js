@@ -12,7 +12,7 @@ const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} 
 function renderTemplate(env = "production"){
     if(env === "production") return;
     lambdaController.getAllFuncInfo().then(() => {
-        
+
     var arr = [];
     var tagsOnly = [];
     var tagsWFunc = [];
@@ -136,9 +136,9 @@ function pullParams(funcName) {
         this.Payload = '{"source" : "C4-serverless"}'
 };
 
-lambdaController.setFunctionList = function (functionList) {
+lambdaController.setFunctionList = function (functionList, env) {
     this.functionList = functionList;
-    renderTemplate();
+    renderTemplate(env);
 }
 
 lambdaController.getAwsFunctions = function (...rest) {

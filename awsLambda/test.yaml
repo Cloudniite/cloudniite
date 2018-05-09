@@ -8,7 +8,7 @@ Resources:
       Runtime: nodejs8.10
       Environment: 
         Variables:
-          S3_BUCKET: test-codesmith-bucket2
+          S3_BUCKET: test-bucket-codesmith
   TestFunction5:
     Type: AWS::Serverless::Function
     Properties:
@@ -16,7 +16,7 @@ Resources:
       Runtime: nodejs8.10
       Environment:
         Variables:
-          S3_BUCKET: test-codesmith-bucket2
+          S3_BUCKET: test-bucket-codesmith
   TestFunction6:
     Type: AWS::Serverless::Function
     Properties:
@@ -24,4 +24,4 @@ Resources:
       Runtime: nodejs8.10
       Environment:
         Variables:
-          S3_BUCKET: test-codesmith-bucket2
+          S3_BUCKET: test-bucket-codesmith

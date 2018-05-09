@@ -3,63 +3,51 @@ const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
 
+const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "" };
+var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
-var lambda;
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
+lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
+    AWS.config.update({ region: region });
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
+    this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
+}
 
-
-
-function renderTemplate(env = "production"){
-    if(env === "production") return;
+function renderTemplate(env = "production") {
+    if (env === "production") return;
     lambdaController.getAllFuncInfo().then(() => {
 
-    var arr = [];
-    var tagsOnly = [];
-    var tagsWFunc = [];
-    var timeAndDur = [];
+        var arr = [];
+        var tagsOnly = [];
+        var tagsWFunc = [];
+        var timeAndDur = [];
 
-    lambdaController.functionList.Functions.forEach((func) => {
-        var shortHandFunc = func.FunctionName.split('-')[1]
-        arr.push(`<button class="functions ${shortHandFunc}">${shortHandFunc} </button>`);
-        var timeDurObj = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
-         for (var key in timeDurObj) {
-            timeAndDur.push(`<p class="timeAndDur ${shortHandFunc}"> ${key.split(": ")[1]} with a ${precisionRound(timeDurObj[key],3)} milliseconds delay </p>`)
+        lambdaController.functionList.Functions.forEach((func) => {
+            var shortHandFunc = func.FunctionName.split('-')[1]
+            arr.push(`<button class="functions ${shortHandFunc}">${shortHandFunc} </button>`);
+            var timeDurObj = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
+            for (var key in timeDurObj) {
+                timeAndDur.push(`<p class="timeAndDur ${shortHandFunc}"> ${key.split(": ")[1]} with a ${precisionRound(timeDurObj[key], 3)} milliseconds delay </p>`)
+            };
+        });
+
+        Object.keys(lambdaController.tagGroups).forEach((tag) => {
+            tagsOnly.push(`<button class="tag ${tag}">${tag} </button>`);
+        })
+
+        var view = {
+            function: arr,
+            runEnv: '',
+            tagsOnly: tagsOnly,
+            tagsWFunc: tagsWFunc,
+            timeAndDuration: timeAndDur,
         };
-    });
 
-    Object.keys(lambdaController.tagGroups).forEach((tag) => {
-        tagsOnly.push(`<button class="tag ${tag}">${tag} </button>`);
-    })
-//    functions rendered in HTML
-
-//    tagsOnly.forEach((tags) => {
-//         tagsWFunc.push(`<button class="tags">${tags} </button>`)
-//         tagsWFunc.push(`<button class="tagsWFunc">${lambdaController.tagGroups[tags]} </button>`)
-//     });
-    //  tags rendered in HTML
-
-    //  lambdaController.tagGroups.forEach((tagsFunc) => {
-    //     tagsWFunc.push(`<button class="tagsWFunc">${tagsFunc} </button>`)
-    // });
-    //tags rendered in HTML with func
-
-    var view = {
-        function: arr,
-        runEnv: '',
-        tagsOnly: tagsOnly,
-        tagsWFunc: tagsWFunc,
-        timeAndDuration: timeAndDur,
-    };
-
-    
-    
-    fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, html) {
-        if (err) throw err;
-        var output = Mustache.to_html(html, view);
-        this.htmlViz = output;
-    });
+        fs.readFile(path.join(__dirname, 'index.mustache'), 'utf-8', function (err, html) {
+            if (err) throw err;
+            var output = Mustache.to_html(html, view);
+            this.htmlViz = output;
+        });
     }).catch((error) => { console.error(`FAILED: add to html failed, ${error}`) });
-    
 }
 
 function precisionRound(number, precision) {
@@ -67,16 +55,8 @@ function precisionRound(number, precision) {
     return Math.round(number * factor) / factor;
 }
 
-lambdaController.getHtmlViz = function(req, res){
+lambdaController.getHtmlViz = function (req, res) {
     res.send(this.htmlViz);
-}
-
-var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
-
-lambdaController.configure = (region, IdentityPoolId, apiVersion = '2015-03-31') => {
-    AWS.config.update({ region: region });
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
-    lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
 }
 
 function cloudWatchParams(funcName) {
@@ -106,9 +86,9 @@ function cloudWatchParams(funcName) {
     this.StartTime = 0 /* required */
 }
 
-lambdaController.getAllFuncInfo = function (req,res) {
+lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-        this.timeAndDuration[func.FunctionName.split('-')[1]] = {timeAndDuration : {}, MemorySize : func.MemorySize, codeSize : func.CodeSize, runTimeEnv : func.Runtime, lastModified: func.LastModified};
+        this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeAndDuration: {}, MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
         return new Promise((resolve) => {
             cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName), (err, data) => {
                 if (err) {
@@ -125,7 +105,7 @@ lambdaController.getAllFuncInfo = function (req,res) {
     });
 
     return Promise.all(newFunctions)
-        .then(() => {})
+        .then(() => { })
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
@@ -155,7 +135,7 @@ lambdaController.warmupFunctions = function (timer, ...rest) {
     const createfunc = () => {
         var newFunctions = functions.map((func) => {
             return new Promise((resolve) => {
-                lambda.invoke(new pullParams(func), (error, data) => {
+                this.lambda.invoke(new pullParams(func), (error, data) => {
                     if (error) {
                         throw error;
                     } else {
@@ -190,7 +170,7 @@ lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
     const createFunc = () => {
         var newFunctions = functions.map((func) => {
             return new Promise((resolve) => {
-                lambda.invoke(new pullParams(func), (error, data) => {
+                this.lambda.invoke(new pullParams(func), (error, data) => {
                     if (error) {
                         throw error;
                     } else {

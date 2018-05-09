@@ -46,6 +46,11 @@ app.get('/appMedia/guitar-stock.jpg', (req, res) => {
 });
 
 
+app.get('/loginSignup.css', (req, res) => {
+    res.sendFile(path.join(__dirname, './loginSignupPages/loginSignup.css'));
+});
+
+
 
 app.listen(3000, () => {
     console.log("Listening on PORT");

@@ -21,8 +21,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
-// lambdaController.createTagGroup("#HelloWorld1", "TestFunction6");
+lambdaController.createTagGroup("HelloWorld", "TestFunction4", "TestFunction5");
+lambdaController.createTagGroup("HelloWorld1", "TestFunction6");
+lambdaController.addToTagGroup("HelloWorld1", "TestFunction4");
 // lambdaController.warmupFunctions(0.1,"TestFunction6");
 // lambdaController.warmupTagGroup(null, "#HelloWorld1");
 

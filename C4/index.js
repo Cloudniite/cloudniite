@@ -6,16 +6,11 @@ const path = require('path');
 const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "" };
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
-<<<<<<< HEAD
-var lambda;
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "" };
-=======
 lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
     AWS.config.update({ region: region });
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
     this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
 }
->>>>>>> 37687f2247dbfaad103f7345a1f074ab0a91dacd
 
 function renderTemplate(env = "production") {
     if (env === "production") return;

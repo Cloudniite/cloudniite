@@ -4,12 +4,9 @@ Resources:
   TestFunction4:
     Type: AWS::Serverless::Function
     Properties:
-      Tags: 
-          Key: "Category"
-          Value: "HelloWorld"
       Handler: lambda.handler1
       Runtime: nodejs8.10
-      Environment:
+      Environment: 
         Variables:
           S3_BUCKET: test-bucket-codesmith
   TestFunction5:

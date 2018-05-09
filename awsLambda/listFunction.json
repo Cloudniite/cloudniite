@@ -5,11 +5,11 @@
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "en06i35WkruVh/9f4h17DTkWwgA2wSzXj7I2/SHLm8k=", 
+            "CodeSha256": "TUZcDbJMGRUyPMjoTMH8Lg0VbWBWIfe4eKtwu6Ld9bs=", 
             "FunctionName": "testApp-TestFunction4-1LPS6WA57I0WJ", 
             "MemorySize": 128, 
-            "RevisionId": "42b313a3-4bbf-466e-bde0-269c6644e838", 
-            "CodeSize": 973, 
+            "RevisionId": "fd0e36b6-7beb-447a-b7cb-6b144dcba5bc", 
+            "CodeSize": 2102, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction4-1LPS6WA57I0WJ", 
             "Environment": {
                 "Variables": {
@@ -19,7 +19,7 @@
             "Handler": "lambda.handler1", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction4Role-KP607BUYDVHP", 
             "Timeout": 3, 
-            "LastModified": "2018-05-09T14:16:31.231+0000", 
+            "LastModified": "2018-05-09T15:14:23.820+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }, 
@@ -28,11 +28,11 @@
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "en06i35WkruVh/9f4h17DTkWwgA2wSzXj7I2/SHLm8k=", 
+            "CodeSha256": "TUZcDbJMGRUyPMjoTMH8Lg0VbWBWIfe4eKtwu6Ld9bs=", 
             "FunctionName": "testApp-TestFunction5-6H67G6EFI5PK", 
             "MemorySize": 128, 
-            "RevisionId": "8f764c5b-b6ee-490d-aae1-6b5f00c98c8d", 
-            "CodeSize": 973, 
+            "RevisionId": "cdda26dc-c154-4ae7-997f-32d351f3e912", 
+            "CodeSize": 2102, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction5-6H67G6EFI5PK", 
             "Environment": {
                 "Variables": {
@@ -42,7 +42,7 @@
             "Handler": "lambda.handler2", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction5Role-10C4913RHT67K", 
             "Timeout": 3, 
-            "LastModified": "2018-05-09T14:16:31.672+0000", 
+            "LastModified": "2018-05-09T15:14:23.709+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }, 
@@ -51,11 +51,11 @@
                 "Mode": "PassThrough"
             }, 
             "Version": "$LATEST", 
-            "CodeSha256": "en06i35WkruVh/9f4h17DTkWwgA2wSzXj7I2/SHLm8k=", 
+            "CodeSha256": "TUZcDbJMGRUyPMjoTMH8Lg0VbWBWIfe4eKtwu6Ld9bs=", 
             "FunctionName": "testApp-TestFunction6-D72ZQPHTWE3W", 
             "MemorySize": 128, 
-            "RevisionId": "99d54268-6711-40c1-b946-8c6d41c2b170", 
-            "CodeSize": 973, 
+            "RevisionId": "f2bf54bb-9060-4aa3-b01a-8abf0b09a96c", 
+            "CodeSize": 2102, 
             "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction6-D72ZQPHTWE3W", 
             "Environment": {
                 "Variables": {
@@ -65,7 +65,7 @@
             "Handler": "lambda.handler3", 
             "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction6Role-X3QJQ5NW6Z99", 
             "Timeout": 3, 
-            "LastModified": "2018-05-09T14:16:31.463+0000", 
+            "LastModified": "2018-05-09T15:14:23.645+0000", 
             "Runtime": "nodejs8.10", 
             "Description": ""
         }

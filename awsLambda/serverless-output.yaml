@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   TestFunction4:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/cd217e109ea9295634315ef90916832a
+      CodeUri: s3://test-codesmith-bucket1/683e57b7065b47019367e5065dc00a51
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith
@@ -14,7 +14,7 @@ Resources:
     Type: AWS::Serverless::Function
   TestFunction5:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/cd217e109ea9295634315ef90916832a
+      CodeUri: s3://test-codesmith-bucket1/683e57b7065b47019367e5065dc00a51
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith
@@ -23,7 +23,7 @@ Resources:
     Type: AWS::Serverless::Function
   TestFunction6:
     Properties:
-      CodeUri: s3://test-bucket-codesmith/cd217e109ea9295634315ef90916832a
+      CodeUri: s3://test-codesmith-bucket1/683e57b7065b47019367e5065dc00a51
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith

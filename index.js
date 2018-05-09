@@ -21,4 +21,10 @@ $(function() {
             console.log(data - date);
         });
     });
+
+    $('#go-to-login').click(() => {
+        $.get('/warmupLogin', (data, status) => {
+            console.log('Status: ', status, 'Data: ', data)
+        })
+    })
 });

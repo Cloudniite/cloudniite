@@ -5,7 +5,7 @@ const path = require('path');
 
 
 var lambda;
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {} };
+const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "" };
 
 
 function renderTemplate(functionList, env = "production"){

@@ -3,6 +3,19 @@
 <html>
 <head>
 <style>
+
+body {
+  background-color: #f2f2f2;
+}
+
+.hide {
+   display:none;
+}
+
+tr:nth-child(even) {
+  background-color: white;
+}
+
 html {
   height: 100%;
 }
@@ -28,12 +41,20 @@ body {
   padding: 18px 12px;
   width: 100%;
   background-color: inherit;
+  transition: 0.3s;
 }
+
 .menu-links {
   float: left;
   padding: 0px 12px;
   border: 1px solid #ccc;
   width: 70%;
+}
+
+.tags, .functions {
+  width: 100%;
+  font-size: 18px;
+  padding: 1%;
 }
 
 .menu button:hover {
@@ -53,49 +74,112 @@ body {
     border: 1px solid #ccc;
     width: 75%;
     border-left: none;
-    height: 300px;
+    height: 100%;
+}
+
+.tagFunction {
+  background-color: white;
+  color: black;
+  width: 100%;
+  font-size: 18px;
+  text-align: left;
+  padding: 1%;
 }
 
 </style>
 </head>
 <body>
+
   <div class="menu"> 
-    <button class="menu-links" onclick="open(event, 'tagsOnly')" id="defaultOpen">Tags</button>
-    <button class="menu-links" onclick=>Functions</button>
-    <button class="menu-links" onclick=>Stats</button>
-  </div>
-      
-  <div class="content" id="div-func">
-        {{#function}}
-          {{{.}}}
-        {{/function}}
-  </div> 
-  
-  <div class="content" id="timeAndDuration">
-        {{#timeAndDuration}}
-          {{{.}}}
-        {{/timeAndDuration}}
+    <button class="menu-links" onclick="opn(event, 'tagsOnly')">Tags</button>
+    <button class="menu-links" onclick="opn(event, 'div-func')">Functions</button>
+    <button class="menu-links" onclick="opn(event, 'timeAndDuration')">Stats</button>
   </div>
 
   <div class="content" id="tagsOnly">
+    <h3>
         {{#tagsOnly}}
           {{{.}}}
         {{/tagsOnly}}
+    </h3>
   </div>
 
-<script id="template" type="x-tmpl-mustache">
+  <div class="content hide" id="div-func">
+    <h3> 
+        {{#function}}
+          {{{.}}}
+        {{/function}}
+    </h3>
+  </div> 
   
+  <div class="content hide" id="timeAndDuration">
+    <h3>
+        {{#timeAndDuration}}
+          {{{.}}}
+        {{/timeAndDuration}}
+    </h3>
+  </div>
+
+
+
+<script id="template" type="x-tmpl-mustache">
 </script>
 <script>
 
-function open(event, menuItem) {
-  document.getElementByClassName
+function opn(evt, menuItem) {
+  var tabcontent = document.getElementsByClassName("content");
+  for (var i = 0; i < tabcontent.length; i ++) {
+    if (tabcontent[i].className === "content") {
+      tabcontent[i].className += " hide"
+    }
+    if (tabcontent[i].id === menuItem) {
+      tabcontent[i].className = "content"
+    }
+  }
+
+  evt.currentTarget.className += " active";
 }
 
-document.getElementById("defaultOpen").click();
+  var acc = document.getElementsByClassName("tags");
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+  }
+
+  var durationAndStats = document.getElementsByClassName("tagFunction");
+  for (i = 0; i < durationAndStats.length; i++) {
+    durationAndStats[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+  }
+
+  var durationAndStats = document.getElementsByClassName("functions");
+  for (i = 0; i < durationAndStats.length; i++) {
+    durationAndStats[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+  }
+
 </script>
 </body>
 </html>
-
-
 

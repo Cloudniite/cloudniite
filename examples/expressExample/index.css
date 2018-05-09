@@ -1,0 +1,76 @@
+html{
+    margin:0;
+}
+
+body{
+    margin:0;
+}
+
+#site-title{
+    font-size:22px;
+    color:white;
+    float:left;
+    margin-left:20px;
+}
+
+#page-1-nav{
+    width:100%;
+    height:70px;
+    background-color:black;
+}
+
+#page-1-outer{
+    width:100%;
+    height:100%;
+    background-color:#efefef;
+}
+
+#cover-photo{
+    width:100%;
+    height:100%;
+}
+
+
+#cover-photo-img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#login-nav{
+    color:white;
+    font-size:18px;
+    float:right;
+    margin-right:30px;
+    margin-top:20px;
+    background-color: Transparent;
+}
+
+#login-nav:hover{
+    color:rgb(176, 176, 176);
+    cursor: pointer;
+    transition: 200ms;
+}
+
+#signup-button input{
+    font-size:18px;
+    font-weight: 700;
+    margin:auto;
+    width:150px;
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius: 3px;
+}
+
+
+#signup-button input:hover{
+    cursor: pointer;
+    background-color:rgb(219, 219, 219);
+    transition:200ms;
+}
+
+#signup-button{
+    width:150px;
+    margin:auto;
+    margin-top:-420px;
+}

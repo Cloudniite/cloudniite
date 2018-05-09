@@ -1,0 +1,36 @@
+#signup-form{
+    width:450px;
+    height:200px;
+    background-color:#efefef;
+    margin:auto;
+    text-align: center;
+    padding:10px;
+    margin-top:100px;
+    border:1px solid #ccc;
+    border-radius:3px;
+}
+
+.username{
+    display: block;
+    margin-bottom:20px;
+}
+
+.password{
+    display:block;
+}
+
+.submit-login-signup{
+    margin-top:20px;
+}
+
+
+.cloudniite-working{
+    width:400px;
+    border:1px solid #ccc;
+    border-radius:3px;
+    margin:auto;
+    text-align: center;
+    background-color:#efefef;
+    margin-top:50px;
+    padding:10px;
+}

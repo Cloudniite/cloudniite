@@ -151,7 +151,14 @@ body {
 //D3 data visualizations
 d3.selectAll("h3").style("color", "purple")
 var rawFunctionData = JSON.parse(functionRawData.innerHTML);
-console.log(rawFunctionData.TestFunction4);
+var testFunction4Times = rawFunctionData.TestFunction4.timeAndDuration;
+
+console.log(testFunction4Times)
+
+for (var data in testFunction4Times){
+  console.log("Looper", data);
+}
+
 
 var margin = {top:20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,

@@ -14,7 +14,7 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersion = '201
 
 function renderTemplate() {
     lambdaController.getAllFuncInfo().then(() => {
-        // console.log(lambdaController.timeAndDuration);
+        console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
 
         var functionArray = [];
         var tagsArray = [];
@@ -30,9 +30,7 @@ function renderTemplate() {
         function tableStats(idx, shortHandFunc, array) {
             var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeSeries;
             for (var i = 0 ; i < timeDuration.length; i++) {
-                for (var date in timeDuration[i]) {
-                    array[idx] += `<tr><td style = "font-weight: 400">${date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i][date], 3)} mil</td> </tr>`;
-                }
+                    array[idx] += `<tr><td style = "font-weight: 400">${timeDuration[i].date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> </tr>`;
             }
             array[idx] += `</table></div>`;
         }
@@ -108,7 +106,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
                         var funcName = func.FunctionName.split('-')[1];
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var duration = data.MetricDataResults[0].Values[i];
-                        var singleInvocationData = {[date] : duration};
+                        var singleInvocationData = {date : date, duration : duration};
                         this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
                     }
                     return resolve();

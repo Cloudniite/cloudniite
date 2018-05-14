@@ -14,17 +14,24 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersion = '201
 
 function renderTemplate() {
     lambdaController.getAllFuncInfo().then(() => {
+        // console.log(lambdaController.timeAndDuration);
 
         var functionArray = [];
         var tagsArray = [];
         var timeAndDur = [];
 
-        var view = { function: functionArray, tagsArray: tagsArray, timeAndDuration: timeAndDur , functionRawData: JSON.stringify(lambdaController.timeAndDuration) || '',};
+        var view = { 
+            function: functionArray, 
+            tagsArray: tagsArray, 
+            timeAndDuration: timeAndDur,
+        };
 
         function tableStats(idx, shortHandFunc, array) {
-            var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
-            for (var time in timeDuration) {
-                array[idx] += `<tr><td style = "font-weight: 400">${time.split(": ")[1]}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[time], 3)} mil</td> </tr>`;
+            var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeSeries;
+            for (var i = 0 ; i < timeDuration.length; i++) {
+                for (var date in timeDuration[i]) {
+                    array[idx] += `<tr><td style = "font-weight: 400">${date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i][date], 3)} mil</td> </tr>`;
+                }
             }
             array[idx] += `</table></div>`;
         }
@@ -89,15 +96,19 @@ function cloudWatchParams(funcName) {
 
 lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-        this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeAndDuration: {}, MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
+        this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeSeries: [], MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
         return new Promise((resolve) => {
             cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName), (err, data) => {
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
-                        var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
-                        this.timeAndDuration[func.FunctionName.split('-')[1]].timeAndDuration[`${data.MetricDataResults[0].Timestamps.length - 1 - i} : ${Math.abs(time) / 60} min`] = data.MetricDataResults[0].Values[i]; // successful response
+                        // var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
+                        var funcName = func.FunctionName.split('-')[1];
+                        var date = data.MetricDataResults[0].Timestamps[i];
+                        var duration = data.MetricDataResults[0].Values[i];
+                        var singleInvocationData = {[date] : duration};
+                        this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
                     }
                     return resolve();
                 }

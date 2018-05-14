@@ -137,10 +137,10 @@ body {
         {{/timeAndDuration}}
     </h3>
 
-    <div id="functionDurations" style="display:none">{{functionDurations}}</div>
-    <div id="info-graph" ></div>
   </div>
 
+    <div id="rawTimeDurationData" style="display:block">{{rawTimeDurationData}}</div>
+    <div id="info-graph" ></div>
 
 
 <script id="template" type="x-tmpl-mustache">
@@ -148,10 +148,17 @@ body {
 
 <script>
 //D3 data visualizations
-d3.selectAll("h3").style("color", "purple")
+d3.selectAll("h3").style("color", "purple");
 
-console.log(functionDurations.innerHTML)
+var functionsTimeData = document.getElementById('rawTimeDurationData').innerHTML;
 
+var testFunction6 =  JSON.parse(functionsTimeData).TestFunction6.timeSeries;
+
+for (var data in testFunction6){
+  console.log(data[0]);
+}
+
+console.log(testFunction6[0]);
 
 var margin = {top:20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
@@ -163,11 +170,7 @@ var x = d3.scaleLinear()
 var y = d3.scaleLinear()
     .range([height, 0]);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-var xAxis = d3.axisBottom(x)
-
-var yAxis = d3.axisLeft(y)
+x.domain(d3.extent(testFunction6, function(data){ return data[0]}))
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)

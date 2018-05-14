@@ -6,7 +6,7 @@ const path = require('path');
 const lambdaController = { 
     functionList: "", 
     tagGroups: {}, 
-    timeAndDuration: [], 
+    timeAndDuration: {}, 
     htmlViz: "", 
     lambda: "", 
     allFunctions: {}, 
@@ -32,7 +32,7 @@ function renderTemplate() {
             function: functionArray, 
             tagsArray: tagsArray, 
             timeAndDuration: timeAndDur,
-            rawData : JSON.stringify(lambdaController.timeAndDuration),
+            rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
         };
 
         function tableStats(idx, shortHandFunc, array) {

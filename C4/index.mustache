@@ -137,7 +137,7 @@ body {
         {{/timeAndDuration}}
     </h3>
 
-    <div id="functionRawData" style="display:none">{{functionRawData}}</div>
+    <div id="functionDurations" style="display:none">{{functionDurations}}</div>
     <div id="info-graph" ></div>
   </div>
 
@@ -149,14 +149,8 @@ body {
 <script>
 //D3 data visualizations
 d3.selectAll("h3").style("color", "purple")
-var rawFunctionData = JSON.parse(functionRawData.innerHTML);
-var testFunction4Times = rawFunctionData.TestFunction4.timeAndDuration;
 
-console.log(testFunction4Times)
-
-for (var data in testFunction4Times){
-  console.log("Looper", data, "print: ", data);
-}
+console.log(functionDurations.innerHTML)
 
 
 var margin = {top:20, right: 20, bottom: 30, left: 40},

@@ -3,7 +3,16 @@ const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
 
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "", allFunctions: {} };
+const lambdaController = { 
+    functionList: "", 
+    tagGroups: {}, 
+    timeAndDuration: [], 
+    htmlViz: "", 
+    lambda: "", 
+    allFunctions: {}, 
+    d3Data: [] 
+};
+
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
 lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
@@ -19,7 +28,12 @@ function renderTemplate() {
         var tagsArray = [];
         var timeAndDur = [];
 
-        var view = { function: functionArray, tagsArray: tagsArray, timeAndDuration: timeAndDur , functionRawData: JSON.stringify(lambdaController.timeAndDuration) || '',};
+        var view = {
+            function: functionArray,
+            tagsArray: tagsArray,
+            timeAndDuration: timeAndDur,
+            functionDurations: lambdaController.d3Data || "",
+        };
 
         function tableStats(idx, shortHandFunc, array) {
             var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
@@ -89,17 +103,28 @@ function cloudWatchParams(funcName) {
 
 lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-        this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeAndDuration: {}, MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
+
+        this.timeAndDuration[func.FunctionName.split('-')[1]] = { 
+            timeAndDuration: [], 
+            MemorySize: func.MemorySize, 
+            codeSize: func.CodeSize, 
+            runTimeEnv: func.Runtime, 
+            lastModified: func.LastModified 
+        };
+
         return new Promise((resolve) => {
             cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName), (err, data) => {
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {
-                    console.log(data.MetricDataResults[0])
-                    for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
-                        var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
-                        this.timeAndDuration[func.FunctionName.split('-')[1]].timeAndDuration[`${data.MetricDataResults[0].Timestamps.length - 1 - i} : ${Math.abs(time) / 60} min`] = data.MetricDataResults[0].Values[i]; // successful response
+                    var funcName = functionName.split('-')[1];
+                    var functionTimeSeries = [];
+                    
+                    for (var i = 0; i < timeData.Timestamps.length; i += 1) {
+                        functionTimeSeries[timeData.Timestamps[i]] = timeData.Values[i];
                     }
+                    this.timeAndDuration[funcName] = functionTimeSeries;
+
                     return resolve();
                 }
             });
@@ -109,6 +134,16 @@ lambdaController.getAllFuncInfo = function (req, res) {
     return Promise.all(newFunctions)
         .then(() => { })
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
+}
+
+function formatForD3(functionName, timeData) {
+    var funcName = functionName.split('-')[1];
+    var functionTimeSeries = [];
+    for (var i = 0; i < timeData.Timestamps.length; i += 1) {
+        functionTimeSeries[timeData.Timestamps[i]] = timeData.Values[i];
+    }
+    console.log('Heres the data for ', functionName.split('-')[1], functionTimeSeries);
+    lambdaController.d3Data[funcName] = functionTimeSeries;
 }
 
 function pullParams(funcName) {
@@ -136,7 +171,7 @@ lambdaController.getAwsFunctions = function (...rest) {
         };
     })
 
-return awsFunctionNames;
+    return awsFunctionNames;
 }
 
 function failedType(method, timer = null, tagGroup = "") {

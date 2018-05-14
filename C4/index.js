@@ -123,6 +123,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {
+                    console.log(data.MetricDataResults[0])
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
                         var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
                         this.timeAndDuration[func.FunctionName.split('-')[1]].timeAndDuration[`${data.MetricDataResults[0].Timestamps.length - 1 - i} : ${Math.abs(time) / 60} min`] = data.MetricDataResults[0].Values[i]; // successful response

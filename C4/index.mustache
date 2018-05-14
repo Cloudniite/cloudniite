@@ -139,11 +139,7 @@ body {
 
   </div>
 
-<<<<<<< HEAD
-    <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
-=======
-    <div id="functionRawData">{{rawTimeDurationDate}}</div>
->>>>>>> 57db490f7b8952f0f483b5462ae0a6803957c89b
+    <div id="functionRawData" style = "display: none;">{{rawTimeDurationDate}}</div>
     <div id="info-graph" ></div>
 
 
@@ -163,6 +159,7 @@ var testData = [
   {date: new Date(2016, 0 ,1), duration: 9},
 ]
 
+
 var margin = {top:20, right: 10, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -180,7 +177,8 @@ var valueLine = d3.line()
     .y(function(d) {return y(d.duration)})
 
 
-var svg = d3.select("#info-graph").append("svg")
+var svg = d3.select("#info-graph")
+    .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")

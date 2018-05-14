@@ -8,6 +8,8 @@ const app = express();
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e');
 lambdaController.setFunctionList(functionList, "dev");
 lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
+lambdaController.warmupTagGroup(null, "#HelloWorld");
+
 
 //This is a custom route for specifically for development 
 //Go to this route to view all your tag groups and AWS Lambda function information
@@ -31,12 +33,12 @@ app.get('/index.css', (req, res) => {
 //Signup and Login Page Routes
 app.get('/signup', (req, res) => {
     //Here you can warm up functions that are likely to be invoked when a user goes to this page
-    // lambdaController.warmupTagGroup(null, "#HelloWorld");
+    lambdaController.warmupTagGroup(null, "#HelloWorld");
     res.sendFile(path.join(__dirname, './loginSignupPages/signupPage.html'));
 });
 
 app.get('/login', (req, res) => {
-    // lambdaController.warmupTagGroup(null, "#HelloWorld");
+    lambdaController.warmupTagGroup(null, "#HelloWorld");
     res.sendFile(path.join(__dirname, './loginSignupPages/loginPage.html'));
 });
 

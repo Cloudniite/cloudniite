@@ -22,7 +22,7 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersion = '201
 
 function renderTemplate() {
     lambdaController.getAllFuncInfo().then(() => {
-        console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
+        // console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
 
         var functionArray = [];
         var tagsArray = [];

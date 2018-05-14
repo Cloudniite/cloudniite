@@ -200,7 +200,7 @@ function draw(){
    y.domain([0, d3.max(data, function(d) {return d.duration; })]);
       
 
-  // Add the valueline path.
+  // Add the valueline path here
   svg.append("path")
      .data([data])
       .attr("class", "line")

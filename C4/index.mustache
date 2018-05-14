@@ -151,6 +151,12 @@ body {
 //D3 data visualizations
 d3.selectAll("h3").style("color", "purple");
 
+var rawFunctionData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
+
+var funcFour = rawFunctionData.TestFunction5.timeSeries;
+
+console.log(funcFour)
+
 var testData = [
   {date: new Date(2010, 0 ,1), duration: 1},
   {date: new Date(2011, 0 ,1), duration: 12},
@@ -163,7 +169,7 @@ var margin = {top:20, right: 10, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var formatTime = d3.timeFormat("%Y");
+var parseTime = d3.timeFormat("%Y");
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -183,10 +189,10 @@ var svg = d3.select("#info-graph").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 function draw(){
-  var data = testData;
+  var data = funcFour;
 
   data.forEach((d) => {
-    d.date = d.date;
+    d.date = new Date(d.date);
     d.duration = +d.duration;
   })
 

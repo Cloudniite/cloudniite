@@ -32,7 +32,7 @@ function renderTemplate() {
             function: functionArray, 
             tagsArray: tagsArray, 
             timeAndDuration: timeAndDur,
-            rawTimeDurationDate : JSON.stringify(lambdaController.timeAndDuration),
+            rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
         };
 
         function tableStats(idx, shortHandFunc, array) {
@@ -114,7 +114,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
                         var funcName = func.FunctionName.split('-')[1];
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var duration = data.MetricDataResults[0].Values[i];
-                        var singleInvocationData = {date : date, duration : duration};
+                        var singleInvocationData = {date : new Date(date), duration : duration};
                         this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
                     }
                     return resolve();

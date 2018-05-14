@@ -105,31 +105,12 @@ function cloudWatchParams(funcName) {
 
 lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-<<<<<<< HEAD
-
-        this.timeAndDuration[func.FunctionName.split('-')[1]] = { 
-            timeAndDuration: [], 
-            MemorySize: func.MemorySize, 
-            codeSize: func.CodeSize, 
-            runTimeEnv: func.Runtime, 
-            lastModified: func.LastModified 
-        };
-
-=======
         this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeSeries: [], MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
->>>>>>> 02ee86f9322b4345e0fce2d5ddc5931f4fde8491
         return new Promise((resolve) => {
             cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName), (err, data) => {
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {
-<<<<<<< HEAD
-                    var funcName = functionName.split('-')[1];
-                    var functionTimeSeries = [];
-                    
-                    for (var i = 0; i < timeData.Timestamps.length; i += 1) {
-                        functionTimeSeries[timeData.Timestamps[i]] = timeData.Values[i];
-=======
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
                         // var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
                         var funcName = func.FunctionName.split('-')[1];
@@ -137,7 +118,6 @@ lambdaController.getAllFuncInfo = function (req, res) {
                         var duration = data.MetricDataResults[0].Values[i];
                         var singleInvocationData = {[date] : duration};
                         this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
->>>>>>> 02ee86f9322b4345e0fce2d5ddc5931f4fde8491
                     }
                     this.timeAndDuration[funcName] = functionTimeSeries;
 

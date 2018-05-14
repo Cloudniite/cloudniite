@@ -12,7 +12,7 @@ body {
 
 .line {
   fill: none;
-  stroke: blue;
+  stroke: orange;
   stroke-width: 2px;
 }
 
@@ -139,11 +139,7 @@ body {
 
   </div>
 
-<<<<<<< HEAD
     <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
-=======
-    <div id="functionRawData">{{rawTimeDurationDate}}</div>
->>>>>>> 57db490f7b8952f0f483b5462ae0a6803957c89b
     <div id="info-graph" ></div>
 
 
@@ -167,11 +163,10 @@ var margin = {top:20, right: 10, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var parseTime = d3.timeParse("%d-%b-%y");
+var formatTime = d3.timeFormat("%Y");
 
 var x = d3.scaleTime()
-  .domain([new Date(2012,0,1), new Date(2015,0,1)])
-	.range([0, 700]);
+	.range([0, width]);
 
 var y = d3.scaleLinear().range([height, 0]);
 
@@ -195,15 +190,15 @@ function draw(){
     d.duration = +d.duration;
   })
 
-   x.domain([0, d3.max(data, function(d) {return d.date; })]);
+   x.domain(d3.extent(data, function(d) {return d.date; }));
    y.domain([0, d3.max(data, function(d) {return d.duration; })]);
       
 
   // Add the valueline path.
-  //svg.append("path")
-    //  .data(data)
-      //.attr("class", "line")
-      //.attr("d", valueLine);
+  svg.append("path")
+     .data([data])
+      .attr("class", "line")
+      .attr("d", valueLine);
 
   // Add the X Axis
   svg.append("g")

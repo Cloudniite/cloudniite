@@ -8,7 +8,7 @@ const app = express();
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e');
 lambdaController.setFunctionList(functionList, "dev");
 lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
-lambdaController.warmupTagGroup(null, "#HelloWorld");
+// lambdaController.warmupTagGroup(null, "#HelloWorld");
 
 
 //This is a custom route for specifically for development 

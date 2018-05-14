@@ -10,16 +10,16 @@ body {
   background-color: #f2f2f2;
 }
 
+.line {
+  fill: none;
+  stroke: blue;
+  stroke-width: 2px;
+}
+
 .hide {
    display:none;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
 
 .dot {
   stroke: #000;
@@ -139,7 +139,11 @@ body {
 
   </div>
 
+<<<<<<< HEAD
+    <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
+=======
     <div id="functionRawData">{{rawTimeDurationDate}}</div>
+>>>>>>> 57db490f7b8952f0f483b5462ae0a6803957c89b
     <div id="info-graph" ></div>
 
 
@@ -149,32 +153,72 @@ body {
 
 <script>
 //D3 data visualizations
-d3.selectAll("h3").style("color", "purple")
-var rawFunctionData = JSON.parse(functionRawData.innerHTML);
-console.log(rawFunctionData.TestFunction4);
+d3.selectAll("h3").style("color", "purple");
 
-var margin = {top:20, right: 20, bottom: 30, left: 40},
+var testData = [
+  {date: new Date(2010, 0 ,1), duration: 1},
+  {date: new Date(2011, 0 ,1), duration: 12},
+  {date: new Date(2012, 0 ,1), duration: 23},
+  {date: new Date(2014, 0 ,1), duration: 3},
+  {date: new Date(2016, 0 ,1), duration: 9},
+]
+
+var margin = {top:20, right: 10, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var x = d3.scaleLinear()
-    .range([0, width]);
+var parseTime = d3.timeParse("%d-%b-%y");
 
-var y = d3.scaleLinear()
-    .range([height, 0]);
+var x = d3.scaleTime()
+  .domain([new Date(2012,0,1), new Date(2015,0,1)])
+	.range([0, 700]);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
+var y = d3.scaleLinear().range([height, 0]);
 
-var xAxis = d3.axisBottom(x)
+var valueLine = d3.line()
+    .x(function(d) {return x(d.date)})
+    .y(function(d) {return y(d.duration)})
 
-var yAxis = d3.axisLeft(y)
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#info-graph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
+function draw(){
+  var data = testData;
+
+  data.forEach((d) => {
+    d.date = d.date;
+    d.duration = +d.duration;
+  })
+
+   x.domain([0, d3.max(data, function(d) {return d.date; })]);
+   y.domain([0, d3.max(data, function(d) {return d.duration; })]);
+      
+
+  // Add the valueline path.
+  //svg.append("path")
+    //  .data(data)
+      //.attr("class", "line")
+      //.attr("d", valueLine);
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+  }
+
+
+  // trigger render
+  draw();
+    
 
 </script>
 

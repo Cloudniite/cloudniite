@@ -3,7 +3,15 @@ const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
 
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "", allFunctions: {} };
+const lambdaController = { 
+    functionList: "", 
+    tagGroups: {}, 
+    timeAndDuration: {}, 
+    htmlViz: "", 
+    lambda: "", 
+    allFunctions: {}, 
+};
+
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
 lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
@@ -14,7 +22,7 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersion = '201
 
 function renderTemplate() {
     lambdaController.getAllFuncInfo().then(() => {
-        console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
+        // console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
 
         var functionArray = [];
         var tagsArray = [];
@@ -24,7 +32,11 @@ function renderTemplate() {
             function: functionArray, 
             tagsArray: tagsArray, 
             timeAndDuration: timeAndDur,
+<<<<<<< HEAD
+            rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
+=======
             rawTimeDurationDate : JSON.stringify(lambdaController.timeAndDuration),
+>>>>>>> 57db490f7b8952f0f483b5462ae0a6803957c89b
         };
 
         function tableStats(idx, shortHandFunc, array) {
@@ -145,7 +157,7 @@ lambdaController.getAwsFunctions = function (...rest) {
         };
     })
 
-return awsFunctionNames;
+    return awsFunctionNames;
 }
 
 function failedType(method, timer = null, tagGroup = "") {

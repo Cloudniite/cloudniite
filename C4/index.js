@@ -20,13 +20,14 @@ function renderTemplate(env = "production") {
         var tagsOnly = [];
         var tagsWFunc = [];
         var timeAndDur = [];
-
+        
         var view = {
             function: arr,
             runEnv: '',
             tagsOnly: tagsOnly,
             tagsWFunc: tagsWFunc,
             timeAndDuration: timeAndDur,
+            functionRawData: JSON.stringify(lambdaController.timeAndDuration) || '',
         };
 
         lambdaController.functionList.Functions.forEach((func,idx) => {

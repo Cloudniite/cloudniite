@@ -2,6 +2,8 @@
 
 <html>
 <head>
+<script src="https://d3js.org/d3.v4.js"></script>
+
 <style>
 
 body {
@@ -10,6 +12,17 @@ body {
 
 .hide {
    display:none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
 }
 
 tr:nth-child(even) {
@@ -77,6 +90,12 @@ body {
     height: 100%;
 }
 
+#info-graph{
+  width:90%;
+  height: 1500px;
+  margin:auto;
+}
+
 .tagFunction {
   background-color: white;
   color: black;
@@ -118,13 +137,51 @@ body {
           {{{.}}}
         {{/timeAndDuration}}
     </h3>
+
+    <div id="functionRawData" style="display:none">{{functionRawData}}</div>
+    <div id="info-graph" ></div>
   </div>
 
 
 
 <script id="template" type="x-tmpl-mustache">
 </script>
+
 <script>
+//D3 data visualizations
+d3.selectAll("h3").style("color", "purple")
+var rawFunctionData = JSON.parse(functionRawData.innerHTML);
+console.log(rawFunctionData.TestFunction4);
+
+var margin = {top:20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scaleLinear()
+    .range([0, width]);
+
+var y = d3.scaleLinear()
+    .range([height, 0]);
+
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+var xAxis = d3.axisBottom(x)
+
+var yAxis = d3.axisLeft(y)
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+</script>
+
+
+<script>
+//aws data visualizations 
 
 function opn(evt, menuItem) {
   var tabcontent = document.getElementsByClassName("content");

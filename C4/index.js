@@ -10,7 +10,6 @@ const lambdaController = {
     htmlViz: "", 
     lambda: "", 
     allFunctions: {}, 
-    d3Data: [] 
 };
 
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
@@ -119,8 +118,6 @@ lambdaController.getAllFuncInfo = function (req, res) {
                         var singleInvocationData = {[date] : duration};
                         this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
                     }
-                    this.timeAndDuration[funcName] = functionTimeSeries;
-
                     return resolve();
                 }
             });
@@ -130,16 +127,6 @@ lambdaController.getAllFuncInfo = function (req, res) {
     return Promise.all(newFunctions)
         .then(() => { })
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
-}
-
-function formatForD3(functionName, timeData) {
-    var funcName = functionName.split('-')[1];
-    var functionTimeSeries = [];
-    for (var i = 0; i < timeData.Timestamps.length; i += 1) {
-        functionTimeSeries[timeData.Timestamps[i]] = timeData.Values[i];
-    }
-    console.log('Heres the data for ', functionName.split('-')[1], functionTimeSeries);
-    lambdaController.d3Data[funcName] = functionTimeSeries;
 }
 
 function pullParams(funcName) {

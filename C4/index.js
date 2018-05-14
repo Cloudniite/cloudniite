@@ -32,7 +32,11 @@ function renderTemplate() {
             function: functionArray, 
             tagsArray: tagsArray, 
             timeAndDuration: timeAndDur,
+<<<<<<< HEAD
             rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
+=======
+            rawTimeDurationDate : JSON.stringify(lambdaController.timeAndDuration),
+>>>>>>> 57db490f7b8952f0f483b5462ae0a6803957c89b
         };
 
         function tableStats(idx, shortHandFunc, array) {

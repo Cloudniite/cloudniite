@@ -112,14 +112,13 @@ body {
   <div class="menu"> 
     <button class="menu-links" onclick="opn(event, 'tagsOnly')">Tags</button>
     <button class="menu-links" onclick="opn(event, 'div-func')">Functions</button>
-    <button class="menu-links" onclick="opn(event, 'timeAndDuration')">Stats</button>
   </div>
 
   <div class="content" id="tagsOnly">
     <h3>
-        {{#tagsOnly}}
+        {{#tagsArray}}
           {{{.}}}
-        {{/tagsOnly}}
+        {{/tagsArray}}
     </h3>
   </div>
 

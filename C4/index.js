@@ -3,7 +3,7 @@ const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
 
-const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "" };
+const lambdaController = { functionList: "", tagGroups: {}, timeAndDuration: {}, htmlViz: "", lambda: "", allFunctions: {} };
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
 lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
@@ -12,62 +12,43 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersion = '201
     this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
 }
 
-function renderTemplate(env = "production") {
-    if (env === "production") return;
+function renderTemplate() {
     lambdaController.getAllFuncInfo().then(() => {
 
-        var arr = [];
-        var tagsOnly = [];
-        var tagsWFunc = [];
+        var functionArray = [];
+        var tagsArray = [];
         var timeAndDur = [];
-        
-        var view = {
-            function: arr,
-            runEnv: '',
-            tagsOnly: tagsOnly,
-            tagsWFunc: tagsWFunc,
-            timeAndDuration: timeAndDur,
-            functionRawData: JSON.stringify(lambdaController.timeAndDuration) || '',
-        };
 
-        lambdaController.functionList.Functions.forEach((func,idx) => {
+        var view = { function: functionArray, tagsArray: tagsArray, timeAndDuration: timeAndDur , functionRawData: JSON.stringify(lambdaController.timeAndDuration) || '',};
+
+        function tableStats(idx, shortHandFunc, array) {
+            var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
+            for (var time in timeDuration) {
+                array[idx] += `<tr><td style = "font-weight: 400">${time.split(": ")[1]}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[time], 3)} mil</td> </tr>`;
+            }
+            array[idx] += `</table></div>`;
+        }
+
+        lambdaController.functionList.Functions.forEach((func, idx) => {
             var shortHandFunc = func.FunctionName.split('-')[1]
-            arr[idx] =`<button class="functions" ${shortHandFunc}">${shortHandFunc}`;
-            for(var tagGroup in lambdaController.tagGroups) {
-                if(lambdaController.tagGroups[tagGroup].includes(func.FunctionName)) {
-                    arr[idx] += ` - ${tagGroup}`
+            functionArray[idx] = `<button class="functions" ${shortHandFunc}"><b>Function Name</b>: ${shortHandFunc}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b> Tag Groups</b>: `;
+            for (var tagGroup in lambdaController.tagGroups) {
+                if (lambdaController.tagGroups[tagGroup].includes(func.FunctionName)) {
+                    functionArray[idx] += ` - ${tagGroup}`
                 }
             }
-            arr[idx] += `</button>`;
-            arr[idx] += `<div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;"> 
-            <tr>
-                <th style = "font-weight: bold">Since Previously Invoked</th>
-                <th style = "font-weight: bold">Duration</th>
-            </tr>`;
-            var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeAndDuration;
-            for(var time in timeDuration) {
-                arr[idx] += `<tr><td style = "font-weight: 400">${time.split(": ")[1]}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[time], 3)} mil</td> </tr>`;
-            }
-            arr[idx] += `</table></div>`;
-
+            functionArray[idx] += `</button><div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;"><tr style = ""><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`
+            tableStats(idx, shortHandFunc, functionArray);
         });
 
         Object.keys(lambdaController.tagGroups).forEach((tag, idx) => {
-            tagsOnly[idx] = (`<button class="tags" id = "${tag}" >${tag} </button> <div style="display: none;">`);
+            tagsArray[idx] = (`<button class="tags" id = "${tag}" ><b> Tag Groups</b>: ${tag} </button> <div style="display: none;">`);
             lambdaController.tagGroups[tag].forEach((functionName) => {
                 var shortFunctionName = functionName.split('-')[1];
-               tagsOnly[idx] += `<button class = "tagFunction">${shortFunctionName}</button> <div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;">   <tr>
-               <th style = "font-weight: bold">Since Previously Invoked</th>
-               <th style = "font-weight: bold">Duration</th>
-             </tr>`;
-               var timeDuration = lambdaController.timeAndDuration[shortFunctionName].timeAndDuration;
-               for(var time in timeDuration) {
-                   tagsOnly[idx] += `<tr><td style = "font-weight: 400">${time.split(": ")[1]}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[time], 3)} mil</td> </tr>`;
-               }
-               tagsOnly[idx] += `</table></div>`;
+                tagsArray[idx] += `<button class = "tagFunction">${shortFunctionName}</button> <div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;"><tr><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`;
+                tableStats(idx, shortFunctionName, tagsArray);
             });
-            tagsOnly[idx] +=`</div>`;
-
+            tagsArray[idx] += `</div>`;
         })
 
 
@@ -76,7 +57,7 @@ function renderTemplate(env = "production") {
             var output = Mustache.to_html(html, view);
             this.htmlViz = output;
         });
-    }).catch((error) => { console.error(`FAILED: add to html failed, ${error}`) });
+    }).catch((error) => { console.error(`FAILED: Adding to html failed, ${error}`) });
 }
 
 function precisionRound(number, precision) {
@@ -84,35 +65,26 @@ function precisionRound(number, precision) {
     return Math.round(number * factor) / factor;
 }
 
-lambdaController.getHtmlViz = function (req, res) {
-    res.send(this.htmlViz);
-}
+lambdaController.getHtmlViz = function (req, res) { res.send(this.htmlViz); }
 
 function cloudWatchParams(funcName) {
-    this.EndTime = new Date, /* required */
-        this.MetricDataQueries = [ /* required */
+    this.EndTime = new Date,
+        this.MetricDataQueries = [
             {
-                Id: 'testMetric', /* required */
+                Id: 'testMetric',
                 MetricStat: {
-                    Metric: { /* required */
-                        Dimensions: [
-                            {
-                                Name: 'FunctionName', /* required */
-                                Value: funcName, /* required */
-                            },
-                            /* more items */
-                        ],
+                    Metric: {
+                        Dimensions: [{ Name: 'FunctionName', Value: funcName }],
                         MetricName: 'Duration',
                         Namespace: 'AWS/Lambda'
                     },
-                    Period: 60, /* required */
-                    Stat: 'Average', /* required */
+                    Period: 60,
+                    Stat: 'Average',
                 },
                 ReturnData: true || false
             }
-            /* more items */
         ];
-    this.StartTime = 0 /* required */
+    this.StartTime = 0
 }
 
 lambdaController.getAllFuncInfo = function (req, res) {
@@ -145,21 +117,40 @@ function pullParams(funcName) {
         this.Payload = '{"source" : "C4-serverless"}'
 };
 
-lambdaController.setFunctionList = function (functionList, env) {
+lambdaController.setFunctionList = function (functionList) {
     this.functionList = functionList;
-    renderTemplate(env);
+    functionList.Functions.forEach((func) => {
+        this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
+    });
+    renderTemplate();
 }
 
 lambdaController.getAwsFunctions = function (...rest) {
     const awsFunctionNames = [];
-    this.functionList.Functions.forEach(func => {
-        if (rest.includes(func.FunctionName.split('-')[1])) awsFunctionNames.push(func.FunctionName);
+    rest.forEach((restFunc) => {
+        if (this.allFunctions[restFunc]) {
+            awsFunctionNames.push(this.allFunctions[restFunc])
+        } else {
+            console.error(`Error creating tag group for function ${restFunc}. Function ${restFunc} doesn't exist!`);
+        };
     })
-    return awsFunctionNames;
+
+return awsFunctionNames;
+}
+
+function failedType(method, timer = null, tagGroup = "") {
+    if (typeof timer !== 'number' && timer !== null) {
+        console.error(`FAILED at ${method}: First argument should be a number specifying the timer or null for single execution`);
+        return true;
+    }
+    if (typeof tagGroup !== 'string') {
+        console.error(`FAILED at ${method}: First argument should be a string specifying the category`);
+        return true;
+    }
 }
 
 lambdaController.warmupFunctions = function (timer, ...rest) {
-    if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupFunctions: First argument should be a number specifying the timer or null for single execution`);
+    if (failedType('warmupFunctions', timer)) return;
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
         var newFunctions = functions.map((func) => {
@@ -181,14 +172,14 @@ lambdaController.warmupFunctions = function (timer, ...rest) {
             .then(() => console.log(`Warmup of function/s ${rest} complete`))
             .catch((error) => { console.error(`FAILED: Warmup of function/s ${rest} failed, ${error}`) });
     }
-
     promiseCall();
     if (timer !== null && timer > 0) setInterval(() => { promiseCall(); }, (timer * 60000));
 }
 
+
 lambdaController.createTagGroup = function (tagGroup, ...rest) {
-    if (typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
-    if(!(tagGroup in this.tagGroups)) {
+    if (failedType('createTagGroup', null, tagGroup)) return;
+    if (!(tagGroup in this.tagGroups)) {
         this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
     } else {
         console.error("FAILED at createTagGroup: Tag group already exists");
@@ -197,7 +188,7 @@ lambdaController.createTagGroup = function (tagGroup, ...rest) {
 
 lambdaController.addToTagGroup = function (tagGroup, ...rest) {
     if (typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
-    if(!(tagGroup in this.tagGroups)) {
+    if (!(tagGroup in this.tagGroups)) {
         console.error("FAILED at addToTagGroup: Tag group doesn't exists");
     } else {
         this.tagGroups[tagGroup] = this.tagGroups[tagGroup].concat(this.getAwsFunctions(...rest));

@@ -1,13 +1,12 @@
 const express = require('express');
 const path = require('path');
 const body = require('body-parser');
-const functionList = require('./awsLambda/listFunction.json');
 const lambdaController = require('../../C4/index.js');
 const app = express();
 
-lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e');
-lambdaController.setFunctionList(functionList, "dev");
-lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
+lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
+    lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
+});
 // lambdaController.warmupTagGroup(null, "#HelloWorld");
 
 

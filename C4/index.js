@@ -110,7 +110,7 @@ function renderTemplate() {
                     <input name = "functionStats" type="radio" value="Table" onclick="showTable(event, '${shortHandFunc + 'table'}')"> Table </input>
                 </div>
             </form>
-                <div class = "${shortHandFunc + 'table'} hide" style = "overflow-y: auto; height: 300px;">
+                <div class = "${shortHandFunc + 'table'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr style = "">
                             <th style = "font-weight: bold">Invoked</th>
@@ -118,7 +118,7 @@ function renderTemplate() {
                         </tr>`
                 tableStats(idx, shortHandFunc, functionArray);
                 functionArray[idx] += `
-                <div class = "${shortHandFunc + 'graph1'}">
+                <div class = "${shortHandFunc + 'graph1'}" >
                 </div>
             </div>`;
             });
@@ -137,7 +137,7 @@ function renderTemplate() {
                         <input name = "functionStats" type="radio" value="Table" onclick="showTable2(event, '${shortFunctionName + 'table2'}')"> Table </input>
                     </div>
                 </form>
-                <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 300px;">
+                <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr>
                             <th style = "font-weight: bold">Invoked</th>

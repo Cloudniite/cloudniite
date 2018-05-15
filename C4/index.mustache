@@ -158,9 +158,9 @@ html {
 <script>
 //D3 data visualizations
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
-var margin = {top:20, right: 10, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin = {top:20, right: 10, bottom: 50, left: 80},
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -194,24 +194,48 @@ function draw(testData, func){
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("rect")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
       
   // Add the valueline path.
-  svg.append("path")
-     .data([data])
-      .attr("class", "line")
-      .attr("d", valueLine)
-      .enter();
+  //svg.append("path")
+    // .data([data])
+    //.attr("class", "line")
+    // .attr("d", valueLine)
+    // .enter();
+
+  svg.selectAll("dot")
+      .data(data)
+      .enter().append("circle")
+      .attr("r", 3.5)
+      .attr("cx", function(d) { return x(d.date); })
+      .attr("cy", function(d) { return y(d.duration); });    
 
   // Add the X Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
+  svg.append("text")             
+      .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Date");    
+
   // Add the Y Axis
   svg.append("g")
       .call(d3.axisLeft(y));
+
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - 70)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Duration (ms)");  
   }
 
 </script>

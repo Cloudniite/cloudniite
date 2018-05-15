@@ -128,11 +128,11 @@ body {
     </h3>
   </div> 
   
-  <div class="content hide" id="timeAndDuration">
+  <div class="content hide" id="allFunctionData">
     <h3>
-        {{#timeAndDuration}}
+        {{#allFunctionData}}
           {{{.}}}
-        {{/timeAndDuration}}
+        {{/allFunctionData}}
     </h3>
 
   </div>
@@ -163,7 +163,7 @@ var valueLine = d3.line()
 
 
 for(var func in fullTestData) {
-  var testData = fullTestData[func].timeSeries;
+  var testData = fullTestData[func].durationSeries;
   draw(testData, func + 1);
 }
 

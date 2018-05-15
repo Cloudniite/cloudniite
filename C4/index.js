@@ -6,23 +6,36 @@ const path = require('path');
 const lambdaController = { 
     functionList: "", 
     tagGroups: {}, 
-    timeAndDuration: {}, 
+    allFunctionData: {},
     htmlViz: "", 
-    lambda: "", 
+    lambda: "",
+    cloudwatch: "", 
     allFunctions: {}, 
 };
 
-var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
-
-lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
+lambdaController.configure = function (region, IdentityPoolId, apiVersionLambda = '2015-03-31', apiVersionCloudW = '2010-08-01') {
     AWS.config.update({ region: region });
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
-    this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
+    this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersionLambda });
+    this.cloudwatch = new AWS.CloudWatch({ region: region, apiVersion: apiVersionCloudW });
 }
 
+lambdaController.setFunctionList = function (functionList) {
+    this.functionList = functionList;
+    functionList.Functions.forEach((func) => {
+        this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
+    });
+    renderTemplate();
+}
+
+//build a Mustache template to inject with function data and metrics 
+//for monitoring and optimization 
 function renderTemplate() {
-    lambdaController.getAllFuncInfo().then(() => {
-        // console.log(lambdaController.timeAndDuration.TestFunction4.timeSeries);
+    lambdaController.getAllFuncInfo()
+        .then(lambdaController.getInvocationInfo())
+        .then(() => {
+        console.log('in the render ', lambdaController.allFunctionData)
+        
 
         var functionArray = [];
         var tagsArray = [];
@@ -31,12 +44,12 @@ function renderTemplate() {
         var view = { 
             function: functionArray, 
             tagsArray: tagsArray, 
-            timeAndDuration: timeAndDur,
-            rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
+            allFunctionData: timeAndDur,
+            rawTimeDurationData: JSON.stringify(lambdaController.allFunctionData),
         };
 
         function tableStats(idx, shortHandFunc, array) {
-            var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeSeries;
+            var timeDuration = lambdaController.allFunctionData[shortHandFunc].durationSeries;
             for (var i = 0 ; i < timeDuration.length; i++) {
                     array[idx] += `<tr><td style = "font-weight: 400">${timeDuration[i].date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> </tr>`;
             }
@@ -79,9 +92,11 @@ function precisionRound(number, precision) {
     return Math.round(number * factor) / factor;
 }
 
-lambdaController.getHtmlViz = function (req, res) { res.send(this.htmlViz); }
+lambdaController.getHtmlViz = function (req, res) { 
+    res.send(this.htmlViz); 
+}
 
-function cloudWatchParams(funcName) {
+function cloudWatchParams(funcName, metricName) {
     this.EndTime = new Date,
         this.MetricDataQueries = [
             {
@@ -89,7 +104,7 @@ function cloudWatchParams(funcName) {
                 MetricStat: {
                     Metric: {
                         Dimensions: [{ Name: 'FunctionName', Value: funcName }],
-                        MetricName: 'Duration',
+                        MetricName: metricName,
                         Namespace: 'AWS/Lambda'
                     },
                     Period: 60,
@@ -103,19 +118,30 @@ function cloudWatchParams(funcName) {
 
 lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-        this.timeAndDuration[func.FunctionName.split('-')[1]] = { timeSeries: [], MemorySize: func.MemorySize, codeSize: func.CodeSize, runTimeEnv: func.Runtime, lastModified: func.LastModified };
+        //create new key inside allFunctionData object on the lambdaController
+        //and fill with function information from the functionList
+        this.allFunctionData[func.FunctionName.split('-')[1]] = { 
+            durationSeries: [], 
+            MemorySize: func.MemorySize, 
+            codeSize: func.CodeSize, 
+            runTimeEnv: func.Runtime, 
+            lastModified: func.LastModified 
+        };
+
+        //create promises for each function to retrieve duration data from 
+        //AWS Cloudwatch
         return new Promise((resolve) => {
-            cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName), (err, data) => {
+            this.cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName, 'Duration'), (err, data) => {
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
-                        // var time = data.MetricDataResults[0].Timestamps[i + 1] ? new Date(data.MetricDataResults[0].Timestamps[i]).getTime() / 1000 - new Date(data.MetricDataResults[0].Timestamps[i + 1]).getTime() / 1000 : 0;
                         var funcName = func.FunctionName.split('-')[1];
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var duration = data.MetricDataResults[0].Values[i];
-                        var singleInvocationData = {date : new Date(date), duration : duration};
-                        this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
+                        var singleDurationData = {date : new Date(date), duration : duration};
+                        console.log(singleDurationData, funcName, this.allFunctionData[funcName])
+                        this.allFunctionData[funcName].durationSeries.push(singleDurationData); // successful response
                     }
                     return resolve();
                 }
@@ -123,24 +149,48 @@ lambdaController.getAllFuncInfo = function (req, res) {
         })
     });
 
+    //wait until all promises have resolved 
     return Promise.all(newFunctions)
         .then(() => { })
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
-function pullParams(funcName) {
-    this.FunctionName = funcName,
-        this.InvocationType = 'RequestResponse',
-        this.LogType = 'None',
-        this.Payload = '{"source" : "C4-serverless"}'
-};
+lambdaController.getInvocationInfo = function () {
+    console.log("GETTING INVOCATIONS")
+    var newFunctions = this.functionList.Functions.map(func => {
+        //create new key inside allFunctionData object on the lambdaController
+        //and fill with function information from the functionList
+        this.allFunctionData[func.FunctionName.split('-')[1]] = { 
+            ...this.allFunctionData[func.FunctionName.split('-')[1]],
+            invocationSeries: [], 
+        };
 
-lambdaController.setFunctionList = function (functionList) {
-    this.functionList = functionList;
-    functionList.Functions.forEach((func) => {
-        this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
+        //create promises for each function to retrieve duration data from 
+        //AWS Cloudwatch
+        return new Promise((resolve) => {
+            console.log('INSIDE PROMISE')
+            this.cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName, 'Invocations'), (err, data) => {
+                
+                if (err) {
+                    console.log(err, err.stack); // an error occurred
+                } else {
+                    for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
+                        var funcName = func.FunctionName.split('-')[1];
+                        var date = data.MetricDataResults[0].Timestamps[i];
+                        var invocation = data.MetricDataResults[0].Values[i];
+                        var singleInvocationData = {date : new Date(date), invocation : invocation};
+                        this.allFunctionData[funcName].invocationSeries.push(singleInvocationData); // successful response
+                    }
+                    return resolve();
+                }
+            });
+        })
     });
-    renderTemplate();
+
+    //wait until all promises have resolved 
+    return Promise.all(newFunctions)
+        .then(() => { })
+        .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
 lambdaController.getAwsFunctions = function (...rest) {
@@ -152,7 +202,7 @@ lambdaController.getAwsFunctions = function (...rest) {
             console.error(`Error creating tag group for function ${restFunc}. Function ${restFunc} doesn't exist!`);
         };
     })
-
+    
     return awsFunctionNames;
 }
 
@@ -166,6 +216,31 @@ function failedType(method, timer = null, tagGroup = "") {
         return true;
     }
 }
+
+lambdaController.createTagGroup = function (tagGroup, ...rest) {
+    if (failedType('createTagGroup', null, tagGroup)) return;
+    if (!(tagGroup in this.tagGroups)) {
+        this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
+    } else {
+        console.error("FAILED at createTagGroup: Tag group already exists");
+    }
+};
+
+lambdaController.addToTagGroup = function (tagGroup, ...rest) {
+    if (typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
+    if (!(tagGroup in this.tagGroups)) {
+        console.error("FAILED at addToTagGroup: Tag group doesn't exists");
+    } else {
+        this.tagGroups[tagGroup] = this.tagGroups[tagGroup].concat(this.getAwsFunctions(...rest));
+    }
+};
+
+function pullParams(funcName) {
+    this.FunctionName = funcName,
+        this.InvocationType = 'RequestResponse',
+        this.LogType = 'None',
+        this.Payload = '{"source" : "Cloudniite-Warmup"}'
+};
 
 lambdaController.warmupFunctions = function (timer, ...rest) {
     if (failedType('warmupFunctions', timer)) return;
@@ -193,25 +268,6 @@ lambdaController.warmupFunctions = function (timer, ...rest) {
     promiseCall();
     if (timer !== null && timer > 0) setInterval(() => { promiseCall(); }, (timer * 60000));
 }
-
-
-lambdaController.createTagGroup = function (tagGroup, ...rest) {
-    if (failedType('createTagGroup', null, tagGroup)) return;
-    if (!(tagGroup in this.tagGroups)) {
-        this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
-    } else {
-        console.error("FAILED at createTagGroup: Tag group already exists");
-    }
-};
-
-lambdaController.addToTagGroup = function (tagGroup, ...rest) {
-    if (typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
-    if (!(tagGroup in this.tagGroups)) {
-        console.error("FAILED at addToTagGroup: Tag group doesn't exists");
-    } else {
-        this.tagGroups[tagGroup] = this.tagGroups[tagGroup].concat(this.getAwsFunctions(...rest));
-    }
-};
 
 lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
     if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupTagGroup: First argument should be a number specifying the timer or null for single execution`);

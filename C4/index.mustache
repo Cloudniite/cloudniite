@@ -20,7 +20,6 @@ body {
    display:none;
 }
 
-
 .dot {
   stroke: #000;
 }
@@ -34,7 +33,6 @@ html {
 }
 
 body {
-  height: 100%;
   margin: 0px;
 }
 .menu {
@@ -149,35 +147,10 @@ body {
 
 <script>
 //D3 data visualizations
-d3.selectAll("h3").style("color", "purple");
-
-<<<<<<< HEAD
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
-=======
-var rawFunctionData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
-
-var funcFour = rawFunctionData.TestFunction5.timeSeries;
-
-console.log(funcFour)
->>>>>>> a9fe8175d4014936c57fdbb3976c6f28f796ee2a
-
-var testData = [
-  {date: new Date(2010, 0 ,1), duration: 1},
-  {date: new Date(2011, 0 ,1), duration: 12},
-  {date: new Date(2012, 0 ,1), duration: 23},
-  {date: new Date(2014, 0 ,1), duration: 3},
-  {date: new Date(2016, 0 ,1), duration: 9},
-]
-console.log(testData);
-
-for(var func in fullTestData) {
-  var testData = fullTestData[func].timeSeries;
-  console.log(testData);
-  var margin = {top:20, right: 10, bottom: 30, left: 40},
+var margin = {top:20, right: 10, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
-
-var parseTime = d3.timeFormat("%Y");
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -189,16 +162,13 @@ var valueLine = d3.line()
     .y(function(d) {return y(d.duration)})
 
 
-var svg = d3.select("#info-graph")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+for(var func in fullTestData) {
+  var testData = fullTestData[func].timeSeries;
+  draw(testData, func + 1);
+}
 
-function draw(){
-  var data = funcFour;
+function draw(testData, func){
+  var data = testData;
 
   data.forEach((d) => {
     d.date = new Date(d.date);
@@ -207,13 +177,21 @@ function draw(){
 
    x.domain(d3.extent(data, function(d) {return d.date; }));
    y.domain([0, d3.max(data, function(d) {return d.duration; })]);
+  
+    var svg = d3.selectAll(`.${func}`)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
       
-
-  // Add the valueline path here
+  // Add the valueline path.
   svg.append("path")
      .data([data])
       .attr("class", "line")
-      .attr("d", valueLine);
+      .attr("d", valueLine)
+      .enter();
 
   // Add the X Axis
   svg.append("g")
@@ -224,13 +202,6 @@ function draw(){
   svg.append("g")
       .call(d3.axisLeft(y));
   }
-
-
-  // trigger render
-  draw();
-    
-  
-}
 
 </script>
 

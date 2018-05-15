@@ -40,7 +40,7 @@ function renderTemplate() {
             for (var i = 0 ; i < timeDuration.length; i++) {
                     array[idx] += `<tr><td style = "font-weight: 400">${timeDuration[i].date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> </tr>`;
             }
-            array[idx] += `</table></div>`;
+            array[idx] += `</table></div><div class = "${shortHandFunc + 1}"></div></div>`;
         }
 
         lambdaController.functionList.Functions.forEach((func, idx) => {
@@ -51,7 +51,7 @@ function renderTemplate() {
                     functionArray[idx] += ` - ${tagGroup}`
                 }
             }
-            functionArray[idx] += `</button><div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;"><tr style = ""><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`
+            functionArray[idx] += `</button><div style=" display: none;"> <div style = "overflow-y: auto; height: 300px;"><table style = "width: 80%; text-align: center;"><tr style = ""><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`
             tableStats(idx, shortHandFunc, functionArray);
         });
 
@@ -59,7 +59,7 @@ function renderTemplate() {
             tagsArray[idx] = (`<button class="tags" id = "${tag}" ><b> Tag Groups</b>: ${tag} </button> <div style="display: none;">`);
             lambdaController.tagGroups[tag].forEach((functionName) => {
                 var shortFunctionName = functionName.split('-')[1];
-                tagsArray[idx] += `<button class = "tagFunction">${shortFunctionName}</button> <div style=" display: none; overflow-y: auto; height: 300px;"> <table style = "width: 80%; text-align: center;"><tr><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`;
+                tagsArray[idx] += `<button class = "tagFunction">${shortFunctionName}</button> <div style=" display: none;"> <div style = "overflow-y: auto; height: 300px;"><table style = "width: 80%; text-align: center;"><tr><th style = "font-weight: bold">Since Previously Invoked</th><th style = "font-weight: bold">Duration</th></tr>`;
                 tableStats(idx, shortFunctionName, tagsArray);
             });
             tagsArray[idx] += `</div>`;

@@ -2,22 +2,46 @@ const AWS = require('aws-sdk');
 const Mustache = require('mustache');
 var fs = require("fs");
 const path = require('path');
+const { exec } = require('child_process');
 
-const lambdaController = { 
-    functionList: "", 
-    tagGroups: {}, 
-    timeAndDuration: {}, 
-    htmlViz: "", 
-    lambda: "", 
-    allFunctions: {}, 
+function executeAWSCommand() {
+    return new Promise((resolve, reject) => {
+        exec('aws lambda list-functions', (err, stdout, stderr) => {
+            if (err) {
+                console.log("ERROR HERE");
+                // node couldn't execute the command
+                return;
+            }
+
+            // the *entire* stdout and stderr (buffered)
+            console.log(stdout);
+            lambdaController.functionList = JSON.parse(stdout);
+            lambdaController.setFunctionList(JSON.parse(stdout));
+            return resolve();
+        });
+    });
+}
+
+const lambdaController = {
+    functionList: "",
+    tagGroups: {},
+    timeAndDuration: {},
+    htmlViz: "",
+    lambda: "",
+    allFunctions: {},
 };
 
 var cloudwatch = new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
 
 lambdaController.configure = function (region, IdentityPoolId, apiVersion = '2015-03-31') {
-    AWS.config.update({ region: region });
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
-    this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
+    return new Promise((resolve, reject) => {
+        executeAWSCommand().then(() => {
+            AWS.config.update({ region: region });
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
+            this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersion });
+            return resolve();
+        }) 
+    });
 }
 
 function renderTemplate() {
@@ -28,20 +52,24 @@ function renderTemplate() {
         var tagsArray = [];
         var timeAndDur = [];
 
-        var view = { 
-            function: functionArray, 
-            tagsArray: tagsArray, 
+        var view = {
+            function: functionArray,
+            tagsArray: tagsArray,
             timeAndDuration: timeAndDur,
             rawTimeDurationData: JSON.stringify(lambdaController.timeAndDuration),
         };
 
         function tableStats(idx, shortHandFunc, array) {
             var timeDuration = lambdaController.timeAndDuration[shortHandFunc].timeSeries;
-            for (var i = 0 ; i < timeDuration.length; i++) {
+            for (var i = 0; i < timeDuration.length; i++) {
                 var date = new Date(timeDuration[i].date);
                 date = date.toUTCString();
                 date = date.split(' ').slice(0, 5).join(' ');
-                    array[idx] += `<tr><td style = "font-weight: 400"> ${date}</td> <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> </tr>`;
+                array[idx] += `
+                    <tr>
+                        <td style = "font-weight: 400"> ${date}</td> 
+                        <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> 
+                    </tr>`;
             }
             array[idx] += `</table></div>`;
         }
@@ -155,7 +183,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
                         var funcName = func.FunctionName.split('-')[1];
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var duration = data.MetricDataResults[0].Values[i];
-                        var singleInvocationData = {date : new Date(date), duration : duration};
+                        var singleInvocationData = { date: new Date(date), duration: duration };
                         this.timeAndDuration[funcName].timeSeries.push(singleInvocationData); // successful response
                     }
                     return resolve();
@@ -177,7 +205,6 @@ function pullParams(funcName) {
 };
 
 lambdaController.setFunctionList = function (functionList) {
-    this.functionList = functionList;
     functionList.Functions.forEach((func) => {
         this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
     });

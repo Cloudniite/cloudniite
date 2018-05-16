@@ -83,7 +83,7 @@ function renderTemplate() {
                     array[idx] += `
                     <tr>
                         <td style = "font-weight: 400"> ${date}</td> 
-                        <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} mil</td> 
+                        <td style = "font-weight: 400">${precisionRound(timeDuration[i].duration, 3)} ms</td> 
                     </tr>`;
                 }
                 array[idx] += `</table></div>`;

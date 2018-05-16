@@ -153,8 +153,6 @@ html {
     <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
     <div id="info-graph" ></div>
 
-
-
 <script id="template" type="x-tmpl-mustache">
 </script>
 
@@ -181,8 +179,9 @@ for(var func in fullTestData) {
 }
 
 function draw(testData, func){
-  
+
   var data = testData;
+
 
   data.forEach((d) => {
     d.date = new Date(d.date);

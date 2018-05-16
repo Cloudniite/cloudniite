@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v5.js"></script>
 
 <style>
 
@@ -120,6 +120,9 @@ html {
   <div class="menu"> 
     <button class="menu-links" onclick="opn(event, 'tagsOnly'); topFunction();">Tags</button>
     <button class="menu-links" onclick="opn(event, 'div-func'); topFunction();">Functions</button>
+    <button class="menu-links">Export Data</button>
+    <button class="menu-links">Note: Make a slider on both x and y axis to zoom in to sections</button>
+    <button class="menu-links">Note2: Display function data (memory, run-time ect) beside graph</button>
   </div>
 
   <div class="content" id="tagsOnly">
@@ -138,11 +141,11 @@ html {
     </h3>
   </div> 
   
-  <div class="content hide" id="timeAndDuration">
+  <div class="content hide" id="allFunctionData">
     <h3>
-        {{#timeAndDuration}}
+        {{#allFunctionData}}
           {{{.}}}
-        {{/timeAndDuration}}
+        {{/allFunctionData}}
     </h3>
 
   </div>
@@ -156,9 +159,9 @@ html {
 <script>
 //D3 data visualizations
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
-var margin = {top:20, right: 10, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin = {top:20, right: 10, bottom: 50, left: 80},
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -170,7 +173,7 @@ var valueLine = d3.line()
     .y(function(d) {return y(d.duration)})
 
 for(var func in fullTestData) {
-  var testData = fullTestData[func].timeSeries;
+  var testData = fullTestData[func].durationSeries;
   draw(testData, func + 'graph1');
   draw(testData, func + 'graph2');
 }
@@ -192,6 +195,29 @@ function draw(testData, func){
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+<<<<<<< HEAD
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("rect")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
+      
+  // Add the valueline path.
+  //svg.append("path")
+    // .data([data])
+    //.attr("class", "line")
+    // .attr("d", valueLine)
+    // .enter();
+
+  svg.selectAll("dot")
+      .data(data)
+      .enter().append("circle")
+      .attr("r", 3.5)
+      .attr("cx", function(d) { return x(d.date); })
+      .attr("cy", function(d) { return y(d.duration); });    
+=======
     .call(d3.zoom().on("zoom", function () {
       path.attr("transform", "translate(" + d3.event.transform.x + ',' + d3.event.transform.y +  ")" + " scale(" + d3.event.transform.k + ")")
     }))
@@ -204,15 +230,29 @@ function draw(testData, func){
       .call(d3.zoom().on("zoom", function () {
         svg.attr("transform", "translate(" + d3.event.transform.x + ',' + d3.event.transform.y +  ")" + " scale(" + d3.event.transform.k + ")")
       }))
+>>>>>>> 36541c554a302f9933df02997e3f35c717ae6ff0
 
   // Add the X Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
+  svg.append("text")             
+      .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Date");    
+
   // Add the Y Axis
   svg.append("g")
       .call(d3.axisLeft(y));
+
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - 70)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Duration (ms)");  
   }
 
 </script>

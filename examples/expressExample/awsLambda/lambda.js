@@ -8,7 +8,7 @@ var iopipe = require('@iopipe/iopipe')({
   });
 
 exports.handler1 = iopipe(function(event, context, callback) {
-    if (event.source === "C4-serverless") {
+    if (event.source === "Cloudniite-Warmup") {
         function Hello(n) {
             if(n === 1 || n === 2) return 1;
             return Hello(n - 1) + Hello(n - 2);
@@ -20,7 +20,7 @@ exports.handler1 = iopipe(function(event, context, callback) {
 })
 
 exports.handler2 = iopipe(function(event, context, callback) {
-    if (event.source === "C4-serverless") {
+    if (event.source === "Cloudniite-Warmup") {
         function Hello(n) {
             if(n === 1 || n === 2) return 1;
             return Hello(n - 1) + Hello(n - 2);

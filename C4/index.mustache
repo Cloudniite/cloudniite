@@ -150,8 +150,6 @@ html {
     <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
     <div id="info-graph" ></div>
 
-
-
 <script id="template" type="x-tmpl-mustache">
 </script>
 
@@ -178,8 +176,9 @@ for(var func in fullTestData) {
 }
 
 function draw(testData, func){
-  
+
   var data = testData;
+
 
   data.forEach((d) => {
     d.date = new Date(d.date);
@@ -193,16 +192,18 @@ function draw(testData, func){
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-      
+    .call(d3.zoom().on("zoom", function () {
+      path.attr("transform", "translate(" + d3.event.transform.x + ',' + d3.event.transform.y +  ")" + " scale(" + d3.event.transform.k + ")")
+    }))
+
   // Add the valueline path.
-  svg.append("path")
+  var path = svg.append("path")
      .data([data])
       .attr("class", "line")
       .attr("d", valueLine)
-      .enter();
+      .call(d3.zoom().on("zoom", function () {
+        svg.attr("transform", "translate(" + d3.event.transform.x + ',' + d3.event.transform.y +  ")" + " scale(" + d3.event.transform.k + ")")
+      }))
 
   // Add the X Axis
   svg.append("g")

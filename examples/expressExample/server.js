@@ -5,9 +5,9 @@ const lambdaController = require('../../C4/index.js');
 const app = express();
 
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
-    lambdaController.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction5");
+    lambdaController.createTagGroup("#HelloWorld", "TestFunction4");
+    // lambdaController.warmupTagGroup(null, "#HelloWorld");
 });
-// lambdaController.warmupTagGroup(null, "#HelloWorld");
 
 
 //This is a custom route for specifically for development 
@@ -37,7 +37,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    lambdaController.warmupTagGroup(null, "#HelloWorld");
+    // lambdaController.warmupTagGroup(null, "#HelloWorld");
     res.sendFile(path.join(__dirname, './loginSignupPages/loginPage.html'));
 });
 

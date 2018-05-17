@@ -169,19 +169,56 @@ var x = d3.scaleTime()
 var y = d3.scaleLinear().range([height, 0]);
 
 var valueLine = d3.line()
-    .x(function(d) {return x(d.date)})
+    .x(function(d) {return x(d.date) + 40})
     .y(function(d) {return y(d.duration)})
+
+var leftCount = 0;
+var rightCount = 0;
 
 for(var func in fullTestData) {
   var testData = fullTestData[func].durationSeries;
+  
+  drawSvg(testData, func + 'graph1');
   draw(testData, func + 'graph1');
+  drawSvg(testData, func + 'graph2');
   draw(testData, func + 'graph2');
 }
+
+function drawSvg(data, func) {
+  leftCount = 0;
+  rightCount = 0;
+    d3.select(`.${func}`)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .call(d3.zoom().on("zoom", function () {
+      var myMouse = d3.mouse(this);
+      if(myMouse[0] > 300) {
+        if(leftCount + 1 < data.length - rightCount) {
+          leftCount = leftCount + 1;
+        } else {
+          rightCount = 0;
+          leftCount = 0;
+        }
+      } else {
+        if(data.length - rightCount + 1 > leftCount) {
+          rightCount = rightCount + 1;
+        } else {
+          leftCount = 0;
+          rightCount = 0;
+        }
+      }
+      var newData = data.slice(leftCount , data.length - rightCount);
+      d3.select(`.${func} svg`).selectAll("*").remove();
+      draw(newData, func);
+    }))
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+};
 
 function draw(testData, func){
 
   var data = testData;
-
 
   data.forEach((d) => {
     d.date = new Date(d.date);
@@ -191,12 +228,7 @@ function draw(testData, func){
    x.domain(d3.extent(data, function(d) {return d.date; }));
    y.domain([0, d3.max(data, function(d) {return d.duration; })]);
   
-    var svg = d3.select(`.${func}`)
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select(`.${func} svg`);
 
     svg.append("rect")
       .attr("width", "100%")
@@ -204,22 +236,23 @@ function draw(testData, func){
       .attr("fill", "white");
       
   // Add the valueline path.
-  //svg.append("path")
-    // .data([data])
-    //.attr("class", "line")
-    // .attr("d", valueLine)
-    // .enter();
+  svg.append("path")
+    .data([data])
+    .attr("class", "line")
+    .attr("d", valueLine)
+    .enter();
 
-  svg.selectAll("dot")
+      svg.selectAll("dot")
       .data(data)
       .enter().append("circle")
       .attr("r", 3.5)
-      .attr("cx", function(d) { return x(d.date); })
-      .attr("cy", function(d) { return y(d.duration); });    
+      .attr("cx", function(d) { return x(d.date) + 40; })
+      .attr("cy", function(d) { return y(d.duration); })
+      .attr("fill","orange") 
 
   // Add the X Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
+  var xChange = svg.append("g")
+      .attr("transform", "translate(" + 40 +"," + height + ")")
       .call(d3.axisBottom(x));
 
   svg.append("text")             
@@ -228,7 +261,8 @@ function draw(testData, func){
       .text("Date");    
 
   // Add the Y Axis
-  svg.append("g")
+  var yChange = svg.append("g")
+      .attr("transform", "translate(" + 40 + ", 0)")
       .call(d3.axisLeft(y));
 
   svg.append("text")

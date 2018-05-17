@@ -5,7 +5,7 @@ const lambdaController = require('../../C4/index.js');
 const app = express();
 
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
-    lambdaController.createTagGroup("#HelloWorld", "TestFunction4");
+    lambdaController.createTagGroup("#HelloWorld", "TestFunction6");
     // lambdaController.warmupTagGroup(null, "#HelloWorld");
 });
 
@@ -13,7 +13,6 @@ lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c
 //This is a custom route for specifically for development 
 //Go to this route to view all your tag groups and AWS Lambda function information
 app.get('/getHtmlViz', lambdaController.getHtmlViz);
-
 
 //Landing page routes
 app.get('/', (req, res) => {

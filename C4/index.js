@@ -48,7 +48,6 @@ lambdaController.setFunctionList = function (functionList) {
     functionList.Functions.forEach((func) => {
         this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
     });
-    console.log('SET FUNCTION LIST: ', functionList)
     renderTemplate();
 }
 
@@ -58,8 +57,6 @@ function renderTemplate() {
     lambdaController.getAllFuncInfo()
         .then(lambdaController.getInvocationInfo())
         .then(() => {
-            // console.log('in the render ', lambdaController.allFunctionData)
-
 
             var functionArray = [];
             var tagsArray = [];
@@ -71,8 +68,6 @@ function renderTemplate() {
                 allFunctionData: timeAndDur,
                 rawTimeDurationData: JSON.stringify(lambdaController.allFunctionData),
             };
-
-            console.log("allfunctionData: ", lambdaController.allFunctionData);
 
             function tableStats(idx, shortHandFunc, array) {
                 var timeDuration = lambdaController.allFunctionData[shortHandFunc].durationSeries;
@@ -226,7 +221,6 @@ lambdaController.getAllFuncInfo = function (req, res) {
 }
 
 lambdaController.getInvocationInfo = function () {
-    console.log("GETTING INVOCATIONS")
     var newFunctions = this.functionList.Functions.map(func => {
         //create new key inside allFunctionData object on the lambdaController
         //and fill with function information from the functionList
@@ -235,7 +229,6 @@ lambdaController.getInvocationInfo = function () {
         //create promises for each function to retrieve duration data from 
         //AWS Cloudwatch
         return new Promise((resolve) => {
-            console.log('INSIDE PROMISE')
             this.cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName, 'Invocations'), (err, data) => {
 
                 if (err) {

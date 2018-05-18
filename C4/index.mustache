@@ -191,22 +191,32 @@ function drawSvg(data, func) {
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .call(d3.zoom().on("zoom", function () {
+    .call(d3.zoom()
+    .wheelDelta(function () {
       var myMouse = d3.mouse(this);
+      var direction = d3.event.wheelDelta < 0 ? 'down' : 'up';
+      
       if(myMouse[0] > 300) {
-        if(leftCount + 1 < data.length - rightCount) {
-          leftCount = leftCount + 1;
+        if (direction === "up") {
+          if(leftCount + 1 < data.length - rightCount - 1) {
+            leftCount = leftCount + 1;
+          }
         } else {
-          rightCount = 0;
-          leftCount = 0;
+          if(leftCount - 1 > 0) {
+            leftCount = leftCount - 1;
+          }
         }
       } else {
-        if(data.length - rightCount + 1 > leftCount) {
-          rightCount = rightCount + 1;
+        if (direction === "up") {
+          if(data.length - rightCount + 1 > leftCount + 2) {
+            rightCount = rightCount + 1
+          }
         } else {
-          leftCount = 0;
-          rightCount = 0;
+           if(data.length > data.length - rightCount - 1) {
+             rightCount = rightCount - 1;
+           }
         }
+
       }
       var newData = data.slice(leftCount , data.length - rightCount);
       d3.select(`.${func} svg`).selectAll("*").remove();

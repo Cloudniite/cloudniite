@@ -105,6 +105,12 @@ function renderTemplate() {
                     <input name = "functionStats" type="radio" value="Table" onclick="showTable(event, '${shortHandFunc + 'table'}')"> Table </input>
                 </div>
             </form>
+            <div>
+                 Memory size: ${lambdaController.allFunctionData[shortHandFunc].MemorySize}
+                 Code size: ${lambdaController.allFunctionData[shortHandFunc].codeSize}
+                 Runtime environment: ${lambdaController.allFunctionData[shortHandFunc].runTimeEnv}
+                 Last Modified: ${new Date(lambdaController.allFunctionData[shortHandFunc].lastModified)}
+            </div>
                 <div class = "${shortHandFunc + 'table'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr style = "">
@@ -133,8 +139,11 @@ function renderTemplate() {
                     </div>
                 </form>
                 <div>
-                    Here should be the function info here.
-                </div>
+                    Memory size: ${lambdaController.allFunctionData[shortFunctionName].MemorySize} MB
+                    Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} MB
+                    Runtime environment: ${lambdaController.allFunctionData[shortFunctionName].runTimeEnv}
+                    Last Modified: ${new Date(lambdaController.allFunctionData[shortFunctionName].lastModified)}
+               </div>
                 <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr>
@@ -228,7 +237,7 @@ lambdaController.getInvocationInfo = function () {
         //create new key inside allFunctionData object on the lambdaController
         //and fill with function information from the functionList
         this.allFunctionData[func.FunctionName.split('-')[1]].invocationSeries = [];
-        
+
         //create promises for each function to retrieve duration data from 
         //AWS Cloudwatch
         return new Promise((resolve) => {
@@ -249,10 +258,10 @@ lambdaController.getInvocationInfo = function () {
             });
         })
     })
-        //wait until all promises have resolved 
-        return Promise.all(newFunctions)
-            .then(() => { })
-            .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
+    //wait until all promises have resolved 
+    return Promise.all(newFunctions)
+        .then(() => { })
+        .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
 lambdaController.getAwsFunctions = function (...rest) {

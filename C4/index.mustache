@@ -234,15 +234,8 @@ function draw(testData, func){
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("fill", "white");
-      
-  // Add the valueline path.
-  svg.append("path")
-    .data([data])
-    .attr("class", "line")
-    .attr("d", valueLine)
-    .enter();
 
-      svg.selectAll("dot")
+    svg.selectAll("dot")
       .data(data)
       .enter().append("circle")
       .attr("r", 3.5)

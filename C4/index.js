@@ -132,6 +132,9 @@ function renderTemplate() {
                         <input name = "functionStats" type="radio" value="Table" onclick="showTable2(event, '${shortFunctionName + 'table2'}')"> Table </input>
                     </div>
                 </form>
+                <div>
+                    Here should be the function info here.
+                </div>
                 <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr>

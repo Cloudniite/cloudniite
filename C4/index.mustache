@@ -118,14 +118,25 @@ html {
 <body>
 
   <div class="menu"> 
+    <button class="menu-links" onclick="opn(event, 'home'); topFunction();">Home</button>
     <button class="menu-links" onclick="opn(event, 'tagsOnly'); topFunction();">Tags</button>
     <button class="menu-links" onclick="opn(event, 'div-func'); topFunction();">Functions</button>
-    <button class="menu-links">Export Data</button>
-    <button class="menu-links">Note: Make a slider on both x and y axis to zoom in to sections</button>
-    <button class="menu-links">Note2: Display function data (memory, run-time ect) beside graph</button>
   </div>
 
-  <div class="content" id="tagsOnly">
+
+<div class="content" id="home">
+    <h3>
+        Total functions:
+        {{totalFunctionCount}}
+    </h3>
+    <h3>
+        Total Tag Groups:
+        {{totalTagGroupCount}}
+    </h3>
+  </div>
+
+
+  <div class="content hide" id="tagsOnly">
     <h3>
         {{#tagsArray}}
           {{{.}}}
@@ -141,14 +152,6 @@ html {
     </h3>
   </div> 
   
-  <div class="content hide" id="allFunctionData">
-    <h3>
-        {{#allFunctionData}}
-          {{{.}}}
-        {{/allFunctionData}}
-    </h3>
-
-  </div>
 
     <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
     <div id="info-graph" ></div>
@@ -272,15 +275,12 @@ function draw(testData, func){
 
 <script>
 
-function showGraph() {
-
-}
 
 function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
-//aws data visualizations 
+
 function opn(evt, menuItem) {
   var tabcontent = document.getElementsByClassName("content");
   for (var i = 0; i < tabcontent.length; i ++) {

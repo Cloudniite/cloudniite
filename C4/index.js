@@ -4,22 +4,6 @@ var fs = require("fs");
 const path = require('path');
 const { exec } = require('child_process');
 
-function executeAWSCommand() {
-    return new Promise((resolve, reject) => {
-        exec('aws lambda list-functions', (err, stdout, stderr) => {
-            if (err) {
-                console.log("ERROR HERE");
-                // node couldn't execute the command
-                return;
-            }
-
-            // the *entire* stdout and stderr (buffered)
-            lambdaController.functionList = JSON.parse(stdout);
-            return resolve();
-        });
-    });
-}
-
 const lambdaController = {
     functionList: "",
     tagGroups: {},
@@ -51,6 +35,22 @@ lambdaController.setFunctionList = function (functionList) {
     renderTemplate();
 }
 
+function executeAWSCommand() {
+    return new Promise((resolve, reject) => {
+        exec('aws lambda list-functions', (err, stdout, stderr) => {
+            if (err) {
+                console.log("ERROR HERE");
+                // node couldn't execute the command
+                return;
+            }
+
+            // the *entire* stdout and stderr (buffered)
+            lambdaController.functionList = JSON.parse(stdout);
+            return resolve();
+        });
+    });
+}
+
 //build a Mustache template to inject with function data and metrics 
 //for monitoring and optimization 
 function renderTemplate() {
@@ -60,14 +60,28 @@ function renderTemplate() {
 
             var functionArray = [];
             var tagsArray = [];
-            var timeAndDur = [];
 
             var view = {
                 function: functionArray,
                 tagsArray: tagsArray,
-                allFunctionData: timeAndDur,
                 rawTimeDurationData: JSON.stringify(lambdaController.allFunctionData),
+                totalFunctionCount: 0,
+                totalTagGroupCount: 0,
             };
+
+            //count the functions 
+            (function (){
+                Object.keys(lambdaController.allFunctionData).forEach((f) => {
+                    return view.totalFunctionCount += 1;
+                })
+            })();
+
+            //count the tag groups 
+            (function(){
+                Object.keys(lambdaController.tagGroups).forEach((f) => {
+                    return view.totalTagGroupCount += 1;
+                })
+            })();
 
             function tableStats(idx, shortHandFunc, array) {
                 var timeDuration = lambdaController.allFunctionData[shortHandFunc].durationSeries;
@@ -140,7 +154,7 @@ function renderTemplate() {
                 </form>
                 <div>
                     Memory size: ${lambdaController.allFunctionData[shortFunctionName].MemorySize} MB
-                    Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} MB
+                    Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} 
                     Runtime environment: ${lambdaController.allFunctionData[shortFunctionName].runTimeEnv}
                     Last Modified: ${new Date(lambdaController.allFunctionData[shortFunctionName].lastModified)}
                </div>
@@ -242,7 +256,6 @@ lambdaController.getInvocationInfo = function () {
         //AWS Cloudwatch
         return new Promise((resolve) => {
             this.cloudwatch.getMetricData(new cloudWatchParams(func.FunctionName, 'Invocations'), (err, data) => {
-
                 if (err) {
                     console.log(err, err.stack); // an error occurred
                 } else {

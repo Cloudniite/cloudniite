@@ -67,6 +67,10 @@ function renderTemplate() {
                 rawTimeDurationData: JSON.stringify(lambdaController.allFunctionData),
                 totalFunctionCount: 0,
                 totalTagGroupCount: 0,
+                mostUsedCount: 0,
+                mostUsedName: '',
+                leastUsedCount: Infinity,
+                leastUsedName: '',
             };
 
             //count the functions 
@@ -80,6 +84,23 @@ function renderTemplate() {
             (function(){
                 Object.keys(lambdaController.tagGroups).forEach((f) => {
                     return view.totalTagGroupCount += 1;
+                })
+            })();
+
+            //calculate the slowest function here
+            (function freqFunction(){
+                Object.keys(lambdaController.allFunctionData).forEach((funcName) => {
+                    var durationArr = lambdaController.allFunctionData[funcName].durationSeries;
+                    if (durationArr.length >= view.mostUsedCount){
+                        view.mostUsedCount = durationArr.length;
+                        view.mostUsedName = funcName;
+                    }
+
+                    if (durationArr.length <= view.leastUsedCount){
+                        view.leastUsedCount = durationArr.length;
+                        view.leastUsedName = funcName;
+                    }
+
                 })
             })();
 
@@ -110,7 +131,7 @@ function renderTemplate() {
                     }
                 }
                 functionArray[idx] += `</button>
-            <div style=" display: none;"> 
+            <div class="function-data-outer" style=" display: none;"> 
             <form>
                 <div class = "graphButton">
                     <input name = "functionStats" type="radio" value="Graph" onclick="showGraph(event, '${shortHandFunc + 'graph1'}')" checked> Graph </input>
@@ -119,12 +140,16 @@ function renderTemplate() {
                     <input name = "functionStats" type="radio" value="Table" onclick="showTable(event, '${shortHandFunc + 'table'}')"> Table </input>
                 </div>
             </form>
-            <div>
-                 Memory size: ${lambdaController.allFunctionData[shortHandFunc].MemorySize}
-                 Code size: ${lambdaController.allFunctionData[shortHandFunc].codeSize}
-                 Runtime environment: ${lambdaController.allFunctionData[shortHandFunc].runTimeEnv}
-                 Last Modified: ${new Date(lambdaController.allFunctionData[shortHandFunc].lastModified)}
-            </div>
+            <div class="function-info-box">
+                <p>Function Data</p>
+                <ul>
+                   <li>Memory size: ${lambdaController.allFunctionData[shortHandFunc].MemorySize} MB</li>
+                    <li>Code size: ${lambdaController.allFunctionData[shortHandFunc].codeSize} MB</li>
+                    <li>Runtime environment: ${lambdaController.allFunctionData[shortHandFunc].runTimeEnv}</li>
+                    <li>Last Modified: ${new Date(lambdaController.allFunctionData[shortHandFunc].lastModified)}</li>
+                </ul>
+               </div>
+               <div class="function-viz-outer">
                 <div class = "${shortHandFunc + 'table'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr style = "">
@@ -135,7 +160,7 @@ function renderTemplate() {
                 functionArray[idx] += `
                 <div class = "${shortHandFunc + 'graph1'}" >
                 </div>
-            </div>`;
+            </div></div>`;
             });
 
             Object.keys(lambdaController.tagGroups).forEach((tag, idx) => {
@@ -143,7 +168,7 @@ function renderTemplate() {
                 lambdaController.tagGroups[tag].forEach((functionName) => {
                     var shortFunctionName = functionName.split('-')[1];
                     tagsArray[idx] += `<button class = "tagFunction" style = "margin-top: 2%; border-radius: 4px;">${shortFunctionName}</button> 
-                <div style=" display: none;"> 
+                <div class="function-data-outer" style=" display: none;"> 
                 <form>
                     <div class = "graphButton">
                         <input name = "functionStats" type="radio" value="Graph" onclick="showGraph2(event, '${shortFunctionName + 'graph2'}')" checked> Graph </input>
@@ -152,12 +177,16 @@ function renderTemplate() {
                         <input name = "functionStats" type="radio" value="Table" onclick="showTable2(event, '${shortFunctionName + 'table2'}')"> Table </input>
                     </div>
                 </form>
-                <div>
-                    Memory size: ${lambdaController.allFunctionData[shortFunctionName].MemorySize} MB
-                    Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} 
-                    Runtime environment: ${lambdaController.allFunctionData[shortFunctionName].runTimeEnv}
-                    Last Modified: ${new Date(lambdaController.allFunctionData[shortFunctionName].lastModified)}
+                <div class="function-info-box">
+                <p>Function Data</p>
+                <ul>
+                   <li>Memory size: ${lambdaController.allFunctionData[shortFunctionName].MemorySize} MB</li>
+                    <li>Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} MB</li>
+                    <li>Runtime environment: ${lambdaController.allFunctionData[shortFunctionName].runTimeEnv}</li>
+                    <li>Last Modified: ${new Date(lambdaController.allFunctionData[shortFunctionName].lastModified)}</li>
+                </ul>
                </div>
+               <div class="function-viz-outer">
                 <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 400px;">
                     <table style = "width: 80%; text-align: center;">
                         <tr>
@@ -167,7 +196,7 @@ function renderTemplate() {
                     tableStats(idx, shortFunctionName, tagsArray);
                     tagsArray[idx] += `<div class = "${shortFunctionName + 'graph2'}"></div></div>`;
                 });
-                tagsArray[idx] += `</div>`;
+                tagsArray[idx] += `</div></div>`;
             })
 
 

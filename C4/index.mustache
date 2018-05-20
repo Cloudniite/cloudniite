@@ -200,18 +200,22 @@ function drawSvg(data, func) {
         if (direction === "up") {
           if(leftCount + 1 < data.length - rightCount - 1) {
             leftCount = leftCount + 1;
+          } else {
+            console.log("HERE down", leftCount, rightCount, d3.event.wheelDelta);
+            //leftCount = leftCount + 1;
           }
         } else {
+           console.log("HERE up", leftCount, rightCount, d3.event.wheelDelta);
           if(leftCount - 1 > 0) {
             leftCount = leftCount - 1;
+          } else if(leftCount === 1) {
+            rightCount = rightCount - 1;
           }
         }
       } else {
         if (direction === "up") {
           if(data.length - rightCount + 1 > leftCount + 2) {
             rightCount = rightCount + 1
-          } else {
-            leftCount = leftCount + 1;
           }
         } else {
            if(data.length - 1 > data.length - rightCount - 1) {

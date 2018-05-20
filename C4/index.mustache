@@ -3,19 +3,92 @@
 <html>
 <head>
 <script src="https://d3js.org/d3.v5.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 
 <style>
 
 body {
+  font-family: 'Open Sans', sans-serif;
   min-height: 100%;
   margin: 0px;
-  background-color: #f2f2f2;
+  background-color: #2E323C;
+  color:white;
 }
 
 .line {
   fill: none;
   stroke: orange;
   stroke-width: 2px;
+}
+
+.dashboard-nav-outer{
+  width:950px;
+  height:150px;
+  margin:auto;
+  margin-top:30px;
+}
+
+.dashboard-header{
+  width:auto;
+  height: 100px;
+  background-color:blue;
+  color:white;
+  float:left;
+  margin-right:30px;
+  padding:8px;
+  font-size:22px;
+  font-weight:600px;
+  text-align:center;
+  border: 1px solid #ccc;
+  border-radius:3px;
+}
+
+.header-one {
+  background-color: #68B1CE;
+}
+
+.header-two {
+  background-color: #57C9A1;
+}
+
+.header-three {
+  background-color: #7D6FCA;
+}
+
+.header-four {
+  background-color: #E4C074;
+}
+
+.most{
+  width:auto;
+}
+
+.dashboard-header:hover {
+  background-color: lightblue;
+  cursor:pointer;
+}
+
+.most:hover{
+  cursor:default;
+}
+
+.header-three:hover {
+  background-color: #7D6FCA;
+}
+
+.header-four:hover {
+  background-color: #E4C074;
+}
+
+.dash-box-number{
+  font-size:28px;
+  margin-top:18px;
+}
+
+.most-text{
+  margin-top:8px;
+  font-size:20px;
 }
 
 .hide {
@@ -27,7 +100,7 @@ body {
 }
 
 tr:nth-child(even) {
-  background-color: white;
+  background-color: lightgrey;
 }
 
 html {
@@ -36,19 +109,19 @@ html {
 
 .menu {
   position: fixed;
-  background-color: lightgray;
+  background-color: #415175;
   float: left;
   width: 20%;
-  height: 700px;
-  border: 1px solid darkgray;
+  height: 100%;
+  border: 1px solid #ccc;
 }
 
 .menu button {
   text-align: left;
   cursor: pointer;
   transition: 0.3s;
-  font-size: 22px;
-  color: black;
+  font-size: 20px;
+  color: white;
   padding: 18px 12px;
   width: 100%;
   background-color: inherit;
@@ -60,21 +133,34 @@ html {
   padding: 0px 12px;
   border: 1px solid #ccc;
   width: 70%;
+  color:white;
 }
 
 .tags, .functions {
   width: 100%;
   font-size: 18px;
   padding: 1%;
+  background-color:#405176;
+  color:white;
+}
+
+.tags:hover{
+  cursor:pointer;
+} 
+
+.functions:hover{
+  cursor:pointer;
 }
 
 .menu button:hover {
-    background-color: #ddd;
+    color: #fff;
+    cursor:pointer;
 }
 
-.menu button.active {
-    background-color: #ccc;
+.menu button:focus{
+  background-color:#4BCCD1;
 }
+
 .p {
     float: right;
 }
@@ -82,10 +168,54 @@ html {
 .content {
     float: right;
     padding: 0px 12px;
-    border: 1px solid #ccc;
     width: 75%;
-    border-left: none;
     height: 100%;
+}
+
+.function-data-outer{
+  width:100%;
+  height:600px;
+  background-color:white;
+  margin:auto;
+  color:black;
+  border:1px solid #ccc;
+  border-radius:3px;
+}
+
+.function-info-box{
+  width:350px;
+  margin:auto;
+  margin-top:70px;
+  background-color:#efefef;
+  float:right;
+  margin-right:25px;
+  border: 1px solid #ccc;
+  border-radius:3px;
+}
+
+.function-info-box ul {
+  list-style:none;
+}
+
+.function-info-box li {
+  margin-bottom:10px;
+}
+
+.function-info-box p{
+  text-align:center;
+  font-size:23px;
+  margin-top:10px;
+}
+
+.function-viz-outer{
+  width:580px;
+  height:auto;
+  float:left;
+  margin-left:20px;
+  padding:8px;
+  background-color:#efefef;
+  border: 1px solid #ccc;
+  border-radius:3px;
 }
 
 #info-graph{
@@ -96,11 +226,14 @@ html {
 
 .tagFunction {
   background-color: white;
-  color: black;
   width: 100%;
   font-size: 18px;
   text-align: left;
   padding: 1%;
+}
+
+.tagFunction:hover{
+  cursor:pointer;
 }
 
 .graphButton {
@@ -118,14 +251,61 @@ html {
 <body>
 
   <div class="menu"> 
+    <button class="menu-links" onclick="opn(event, 'home'); topFunction();">Dashboard</button>
     <button class="menu-links" onclick="opn(event, 'tagsOnly'); topFunction();">Tags</button>
     <button class="menu-links" onclick="opn(event, 'div-func'); topFunction();">Functions</button>
-    <button class="menu-links">Export Data</button>
-    <button class="menu-links">Note: Make a slider on both x and y axis to zoom in to sections</button>
-    <button class="menu-links">Note2: Display function data (memory, run-time ect) beside graph</button>
   </div>
 
-  <div class="content" id="tagsOnly">
+
+<div class="content" id="home">
+
+  <div class="dashboard-nav-outer">
+    <div class="dashboard-header header-one" onclick="opn(event, 'div-func'); topFunction();">
+       <div class="dash-box-title" >
+           Total Functions
+       </div>
+       <div class="dash-box-number">
+           {{totalFunctionCount}}
+       </div>
+    </div>
+
+    <div class="dashboard-header header-two" onclick="opn(event, 'tagsOnly'); topFunction();">
+       <div class="dash-box-title">
+           Total Tag Groups
+       </div>
+       <div class="dash-box-number">
+           {{totalTagGroupCount}}
+       </div>
+    </div>
+
+     <div class="dashboard-header most header-three">
+       <div class="dash-box-title">
+           Most Invoked
+       </div>
+       <div class="dash-box-number most-text">
+            Name: {{mostUsedName}}
+       </div>
+       <div class="dash-box-number most-text">
+           Count: {{mostUsedCount}} 
+       </div>
+    </div>
+
+     <div class="dashboard-header most header-four">
+       <div class="dash-box-title">
+           Least Invoked
+       </div>
+       <div class="dash-box-number most-text">
+            Name: {{leastUsedName}}
+       </div>
+       <div class="dash-box-number most-text">
+           Count: {{leastUsedCount}}
+       </div>
+    </div>
+   </div>
+  </div>
+
+
+  <div class="content hide" id="tagsOnly">
     <h3>
         {{#tagsArray}}
           {{{.}}}
@@ -141,14 +321,6 @@ html {
     </h3>
   </div> 
   
-  <div class="content hide" id="allFunctionData">
-    <h3>
-        {{#allFunctionData}}
-          {{{.}}}
-        {{/allFunctionData}}
-    </h3>
-
-  </div>
 
     <div id="rawTimeDurationData" style="display:none">{{rawTimeDurationData}}</div>
     <div id="info-graph" ></div>
@@ -161,7 +333,7 @@ html {
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
 var margin = {top:20, right: 10, bottom: 50, left: 80},
     width = 600 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 450 - margin.top - margin.bottom;
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -246,10 +418,10 @@ function draw(testData, func){
   
     var svg = d3.select(`.${func} svg`);
 
-    svg.append("rect")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr("fill", "white");
+  //  svg.append("rect")
+  //    .attr("width", "100%")
+  //    .attr("height", "100%")
+  //    .attr("fill", "white");
       
   // Add the valueline path.
   //svg.append("path")
@@ -273,7 +445,7 @@ function draw(testData, func){
 
   svg.append("text")             
       .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
-      .style("text-anchor", "middle")
+      .attr("x", 20)
       .text("Date");    
 
   // Add the Y Axis
@@ -295,15 +467,12 @@ function draw(testData, func){
 
 <script>
 
-function showGraph() {
-
-}
 
 function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
-//aws data visualizations 
+
 function opn(evt, menuItem) {
   var tabcontent = document.getElementsByClassName("content");
   for (var i = 0; i < tabcontent.length; i ++) {

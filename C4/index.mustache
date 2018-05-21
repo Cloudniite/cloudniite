@@ -27,6 +27,8 @@ body {
   height:150px;
   margin:auto;
   margin-top:30px;
+  padding-left:60px;
+  
 }
 
 .dashboard-header{
@@ -93,6 +95,13 @@ body {
 
 .hide {
    display:none;
+}
+
+#aggregate-graph-outer{
+  width:900px;
+  height:500px;
+  background-color:#415175;
+  margin:auto;
 }
 
 .dot {
@@ -302,6 +311,9 @@ html {
        </div>
     </div>
    </div>
+
+   <div id="aggregate-graph-outer">
+   </div>
   </div>
 
 
@@ -328,8 +340,113 @@ html {
 <script id="template" type="x-tmpl-mustache">
 </script>
 
+
 <script>
-//D3 data visualizations
+//D3 data visualizations for main dashboard aggregate graph
+var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
+var margin = {top:20, right: 10, bottom: 50, left: 80},
+    width = 600 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+var x = d3.scaleTime()
+	.range([0, width]);
+
+var y = d3.scaleLinear().range([height, 0]);
+
+var valueLine = d3.line()
+    .x(function(d) {return x(d.date) + 50})
+    .y(function(d) {return y(d.duration)})
+
+var leftCount = 0;
+var rightCount = 0;
+
+  var testData = fullTestData.TestFunction6.durationSeries.map((dataPoint) => {
+      var newDataPoint = {
+        date: dataPoint.date,
+        duration: dataPoint.duration,
+        color: 'red',
+      }
+      return newDataPoint;
+  });
+  console.log('this is duration series: ', testData);
+
+  drawSvg(testData);
+  draw(testData);
+
+
+function drawSvg(data) {
+  leftCount = 0;
+  rightCount = 0;
+    d3.select('#aggregate-graph-outer')
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+};
+
+function draw(testData, color){
+
+  var data = testData;
+  var colorFill = '';
+
+  data.forEach((d) => {
+    d.date = new Date(d.date);
+    d.duration = +d.duration;
+    if (!colorFill) colorFill = d.color;
+  })
+
+   x.domain(d3.extent(data, function(d) {return d.date; }));
+   y.domain([0, d3.max(data, function(d) {return d.duration; })]);
+  
+    var svg = d3.select(`#aggregate-graph-outer svg`);
+
+    svg.selectAll("dot")
+      .data(data)
+      .enter().append("circle")
+      .attr("r", 3.5)
+      .attr("cx", function(d) { return x(d.date) + 50; })
+      .attr("cy", function(d) { return y(d.duration); })
+      .attr("fill",`${colorFill}`) 
+
+  // Add the X Axis
+  var xChange = svg.append("g")
+      .attr("transform", "translate(" + 50 +"," + height + ")")
+      .call(d3.axisBottom(x));
+
+  svg.append("text")             
+      .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+      .attr("x", 20)
+      .text("Date");    
+
+  // Add the Y Axis
+  var yChange = svg.append("g")
+      .attr("transform", "translate(" + 50 + ", 0)")
+      .call(d3.axisLeft(y));
+
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x", -170)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Duration (ms)");  
+  }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+//D3 data visualizations for individual functions and tagGroups
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
 var margin = {top:20, right: 10, bottom: 50, left: 80},
     width = 600 - margin.left - margin.right,

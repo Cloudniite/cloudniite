@@ -33,6 +33,34 @@ Cloudniite is available as the cloudniite package on npm.
 npm install --save cloudniite
 ```
 
+## Getting Started
+
+#### When creating a function:
+* Add an if statement to check if cloudniite has invoked the function.
+* After else statement fill in the function as you normally would.
+* This will optimally warm-up the function without running the entire function
+
+#### In a text editor: 
+``` jsx
+exports.handler = function(event, context, callback) {
+    if (event.source === "Cloudniite-Warmup") {
+        callback(null,"Warmup");
+    } else {
+         //your function
+    }
+}
+```
+
+#### On AWS: 
+
+
+
+
+
+o
+![alt text](http://url/to/img.png)
+Make sure both yaml and lambda files are in the same folder.
+
 ## Authors
 
 * **Linda Harrison** - *Initial work* - [GitHub](https://github.com/LindafHarrison)

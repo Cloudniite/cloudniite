@@ -30,7 +30,7 @@ lambdaController.configure = function (region, IdentityPoolId, apiVersionLambda 
 
 lambdaController.setFunctionList = function (functionList) {
     functionList.Functions.forEach((func) => {
-        this.allFunctions[func.FunctionName.split('-')[1]] = func.FunctionName;
+        this.allFunctions[func.FunctionName] = func.FunctionName;
     });
     renderTemplate();
 }
@@ -120,7 +120,7 @@ function renderTemplate() {
             }
 
             lambdaController.functionList.Functions.forEach((func, idx) => {
-                var shortHandFunc = func.FunctionName.split('-')[1]
+                var shortHandFunc = func.FunctionName
                 functionArray[idx] = `
             <button style = "margin-bottom: 2%;" class="functions" ${shortHandFunc}">
                 <b>Function Name</b>: ${shortHandFunc}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -166,7 +166,7 @@ function renderTemplate() {
             Object.keys(lambdaController.tagGroups).forEach((tag, idx) => {
                 tagsArray[idx] = (`<button style = "margin-bottom: 2%;" class="tags" id = "${tag}" ><b> Tag Groups</b>: ${tag} </button> <div style="display: none;">`);
                 lambdaController.tagGroups[tag].forEach((functionName) => {
-                    var shortFunctionName = functionName.split('-')[1];
+                    var shortFunctionName = functionName;
                     tagsArray[idx] += `<button class = "tagFunction" style = "margin-top: 2%; border-radius: 4px;">${shortFunctionName}</button> 
                 <div class="function-data-outer" style=" display: none;"> 
                 <form>
@@ -241,7 +241,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
         //create new key inside allFunctionData object on the lambdaController
         //and fill with function information from the functionList
-        this.allFunctionData[func.FunctionName.split('-')[1]] = {
+        this.allFunctionData[func.FunctionName] = {
             durationSeries: [],
             MemorySize: func.MemorySize,
             codeSize: func.CodeSize,
@@ -257,7 +257,7 @@ lambdaController.getAllFuncInfo = function (req, res) {
                     console.log(err, err.stack); // an error occurred
                 } else {
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
-                        var funcName = func.FunctionName.split('-')[1];
+                        var funcName = func.FunctionName;
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var duration = data.MetricDataResults[0].Values[i];
                         var singleDurationData = { date: new Date(date), duration: duration };
@@ -279,7 +279,7 @@ lambdaController.getInvocationInfo = function () {
     var newFunctions = this.functionList.Functions.map(func => {
         //create new key inside allFunctionData object on the lambdaController
         //and fill with function information from the functionList
-        this.allFunctionData[func.FunctionName.split('-')[1]].invocationSeries = [];
+        this.allFunctionData[func.FunctionName].invocationSeries = [];
 
         //create promises for each function to retrieve duration data from 
         //AWS Cloudwatch
@@ -289,7 +289,7 @@ lambdaController.getInvocationInfo = function () {
                     console.log(err, err.stack); // an error occurred
                 } else {
                     for (var i = data.MetricDataResults[0].Values.length - 1; i >= 0; i--) {
-                        var funcName = func.FunctionName.split('-')[1];
+                        var funcName = func.FunctionName;
                         var date = data.MetricDataResults[0].Timestamps[i];
                         var invocation = data.MetricDataResults[0].Values[i];
                         var singleInvocationData = { date: new Date(date), invocation: invocation };

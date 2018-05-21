@@ -1,56 +1,39 @@
-Tutorial Page
-Setting Up A New Project
-1. Follow the AWS step by step tutorial on configuring AWS Cli (you might need to install AWS Cli):
-https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration
-2. Setup Node package modules:
-npm init
-For step by step instructions on setting up your Node package modules (https://www.sitepoint.com/beginners-guide-node-package-manager)
-3. Install the following Node dependies:
-npm install --save aws-sdk cloudniite express
-4. Create an S3 bucket with the following cli command, which will create a 'my-bucket' named bucket in AWS S3:
-aws s3api create-bucket --bucket my-bucket --region region
-Set your bucket name to your name preference, and your region to the correct region (regions are located on the AWS Interface)
-5. Create your yaml and lambda files(Our case test.yaml and lambda.js):
-test.yaml
-AWSTemplateFormatVersion: '2010-09-09'
-    Transform: AWS::Serverless-2016-10-31
-    Resources:
-    TestFunction4:
-        Type: AWS::Serverless::Function
-        Properties:
-            Handler: lambda.handleName
-            Runtime: nodejs8.10
-            Environment: 
-                Variables:
-                    S3_BUCKET: bucketName
-lambda.js
-const aws = require('aws-sdk');
+# [Cloudniite](https://cloudniite.com)&middot;[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/C4-Serverless/cloudniite/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
 
-exports.handler1 = function(event, context, callback) {
-    if (event.source === "Cloudniite-Warmup") {
-        callback(null,"Warmup");
-    } else {
-        callback(null, "Lambda function return value");
-    }
-}
-Make sure both the files are in the same folder
-6. Package and deploy your Lambda files to a stack:
-aws cloudformation package --template-file fileName.yaml --output-template-file serverless-output.yaml --s3-bucket my-bucket
-aws cloudformation deploy --template-file serverless-output.yaml --stack-name stackName --capabilities CAPABILITY_IAM
+Cloudniite is a JavaScript library that helps you as a developer optimize and monitor your serverless application performance and metrics on AWS Lambda. We chose AWS because it has an exceptional ecosystem of cloud products and a huge community of developers that are passionate about the future of serverless. We integrate seamlessly with your application to help you ensure your customers are having a fast and responsive experience. We do this by helping you organize and monitor event-driven AWS Lambda functions. If you are unfamiliar with AWS Lambda, no need to worry, we will cover the core concepts in the next section.
 
+[Learn how to use Cloudniite in your own project](https://cloudniite.com/documentation/introduction).
 
+## How do you optimize AWS Lambda functions?
+Amazon has to prepare or spin-up, new virtual servers to run your code. This startup time only happens when your functions haven't been run in a while. For Amazon, it doesn't make sense to keep your function running on a server if no one is using it. So, after a period of time, if your function isn't used, Amazon will "destroy" the server it is living on. This function will now be considered "cold". Cold functions take longer to run and will leave your users waiting longer for a response because of the time it takes to spin up a server to host the function.
 
+Developers have been using simple timers to "warmup" their functions so that they stay running and available for users. This solution works but we believed there could be a smarter way to manage and keep your Lambda functions warm and performant.
 
-# cloudniite
-# Project Title
+## Cloudniite Examples.
+Below are a few examples of how you could use our library to minimize cold starts, organize your functions into groups and optimize your application to ensure it responds quickly to user actions.
 
-One Paragraph of project description goes here
+## AWS Lambda Function Groups
+Cloudniite lets you easily group your Lambda functions however you like. If you want to make sure all the Lambda functions associated with your landing page are warmed up, simply create a tag group passing in the functions you would like to be grouped together.
 
-## Getting Started
+```jsx
+cloudniite.createTagGroup("#LandingPage","SignupUser","EmailSubscription")
+```
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Then, whenever you want to warmup the LandingPage functions, just call our method passing in the tag group name.
 
-### Prerequisites
+```jsx
+lambdaController.warmupTagGroup(null, "#LandingPage"); 
+```
+
+## Installation
+
+Cloudniite is available as the cloudniite package on npm.
+
+```jsx
+npm install --save cloudniite
+```
+
+### Setting Up A New Project
 
 What things you need to install the software and how to install them
 

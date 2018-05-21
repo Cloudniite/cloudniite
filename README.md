@@ -70,7 +70,7 @@ exports.handler = function(event, context, callback) {
     if (event.source === "Cloudniite-Warmup") {
         callback(null,"Warmup");
     } else {
-         //your function
+         ....add lambda logic here
     }
 }
 ```
@@ -109,6 +109,8 @@ Cloudniite lets you easily group your Lambda functions however you like. If you 
 
 ##### createTagGroup(tagGroup, functionName):
 * add as many functions as you want
+  * if you want to add an array rather then individual functions, add a spread operator
+``` cloudniite.createTagGroup(#tagName, … [functionName1, functionName2, functionName3]) ```
 * must be a string
 
 ```jsx

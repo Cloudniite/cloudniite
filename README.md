@@ -150,7 +150,7 @@ Go to the route on your port
 * URL format: port/getHtmlViz
 ###### example: ``` http://localhost:3000/getHtmlViz ```
 
-## In order to get a longer time range of data
+### Increase time range for Graphs in Visualizer and Cloudwatch
 Change the period in the function cloudWatchParams inside ``` index.js ``` 
 
 data points will be collected at the end of each period

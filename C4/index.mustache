@@ -40,7 +40,7 @@ body {
   height:150px;
   margin:auto;
   margin-top:30px;
-  padding-left:60px;
+  padding-left:80px;
   
 }
 
@@ -126,11 +126,23 @@ body {
   padding-right:60px;
 }
 
-.tooltip {	
+.tooltip-agg {	
     position: absolute;			
     text-align: center;			
     width: 120px;					
     height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;	
+}		
+
+.tooltip-func {	
+    position: absolute;			
+    text-align: center;			
+    width: 150px;					
+    height: 46px;					
     padding: 2px;				
     font: 12px sans-serif;		
     background: lightsteelblue;	
@@ -257,8 +269,7 @@ html {
   float:left;
   margin-left:20px;
   padding:8px;
-  background-color:#efefef;
-  border: 1px solid #ccc;
+  border: 1px solid #c6cad5;
   border-radius:3px;
 }
 
@@ -269,11 +280,12 @@ html {
 }
 
 .tagFunction {
-  background-color: white;
+  background-color: #415175;
   width: 100%;
   font-size: 18px;
   text-align: left;
   padding: 1%;
+  color:white;
 }
 
 .tagFunction:hover{
@@ -447,7 +459,7 @@ function draw(testData, color){
   
     var svg = d3.select(`#aggregate-graph-outer svg`);
     var div = d3.select("body").append("div")
-    .attr("class", "tooltip")
+    .attr("class", "tooltip-agg")
     .style("opacity", 0);
 
     svg.selectAll("dot")
@@ -457,7 +469,7 @@ function draw(testData, color){
       .attr("cx", function(d) { return x(d.date) + 50; })
       .attr("cy", function(d) { return y(d.duration); })
       .attr("fill",function(d) { return (d.color); }) 
-      .on("mouseover", function(d) {		
+      .on("click", function(d) {		
             div.transition()		
                 .duration(200)		
                 .style("opacity", 1);		
@@ -601,6 +613,9 @@ function draw(testData, func){
    y.domain([0, d3.max(data, function(d) {return d.duration + 20; })]);
   
     var svg = d3.select(`.${func} svg`);
+    var div = d3.select("body").append("div")
+    .attr("class", "tooltip-func")
+    .style("opacity", 0);
 
   //  svg.append("rect")
   //    .attr("width", "100%")
@@ -617,25 +632,41 @@ function draw(testData, func){
     svg.selectAll("dot")
       .data(data)
       .enter().append("circle")
-      .attr("r", 3.5)
+      .attr("r", 5)
       .attr("cx", function(d) { return x(d.date) + 50; })
       .attr("cy", function(d) { return y(d.duration); })
-      .attr("fill","black") 
+      .attr("fill","#57C9A1") 
+      .on("click", function(d) {		
+            div.transition()		
+                .duration(100)		
+                .style("opacity", 1);		
+            div	.html(d.date + "<br/>"  + "Duration: " + (d.duration).toFixed(2) + "ms")	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", 0);	
+        });
       
 
   // Add the X Axis
   var xChange = svg.append("g")
       .attr("transform", "translate(" + 50 +"," + height + ")")
+      .attr("class", "axisGray")
       .call(d3.axisBottom(x));
 
   svg.append("text")             
       .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
       .attr("x", 20)
+      .attr("fill", "#ecedf1")
       .text("Date");    
 
   // Add the Y Axis
   var yChange = svg.append("g")
       .attr("transform", "translate(" + 50 + ", 0)")
+      .attr("class", "axisGray")
       .call(d3.axisLeft(y));
 
   svg.append("text")
@@ -644,6 +675,7 @@ function draw(testData, func){
       .attr("x", -170)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
+      .attr("fill", "#ecedf1")
       .text("Duration (ms)");  
   }
 

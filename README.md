@@ -1,3 +1,46 @@
+Tutorial Page
+Setting Up A New Project
+1. Follow the AWS step by step tutorial on configuring AWS Cli (you might need to install AWS Cli):
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration
+2. Setup Node package modules:
+npm init
+For step by step instructions on setting up your Node package modules (https://www.sitepoint.com/beginners-guide-node-package-manager)
+3. Install the following Node dependies:
+npm install --save aws-sdk cloudniite express
+4. Create an S3 bucket with the following cli command, which will create a 'my-bucket' named bucket in AWS S3:
+aws s3api create-bucket --bucket my-bucket --region region
+Set your bucket name to your name preference, and your region to the correct region (regions are located on the AWS Interface)
+5. Create your yaml and lambda files(Our case test.yaml and lambda.js):
+test.yaml
+AWSTemplateFormatVersion: '2010-09-09'
+    Transform: AWS::Serverless-2016-10-31
+    Resources:
+    TestFunction4:
+        Type: AWS::Serverless::Function
+        Properties:
+            Handler: lambda.handleName
+            Runtime: nodejs8.10
+            Environment: 
+                Variables:
+                    S3_BUCKET: bucketName
+lambda.js
+const aws = require('aws-sdk');
+
+exports.handler1 = function(event, context, callback) {
+    if (event.source === "Cloudniite-Warmup") {
+        callback(null,"Warmup");
+    } else {
+        callback(null, "Lambda function return value");
+    }
+}
+Make sure both the files are in the same folder
+6. Package and deploy your Lambda files to a stack:
+aws cloudformation package --template-file fileName.yaml --output-template-file serverless-output.yaml --s3-bucket my-bucket
+aws cloudformation deploy --template-file serverless-output.yaml --stack-name stackName --capabilities CAPABILITY_IAM
+
+
+
+
 # cloudniite
 # Project Title
 

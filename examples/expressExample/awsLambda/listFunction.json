@@ -1,255 +1,114 @@
 {
     "Functions": [
         {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yLg3PmHr5utLCAc9JHEPknUCyyWHXQJ4Dx8G5Nn7R28=", 
-            "FunctionName": "serverless-node-rest-api-dev-create", 
-            "MemorySize": 1024, 
-            "RevisionId": "374a707e-b533-4095-892e-797df07e1e25", 
-            "CodeSize": 22343, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-rest-api-dev-create", 
-            "Environment": {
-                "Variables": {
-                    "DYNAMODB_TABLE": "serverless-node-rest-api-dev"
-                }
-            }, 
-            "Handler": "pets/create.create", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-rest-api-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T23:49:26.704+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yodklZREcj1Jn9rFiRKmevWzIGh+LcYIsU4NDH8x1pY=", 
-            "FunctionName": "testApp-TestFunction5-6H67G6EFI5PK", 
+            "FunctionName": "testApp-TestFunction5-6H67G6EFI5PK",
+            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction5-6H67G6EFI5PK",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction5Role-10C4913RHT67K",
+            "Handler": "lambda.handler2",
+            "CodeSize": 1113,
+            "Description": "",
+            "Timeout": 60,
+            "MemorySize": 128,
+            "LastModified": "2018-05-20T01:06:34.787+0000",
+            "CodeSha256": "bpHAuwSF+ovrYwVj8k6OSxgKeAajo9wia2+y2Cor5V4=",
+            "Version": "$LATEST",
             "VpcConfig": {
-                "SubnetIds": [], 
-                "VpcId": "", 
-                "SecurityGroupIds": []
-            }, 
-            "MemorySize": 128, 
-            "RevisionId": "a84965b1-d8fb-4726-aa4e-b185dbae3f4e", 
-            "CodeSize": 1464, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction5-6H67G6EFI5PK", 
+                "SubnetIds": [],
+                "SecurityGroupIds": [],
+                "VpcId": ""
+            },
             "Environment": {
                 "Variables": {
                     "S3_BUCKET": "test-bucket-codesmith"
                 }
-            }, 
-            "Handler": "lambda.handler2", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction5Role-10C4913RHT67K", 
-            "Timeout": 60, 
-            "LastModified": "2018-05-17T15:52:45.811+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
-        }, 
-        {
+            },
             "TracingConfig": {
                 "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yodklZREcj1Jn9rFiRKmevWzIGh+LcYIsU4NDH8x1pY=", 
-            "FunctionName": "testApp-TestFunction4-ADFMLAOHVJHR", 
-            "MemorySize": 128, 
-            "RevisionId": "48193659-b0fe-407e-a152-c31d91fd55fd", 
-            "CodeSize": 1464, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction4-ADFMLAOHVJHR", 
+            },
+            "RevisionId": "f9bc2368-65d2-494e-a81f-97302a2ed213"
+        },
+        {
+            "FunctionName": "Hello1",
+            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:Hello1",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::432646169424:role/lambda_basic_execution",
+            "Handler": "index.handler",
+            "CodeSize": 208,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-21T17:33:16.589+0000",
+            "CodeSha256": "bywkWt2LVI9SJCFNFyfHk+hcwYgs1oQdPi79onv7vGE=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "597e0923-a5b1-4426-9f76-4fe6e50bd0c4"
+        },
+        {
+            "FunctionName": "Hello",
+            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:Hello",
+            "Runtime": "nodejs6.10",
+            "Role": "arn:aws:iam::432646169424:role/lambda_basic_execution",
+            "Handler": "index.handler",
+            "CodeSize": 216,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-21T17:32:10.362+0000",
+            "CodeSha256": "m83ynL7Ro2gPNMJiVtqf9s06UDrQhn/fVNP6cJYcCnw=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "2fd3a465-70b6-4bac-882b-657a6d6ea3ea"
+        },
+        {
+            "FunctionName": "testApp-TestFunction4-ADFMLAOHVJHR",
+            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction4-ADFMLAOHVJHR",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction4Role-OH3D9GMNNK4W",
+            "Handler": "lambda.handler1",
+            "CodeSize": 1113,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-20T01:06:34.711+0000",
+            "CodeSha256": "bpHAuwSF+ovrYwVj8k6OSxgKeAajo9wia2+y2Cor5V4=",
+            "Version": "$LATEST",
             "Environment": {
                 "Variables": {
                     "S3_BUCKET": "test-bucket-codesmith"
                 }
-            }, 
-            "Handler": "lambda.handler1", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction4Role-OH3D9GMNNK4W", 
-            "Timeout": 3, 
-            "LastModified": "2018-05-17T15:53:04.808+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
-        }, 
-        {
+            },
             "TracingConfig": {
                 "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yodklZREcj1Jn9rFiRKmevWzIGh+LcYIsU4NDH8x1pY=", 
-            "FunctionName": "testApp-TestFunction6-D72ZQPHTWE3W", 
-            "MemorySize": 128, 
-            "RevisionId": "c5d8cc3c-e152-47bc-8dad-7e6bd1dbcec8", 
-            "CodeSize": 1464, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction6-D72ZQPHTWE3W", 
+            },
+            "RevisionId": "bb4b8ca1-2abe-491b-bd63-3c078f41eb23"
+        },
+        {
+            "FunctionName": "testApp-TestFunction6-D72ZQPHTWE3W",
+            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:testApp-TestFunction6-D72ZQPHTWE3W",
+            "Runtime": "nodejs8.10",
+            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction6Role-X3QJQ5NW6Z99",
+            "Handler": "lambda.handler3",
+            "CodeSize": 1113,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2018-05-20T01:06:34.891+0000",
+            "CodeSha256": "bpHAuwSF+ovrYwVj8k6OSxgKeAajo9wia2+y2Cor5V4=",
+            "Version": "$LATEST",
             "Environment": {
                 "Variables": {
                     "S3_BUCKET": "test-bucket-codesmith"
                 }
-            }, 
-            "Handler": "lambda.handler3", 
-            "Role": "arn:aws:iam::432646169424:role/testApp-TestFunction6Role-X3QJQ5NW6Z99", 
-            "Timeout": 3, 
-            "LastModified": "2018-05-17T15:52:45.628+0000", 
-            "Runtime": "nodejs8.10", 
-            "Description": ""
-        }, 
-        {
+            },
             "TracingConfig": {
                 "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "rq1FW8K/mEmVGsvwRDroYb83Hd3putS3tfz4R1kkFQg=", 
-            "FunctionName": "serverless-reminders-dev-dailyReminder", 
-            "MemorySize": 1024, 
-            "RevisionId": "21379b8e-ee98-481e-9e5e-cdc49ac14606", 
-            "CodeSize": 7684, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-reminders-dev-dailyReminder", 
-            "Handler": "handler.sendReminderDaily", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-reminders-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T18:30:40.086+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yLg3PmHr5utLCAc9JHEPknUCyyWHXQJ4Dx8G5Nn7R28=", 
-            "FunctionName": "serverless-node-rest-api-dev-get", 
-            "MemorySize": 1024, 
-            "RevisionId": "bc5e4560-7f04-48da-9b55-55bacdb71e4a", 
-            "CodeSize": 22343, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-rest-api-dev-get", 
-            "Environment": {
-                "Variables": {
-                    "DYNAMODB_TABLE": "serverless-node-rest-api-dev"
-                }
-            }, 
-            "Handler": "pets/get.get", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-rest-api-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T23:49:27.232+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "kFnwfajqTW1tQWBe13w+twaNirJzUP2/a8UY51oOyQY=", 
-            "FunctionName": "serverless-node-text-message-app-dev-validateRecaptchaSendSms", 
-            "MemorySize": 1024, 
-            "RevisionId": "a2212b37-fe67-49fb-9ee7-cd77703405d1", 
-            "CodeSize": 4744214, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-text-message-app-dev-validateRecaptchaSendSms", 
-            "Environment": {
-                "Variables": {
-                    "TWILIO_PHONE_NUMBER": "7038320466", 
-                    "TWILIO_ACCOUNT_SID": "AC0190025db373e14ec8fe13412a1f3a56", 
-                    "TWILIO_AUTH_TOKEN": "289e315249e6b37640bcc69a9296d17e", 
-                    "GOOGLE_RECAPTCHA_TOKEN": "6LcLNVkUAAAAAGtEIVIy4sxqkeIBr5cj1y9807Dm"
-                }
-            }, 
-            "Handler": "handler.validateAndSend", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-text-message-app-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T20:11:11.032+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yLg3PmHr5utLCAc9JHEPknUCyyWHXQJ4Dx8G5Nn7R28=", 
-            "FunctionName": "serverless-node-rest-api-dev-list", 
-            "MemorySize": 1024, 
-            "RevisionId": "3786c84f-9165-44fc-a049-0b97bfa248ec", 
-            "CodeSize": 22343, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-rest-api-dev-list", 
-            "Environment": {
-                "Variables": {
-                    "DYNAMODB_TABLE": "serverless-node-rest-api-dev"
-                }
-            }, 
-            "Handler": "pets/list.list", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-rest-api-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T23:49:26.613+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yLg3PmHr5utLCAc9JHEPknUCyyWHXQJ4Dx8G5Nn7R28=", 
-            "FunctionName": "serverless-node-rest-api-dev-update", 
-            "MemorySize": 1024, 
-            "RevisionId": "48badaba-4915-49b9-9997-280e2ea2a256", 
-            "CodeSize": 22343, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-rest-api-dev-update", 
-            "Environment": {
-                "Variables": {
-                    "DYNAMODB_TABLE": "serverless-node-rest-api-dev"
-                }
-            }, 
-            "Handler": "pets/update.update", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-rest-api-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T23:49:28.555+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "3r4GLCE9u32xmlDiALuXfbdOeosQFicWePvwTp4JnCI=", 
-            "FunctionName": "serverless-reminders-dev-weekendReminder", 
-            "MemorySize": 1024, 
-            "RevisionId": "e2fb2bcc-80d1-4078-b067-3ff584138254", 
-            "CodeSize": 7660, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-reminders-dev-weekendReminder", 
-            "Handler": "handler.sendReminderWeekend", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-reminders-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T18:24:34.690+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
-        }, 
-        {
-            "TracingConfig": {
-                "Mode": "PassThrough"
-            }, 
-            "Version": "$LATEST", 
-            "CodeSha256": "yLg3PmHr5utLCAc9JHEPknUCyyWHXQJ4Dx8G5Nn7R28=", 
-            "FunctionName": "serverless-node-rest-api-dev-delete", 
-            "MemorySize": 1024, 
-            "RevisionId": "a99fed25-c33d-44db-9c95-6f46d69e6720", 
-            "CodeSize": 22343, 
-            "FunctionArn": "arn:aws:lambda:us-east-1:432646169424:function:serverless-node-rest-api-dev-delete", 
-            "Environment": {
-                "Variables": {
-                    "DYNAMODB_TABLE": "serverless-node-rest-api-dev"
-                }
-            }, 
-            "Handler": "pets/delete.delete", 
-            "Role": "arn:aws:iam::432646169424:role/serverless-node-rest-api-dev-us-east-1-lambdaRole", 
-            "Timeout": 6, 
-            "LastModified": "2018-05-14T23:49:28.795+0000", 
-            "Runtime": "nodejs6.10", 
-            "Description": ""
+            },
+            "RevisionId": "81bd674c-4cf9-4425-9bc0-0e64ce797c4c"
         }
     ]
 }

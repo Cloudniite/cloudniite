@@ -151,7 +151,7 @@ function renderTemplate() {
                </div>
                <div class="function-viz-outer">
                 <div class = "${shortHandFunc + 'table'} hide" style = "overflow-y: auto; height: 400px;">
-                    <table style = "width: 80%; text-align: center;">
+                    <table style = "width: 80%; text-align: center; background-color:white; border-radius:3px;">
                         <tr style = "">
                             <th style = "font-weight: bold">Invoked</th>
                             <th style = "font-weight: bold">Duration</th>
@@ -188,7 +188,7 @@ function renderTemplate() {
                </div>
                <div class="function-viz-outer">
                 <div class = "${shortFunctionName + 'table2'} hide" style = "overflow-y: auto; height: 400px;">
-                    <table style = "width: 80%; text-align: center;">
+                    <table style = "width: 80%; text-align: center; background-color:white; border-radius:3px;">
                         <tr>
                             <th style = "font-weight: bold">Invoked</th>
                             <th style = "font-weight: bold">Duration</th>

@@ -12,20 +12,8 @@ Developers have been using simple timers to "warmup" their functions so that the
 ## Cloudniite Examples.
 Below are a few examples of how you could use our library to minimize cold starts, organize your functions into groups and optimize your application to ensure it responds quickly to user actions.
 
-## AWS Lambda Function Groups
-Cloudniite lets you easily group your Lambda functions however you like. If you want to make sure all the Lambda functions associated with your landing page are warmed up, simply create a tag group passing in the functions you would like to be grouped together.
 
-```jsx
-cloudniite.createTagGroup("#LandingPage","SignupUser","EmailSubscription")
-```
-
-Then, whenever you want to warmup the LandingPage functions, just call our method passing in the tag group name.
-
-```jsx
-lambdaController.warmupTagGroup(null, "#LandingPage"); 
-```
-
-## Installation
+# Installation
 
 Cloudniite is available as the cloudniite package on npm.
 
@@ -33,33 +21,141 @@ Cloudniite is available as the cloudniite package on npm.
 npm install --save cloudniite
 ```
 
-## Getting Started
+# Getting Started
 
-#### When creating a function:
+## Creating a function
 * Add an if statement to check if cloudniite has invoked the function.
 * After else statement fill in the function as you normally would.
-* This will optimally warm-up the function without running the entire function
+* This will optimally warm-up the function without running the entire function.
 
-#### In a text editor: 
+Two options for creating a function:
+- [ ] Manually in your text editor
+- [ ] Inside AWS Lamda function creator
+
+
+#### Option 1: Manually in your text editor
+- [X] Text editor
+- [ ] AWS Lamda function creator
+
+##### Yaml file *optional:
+
+Recommended to add ``` FunctionName: func ``` at the bottom of the function in the yaml to create a custom name. 
+
+* Otherwise, AWS CloudFormation generates a unique physical ID to name a resource.
+* this ID is the name of your function in AWS.
+* to refer to the function in our library you **MUST** use the function name in AWS.
+
+* exception: If you reuse templates to create multiple stacks, you must change or remove custom names from your template. 
+
+###### example:
+``` jsx
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  func:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.handler
+      Runtime: nodejs8.10
+      Environment: 
+        Variables:
+          S3_BUCKET: bucketName
+      FunctionName: func 
+```
+
+##### Lambda file:
+
 ``` jsx
 exports.handler = function(event, context, callback) {
     if (event.source === "Cloudniite-Warmup") {
         callback(null,"Warmup");
     } else {
-         //your function
+         ....add lambda logic here
     }
 }
 ```
-
-#### On AWS: 
-
-
-
-
-
-o
-![alt text](http://url/to/img.png)
 Make sure both yaml and lambda files are in the same folder.
+
+
+### Option 2: Inside AWS Lamda function creator
+- [ ] Text editor
+- [X] AWS Lamda function creator
+
+![image not uploading, image of AWS Lambda function](/awsCloudniite.png)
+
+## Setting up your server
+
+
+``` jsx
+const express = require('express');
+const cloudniite = require('cloudniite');
+```
+#### configure params:
+**region:** your AWS region
+**pool ID:** your AWS pool ID
+
+Configure returns a promise.
+If you wish to warm up on server start, use the .then method to invoke the other methods.
+
+``` jsx
+cloudniite.configure('region','poolId').then(() => {
+//add methods here
+});
+```
+
+### Methods
+
+Cloudniite lets you easily group your Lambda functions however you like. If you want to make sure all the Lambda functions associated with your landing page are warmed up, simply create a tag group passing in the functions you would like to be grouped together.
+
+##### createTagGroup(tagGroup, functionName):
+* add as many functions as you want
+  * if you want to add an array rather then individual functions, add a spread operator
+``` cloudniite.createTagGroup(#tagName, … [functionName1, functionName2, functionName3]) ```
+* must be a string
+
+```jsx
+cloudniite.createTagGroup("#tagGroup", "function1", "function2")
+```
+Then, whenever you want to warmup the LandingPage functions, just call our method passing in the tag group name.
+
+##### warmupTagGroup(interval, tagGroup):
+* intervals are set in minutes
+* **null:** no interval
+
+```jsx
+cloudniite.warmupTagGroup(null,"#tagGroup"); 
+```
+
+You can also warm up individuals functions
+
+##### warmupFunctions(interval, tagGroup):
+* intervals are set in minutes
+* **null:** no interval
+
+```jsx
+cloudniite.warmupFunctions(null,"functionName");; 
+```
+##### Recomended:
+Create a tag group for all the lambda functions on a route and call the warmupTagGroup method as middleware!
+
+### Visualizer
+
+Here you can see:
+* List of all Tag Groups and the functions associated
+* List of all your functions
+* Graphs to help you decide when to use intervals for each function or tag group
+* and more...
+
+To access the visualizer add a custom route to your server.
+``` jsx
+app.get('/getHtmlViz', cloudniite.getHtmlViz);
+```
+
+Go to the route on your port
+* URL format: port/getHtmlViz
+###### example: ``` http://localhost:3000/getHtmlViz ```
+
+
 
 ## Authors
 

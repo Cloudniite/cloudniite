@@ -22,6 +22,19 @@ body {
   stroke-width: 2px;
 }
 
+
+.axisGray line{
+  stroke: #A5AEC0;
+}
+
+.axisGray path{
+  stroke: #A5AEC0;
+}
+
+.axisGray text{
+  fill: #A5AEC0;
+} 
+
 .dashboard-nav-outer{
   width:950px;
   height:150px;
@@ -99,10 +112,32 @@ body {
 
 #aggregate-graph-outer{
   width:900px;
-  height:500px;
+  height:550px;
   background-color:#415175;
   margin:auto;
+  padding-top:30px;
+  padding-left:60px;
+  border-radius:3px;
 }
+
+#aggregate-graph-title{
+  text-align:center;
+  margin-top:-10px;
+  padding-right:60px;
+}
+
+.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 120px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;	
+}		
+   
 
 .dot {
   stroke: #000;
@@ -313,6 +348,7 @@ html {
    </div>
 
    <div id="aggregate-graph-outer">
+      <h1 id="aggregate-graph-title">Aggregate Function Graph</h1>
    </div>
   </div>
 
@@ -346,7 +382,7 @@ html {
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
 var margin = {top:20, right: 10, bottom: 50, left: 80},
     width = 800 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+    height = 500 - margin.top - margin.bottom;
 
 var x = d3.scaleTime()
 	.range([0, width]);
@@ -363,7 +399,7 @@ var rightCount = 0;
 
   var testData = [];
   var colorPick = 0;
-  var colorArray = ['blue','yellow','orange','red']
+  var colorArray = ['#7D6FCA','#68B1CE','#57C9A1','#E4C074']
   Object.keys(fullTestData).forEach((funcName) => {
     fullTestData[funcName].durationSeries.map((dataPoint) => {
        var newDataPoint = {
@@ -407,39 +443,60 @@ function draw(testData, color){
   })
 
    x.domain(d3.extent(data, function(d) {return d.date; }));
-   y.domain([0, d3.max(data, function(d) {return d.duration; })]);
+   y.domain([0, d3.max(data, function(d) {return d.duration +20; })]);
   
     var svg = d3.select(`#aggregate-graph-outer svg`);
+    var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
     svg.selectAll("dot")
       .data(data)
       .enter().append("circle")
-      .attr("r", 3.5)
+      .attr("r", 4.5)
       .attr("cx", function(d) { return x(d.date) + 50; })
       .attr("cy", function(d) { return y(d.duration); })
       .attr("fill",function(d) { return (d.color); }) 
+      .on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", 1);		
+            div	.html(d.funcName + "<br/>"  + "Duration: " + (d.duration).toFixed(2) + "ms")	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(300)		
+                .style("opacity", 0);	
+        });
+      
 
   // Add the X Axis
   var xChange = svg.append("g")
       .attr("transform", "translate(" + 50 +"," + height + ")")
+      .attr("class", "axisGray")
       .call(d3.axisBottom(x));
 
   svg.append("text")             
       .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
       .attr("x", 20)
+      .attr("fill", "#A5AEC0")
       .text("Date");    
 
   // Add the Y Axis
   var yChange = svg.append("g")
       .attr("transform", "translate(" + 50 + ", 0)")
+      .attr("class", "axisGray")
       .call(d3.axisLeft(y));
 
   svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0)
-      .attr("x", -170)
+      .attr("x", -200)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
+      .attr("fill", "#A5AEC0")
       .text("Duration (ms)");  
   }
 
@@ -537,7 +594,7 @@ function draw(testData, func){
   })
 
    x.domain(d3.extent(data, function(d) {return d.date; }));
-   y.domain([0, d3.max(data, function(d) {return d.duration; })]);
+   y.domain([0, d3.max(data, function(d) {return d.duration + 20; })]);
   
     var svg = d3.select(`.${func} svg`);
 

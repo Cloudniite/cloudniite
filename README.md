@@ -9,10 +9,6 @@ Amazon has to prepare or spin-up, new virtual servers to run your code. This sta
 
 Developers have been using simple timers to "warmup" their functions so that they stay running and available for users. This solution works but we believed there could be a smarter way to manage and keep your Lambda functions warm and performant.
 
-## Cloudniite Examples.
-Below are a few examples of how you could use our library to minimize cold starts, organize your functions into groups and optimize your application to ensure it responds quickly to user actions.
-
-
 # Installation
 
 Cloudniite is available as the cloudniite package on npm.
@@ -24,9 +20,8 @@ npm install --save cloudniite
 # Getting Started
 
 ## Creating a function
-* Add an if statement to check if cloudniite has invoked the function.
-* After else statement fill in the function as you normally would.
-* This will optimally warm-up the function without running the entire function.
+To minimize execution duration and cost, add an **if statement** to check if Cloudniite has invoked the funtion.
+This will warm-up the funtion without running the function logic
 
 Two options for creating a function:
 - [ ] Manually in your text editor
@@ -83,16 +78,15 @@ Make sure both yaml and lambda files are in the same folder.
 
 ![image not uploading, image of AWS Lambda function](/awsCloudniite.png)
 
-## Setting up your server
-
+# Setting up your server
 
 ``` jsx
 const express = require('express');
 const cloudniite = require('cloudniite');
 ```
-#### configure params:
-**region:** your AWS region
-**pool ID:** your AWS pool ID
+##### configure(region,poolId, apiVersion = optional):
+*default apiVersion is 2015.
+*Advice: if there is a config error, verify that the internet is working.
 
 Configure returns a promise.
 If you wish to warm up on server start, use the .then method to invoke the other methods.
@@ -103,7 +97,7 @@ cloudniite.configure('region','poolId').then(() => {
 });
 ```
 
-### Methods
+## Methods
 
 Cloudniite lets you easily group your Lambda functions however you like. If you want to make sure all the Lambda functions associated with your landing page are warmed up, simply create a tag group passing in the functions you would like to be grouped together.
 
@@ -119,6 +113,7 @@ cloudniite.createTagGroup("#tagGroup", "function1", "function2")
 Then, whenever you want to warmup the LandingPage functions, just call our method passing in the tag group name.
 
 ##### warmupTagGroup(interval, tagGroup):
+To warm up your function on a recurring timer, add an interval
 * intervals are set in minutes
 * **null:** no interval
 

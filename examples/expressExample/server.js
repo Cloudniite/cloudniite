@@ -6,7 +6,8 @@ const app = express();
 
 lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
     lambdaController.createTagGroup("#HelloWorld", "TestFunction6");
-    // lambdaController.warmupTagGroup(null, "#HelloWorld");
+    lambdaController.warmupTagGroup(null, "#HelloWorld");
+    lambdaController.warmupFunctions(0.1, "TestFunction6");
 });
 
 

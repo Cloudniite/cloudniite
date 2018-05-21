@@ -9,6 +9,7 @@ Resources:
       Environment: 
         Variables:
           S3_BUCKET: test-bucket-codesmith
+      FunctionName: TestFunction4
   TestFunction5:
     Type: AWS::Serverless::Function
     Properties:
@@ -25,3 +26,4 @@ Resources:
       Environment:
         Variables:
           S3_BUCKET: test-bucket-codesmith
+      FunctionName: TestFunction6

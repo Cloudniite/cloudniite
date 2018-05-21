@@ -399,7 +399,7 @@ var rightCount = 0;
 
   var testData = [];
   var colorPick = 0;
-  var colorArray = ['#7D6FCA','#68B1CE','#57C9A1','#E4C074']
+  var colorArray = ['#57C9A1', '#68B1CE', '#7D6FCA', '#E4C074']
   Object.keys(fullTestData).forEach((funcName) => {
     fullTestData[funcName].durationSeries.map((dataPoint) => {
        var newDataPoint = {
@@ -453,7 +453,7 @@ function draw(testData, color){
     svg.selectAll("dot")
       .data(data)
       .enter().append("circle")
-      .attr("r", 4.5)
+      .attr("r", 5)
       .attr("cx", function(d) { return x(d.date) + 50; })
       .attr("cy", function(d) { return y(d.duration); })
       .attr("fill",function(d) { return (d.color); }) 

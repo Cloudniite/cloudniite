@@ -35,14 +35,21 @@ npm install --save cloudniite
 
 # Getting Started
 
-## When creating a function
+## Creating a function
 * Add an if statement to check if cloudniite has invoked the function.
 * After else statement fill in the function as you normally would.
 * This will optimally warm-up the function without running the entire function.
 
-### In a text editor 
+Two options for creating a function:
+- [ ] Manually in your text editor
+- [ ] Inside AWS Lamda function creator
 
-#### Yaml file *optional:
+
+#### Option 1: Manually in your text editor
+- [X] Text editor
+- [ ] AWS Lamda function creator
+
+##### Yaml file *optional:
 
 Recommended to add ``` FunctionName: func ``` at the bottom of the function in the yaml to create a custom name. 
 
@@ -68,7 +75,7 @@ Resources:
       FunctionName: func 
 ```
 
-#### Lambda file:
+##### Lambda file:
 
 ``` jsx
 exports.handler = function(event, context, callback) {
@@ -82,9 +89,49 @@ exports.handler = function(event, context, callback) {
 Make sure both yaml and lambda files are in the same folder.
 
 
-### On AWS
+### Option 2: Inside AWS Lamda function creator
+- [ ] Text editor
+- [X] AWS Lamda function creator
 
 ![image not uploading, image of AWS Lambda function](/awsCloudniite.png)
+
+## Setting up your server
+
+
+``` jsx
+const express = require('express');
+const cloudniite = require('cloudniite');
+```
+**region:** your AWS region
+**poolID:** your AWS pool ID
+
+Configure returns a promise.
+If you wish to warm up on server start, use the .then method to invoke the other methods.
+
+``` jsx
+cloudniite.configure('region','poolId').then(() => {
+//add methods here
+});
+```
+
+### Methods
+
+### Visualizer
+
+Here you can see:
+* List of all Tag Groups and the functions associated
+* List of all your functions
+* Graphs to help you decide when to use intervals for each function or tag group
+* and more...
+
+Custom route added to your server
+* Go to the route on your port
+* URL format: port/getHtmlViz
+###### example: ``` http://localhost:3000/getHtmlViz ```
+
+``` jsx
+app.get('/getHtmlViz', cloudniite.getHtmlViz);
+```
 
 ## Authors
 

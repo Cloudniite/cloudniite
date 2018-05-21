@@ -102,8 +102,9 @@ Make sure both yaml and lambda files are in the same folder.
 const express = require('express');
 const cloudniite = require('cloudniite');
 ```
+#### configure params:
 **region:** your AWS region
-**poolID:** your AWS pool ID
+**pool ID:** your AWS pool ID
 
 Configure returns a promise.
 If you wish to warm up on server start, use the .then method to invoke the other methods.
@@ -116,6 +117,14 @@ cloudniite.configure('region','poolId').then(() => {
 
 ### Methods
 
+Creates TagGroup
+``` jsx
+     cloudniite.createTagGroup("#tagGroup", "functionName");
+    //Method for warming up tag group/s
+     cloudniite.warmupTagGroup(null,"#tagGroup");
+    //Method for warming up function/s
+     cloudniite.warmupFunctions(null,"functionName");
+```
 ### Visualizer
 
 Here you can see:

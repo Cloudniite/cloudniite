@@ -25,7 +25,7 @@ Then, whenever you want to warmup the LandingPage functions, just call our metho
 lambdaController.warmupTagGroup(null, "#LandingPage"); 
 ```
 
-## Installation
+# Installation
 
 Cloudniite is available as the cloudniite package on npm.
 
@@ -33,14 +33,43 @@ Cloudniite is available as the cloudniite package on npm.
 npm install --save cloudniite
 ```
 
-## Getting Started
+# Getting Started
 
-#### When creating a function:
+## When creating a function
 * Add an if statement to check if cloudniite has invoked the function.
 * After else statement fill in the function as you normally would.
-* This will optimally warm-up the function without running the entire function
+* This will optimally warm-up the function without running the entire function.
 
-#### In a text editor: 
+### In a text editor 
+
+#### Yaml file *optional:
+
+Recommended to add ``` FunctionName: func ``` at the bottom of the function in the yaml to create a custom name. 
+
+* Otherwise, AWS CloudFormation generates a unique physical ID to name a resource.
+* this ID is the name of your function in AWS.
+* to refer to the function in our library you **MUST** use the function name in AWS.
+
+* exception: If you reuse templates to create multiple stacks, you must change or remove custom names from your template. 
+
+###### example:
+``` jsx
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  func:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.handler
+      Runtime: nodejs8.10
+      Environment: 
+        Variables:
+          S3_BUCKET: bucketName
+      FunctionName: func 
+```
+
+#### Lambda file:
+
 ``` jsx
 exports.handler = function(event, context, callback) {
     if (event.source === "Cloudniite-Warmup") {
@@ -50,16 +79,12 @@ exports.handler = function(event, context, callback) {
     }
 }
 ```
-
-#### On AWS: 
-
-
-
-
-
-o
-![alt text](http://url/to/img.png)
 Make sure both yaml and lambda files are in the same folder.
+
+
+### On AWS
+
+![image not uploading, image of AWS Lambda function](/awsCloudniite.png)
 
 ## Authors
 

@@ -150,7 +150,18 @@ Go to the route on your port
 * URL format: port/getHtmlViz
 ###### example: ``` http://localhost:3000/getHtmlViz ```
 
+## In order to get a longer time range of data
+Change the period in the function cloudWatchParams inside ``` index.js ``` 
 
+data points will be collected at the end of each period
+```Period: num ``` Less than 60 
+* available for 3 hours
+Default: ```Period: 60 ``` (1 min)
+* are available for 15 days
+```Period: 300 ``` (5 min)
+* available for 63 days
+```Period: 3600 ``` (1 hour)
+* available for 455 days (15 months)
 
 ## Authors
 

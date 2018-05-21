@@ -345,7 +345,7 @@ html {
 //D3 data visualizations for main dashboard aggregate graph
 var fullTestData = JSON.parse(document.getElementById('rawTimeDurationData').innerHTML);
 var margin = {top:20, right: 10, bottom: 50, left: 80},
-    width = 600 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
 
 var x = d3.scaleTime()
@@ -359,16 +359,27 @@ var valueLine = d3.line()
 
 var leftCount = 0;
 var rightCount = 0;
+  console.log('this is duration series: ', fullTestData);
 
-  var testData = fullTestData.TestFunction6.durationSeries.map((dataPoint) => {
-      var newDataPoint = {
-        date: dataPoint.date,
-        duration: dataPoint.duration,
-        color: 'red',
-      }
-      return newDataPoint;
-  });
-  console.log('this is duration series: ', testData);
+  var testData = [];
+  var colorPick = 0;
+  var colorArray = ['blue','yellow','orange','red']
+  Object.keys(fullTestData).forEach((funcName) => {
+    fullTestData[funcName].durationSeries.map((dataPoint) => {
+       var newDataPoint = {
+          date: dataPoint.date,
+          duration: dataPoint.duration,
+          color: colorArray[colorPick],
+          funcName: funcName,
+        }
+       testData.push(newDataPoint);
+       return;
+     });
+     colorPick++;
+  })
+
+  console.log('Building aggregate test data: ', testData)
+ 
 
   drawSvg(testData);
   draw(testData);
@@ -393,7 +404,6 @@ function draw(testData, color){
   data.forEach((d) => {
     d.date = new Date(d.date);
     d.duration = +d.duration;
-    if (!colorFill) colorFill = d.color;
   })
 
    x.domain(d3.extent(data, function(d) {return d.date; }));
@@ -407,7 +417,7 @@ function draw(testData, color){
       .attr("r", 3.5)
       .attr("cx", function(d) { return x(d.date) + 50; })
       .attr("cy", function(d) { return y(d.duration); })
-      .attr("fill",`${colorFill}`) 
+      .attr("fill",function(d) { return (d.color); }) 
 
   // Add the X Axis
   var xChange = svg.append("g")

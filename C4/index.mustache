@@ -352,7 +352,6 @@ html {
    </div>
   </div>
 
-
   <div class="content hide" id="tagsOnly">
     <h3>
         {{#tagsArray}}
@@ -398,8 +397,8 @@ var rightCount = 0;
   console.log('this is duration series: ', fullTestData);
 
   var testData = [];
-  var colorPick = 0;
-  var colorArray = ['#57C9A1', '#68B1CE', '#7D6FCA', '#E4C074']
+  var colorPick = Math.floor(Math.random() * 141);
+  var colorArray = [ 'Black', 'Navy', 'DarkBlue', 'MediumBlue', 'Blue', 'DarkGreen', 'Green', 'Teal', 'DarkCyan', 'DeepSkyBlue', 'DarkTurquoise', 'MediumSpringGreen', 'Lime', 'SpringGreen', 'Aqua', 'Cyan', 'MidnightBlue', 'DodgerBlue', 'LightSeaGreen', 'ForestGreen', 'SeaGreen', 'DarkSlateGray', 'LimeGreen', 'MediumSeaGreen', 'Turquoise', 'RoyalBlue', 'SteelBlue', 'DarkSlateBlue', 'MediumTurquoise', 'Indigo', 'DarkOliveGreen', 'CadetBlue', 'CornflowerBlue', 'RebeccaPurple', 'MediumAquaMarine', 'DimGray', 'SlateBlue', 'OliveDrab', 'SlateGray', 'LightSlateGray', 'MediumSlateBlue', 'LawnGreen', 'Chartreuse', 'Aquamarine', 'Maroon', 'Purple', 'Olive', 'Gray', 'SkyBlue', 'LightSkyBlue', 'BlueViolet', 'DarkRed', 'DarkMagenta', 'SaddleBrown', 'DarkSeaGreen', 'LightGreen', 'MediumPurple', 'DarkViolet', 'PaleGreen', 'DarkOrchid', 'YellowGreen', 'Sienna', 'Brown', 'DarkGray', 'LightBlue', 'GreenYellow', 'PaleTurquoise', 'LightSteelBlue', 'PowderBlue', 'FireBrick', 'DarkGoldenRod', 'MediumOrchid', 'RosyBrown', 'DarkKhaki', 'Silver', 'MediumVioletRed', 'IndianRed', 'Peru', 'Chocolate', 'Tan', 'LightGray', 'Thistle', 'Orchid', 'GoldenRod', 'PaleVioletRed', 'Crimson', 'Gainsboro', 'Plum', 'BurlyWood', 'LightCyan', 'Lavender', 'DarkSalmon', 'Violet', 'PaleGoldenRod', 'LightCoral', 'Khaki', 'AliceBlue', 'HoneyDew', 'Azure', 'SandyBrown', 'Wheat', 'Beige', 'WhiteSmoke', 'MintCream', 'GhostWhite', 'Salmon', 'AntiqueWhite', 'Linen', 'LightGoldenRodYellow', 'OldLace', 'Red', 'Fuchsia', 'Magenta', 'DeepPink', 'OrangeRed', 'Tomato', 'HotPink', 'Coral', 'DarkOrange', 'LightSalmon', 'Orange', 'LightPink', 'Pink', 'Gold', 'PeachPuff', 'NavajoWhite', 'Moccasin', 'Bisque', 'MistyRose', 'BlanchedAlmond', 'PapayaWhip', 'LavenderBlush', 'SeaShell', 'Cornsilk', 'LemonChiffon', 'FloralWhite', 'Snow', 'Yellow', 'LightYellow', 'Ivory', 'White']
   Object.keys(fullTestData).forEach((funcName) => {
     fullTestData[funcName].durationSeries.map((dataPoint) => {
        var newDataPoint = {
@@ -411,7 +410,7 @@ var rightCount = 0;
        testData.push(newDataPoint);
        return;
      });
-     colorPick++;
+     colorPick = Math.floor(Math.random() * 141);
   })
 
   console.log('Building aggregate test data: ', testData)

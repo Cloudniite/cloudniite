@@ -21,7 +21,7 @@ Cloudniite is available as the cloudniite package on npm.
 npm install --save cloudniite
 ```
 
-# Getting Started
+# Getting Starte
 
 ## Creating a function
 To minimize execution duration and cost, add an **if statement** to check if Cloudniite has invoked the funtion.

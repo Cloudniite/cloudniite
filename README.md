@@ -1,6 +1,10 @@
-# [Cloudniite](https://cloudniite.com)&middot;[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
+# [Cloudniite](https://cloudniite.com)&middot;[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![npm version](cloudniite_shield.svg)](https://www.npmjs.com/package/cloudniite) [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/cloudniite)
+
+
 
 Cloudniite is a JavaScript library that helps you as a developer optimize and monitor your serverless application performance and metrics on AWS Lambda. We chose AWS because it has an exceptional ecosystem of cloud products and a huge community of developers that are passionate about the future of serverless. We integrate seamlessly with your application to help you ensure your customers are having a fast and responsive experience. We do this by helping you organize and monitor event-driven AWS Lambda functions. If you are unfamiliar with AWS Lambda, no need to worry, we will cover the core concepts in the next section.
+
+![demo gif](/demo.gif)
 
 [Learn how to use Cloudniite in your own project](https://cloudniite.com/documentation/introduction).
 
@@ -76,7 +80,7 @@ Make sure both yaml and lambda files are in the same folder.
 - [ ] Text editor
 - [X] AWS Lamda function creator
 
-![image not uploading, image of AWS Lambda function](/awsCloudniite.png)
+<img src="/awsCloudniite.png" width="600" />
 
 # Setting up your server
 

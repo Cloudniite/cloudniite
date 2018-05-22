@@ -4,7 +4,7 @@ var fs = require("fs");
 const path = require('path');
 const { exec } = require('child_process');
 
-const lambdaController = {
+const cloudniite = {
     functionList: "",
     tagGroups: {},
     allFunctionData: {},
@@ -14,21 +14,21 @@ const lambdaController = {
     allFunctions: {},
 };
 
-lambdaController.configure = function (region, IdentityPoolId, apiVersionLambda = '2015-03-31', apiVersionCloudW = '2010-08-01') {
+cloudniite.configure = function (region, IdentityPoolId, apiVersionLambda = '2015-03-31', apiVersionCloudW = '2010-08-01') {
     return new Promise((resolve, reject) => {
         executeAWSCommand().then(() => {
             AWS.config.update({ region: region });
             AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: IdentityPoolId });
             this.lambda = new AWS.Lambda({ region: region, apiVersion: apiVersionLambda });
             this.cloudwatch = new AWS.CloudWatch({ region: region, apiVersion: apiVersionCloudW });
-            lambdaController.setFunctionList(this.functionList);
+            cloudniite.setFunctionList(this.functionList);
 
             return resolve();
         })
     });
 }
 
-lambdaController.setFunctionList = function (functionList) {
+cloudniite.setFunctionList = function (functionList) {
     functionList.Functions.forEach((func) => {
         this.allFunctions[func.FunctionName] = func.FunctionName;
     });
@@ -45,7 +45,7 @@ function executeAWSCommand() {
             }
 
             // the *entire* stdout and stderr (buffered)
-            lambdaController.functionList = JSON.parse(stdout);
+            cloudniite.functionList = JSON.parse(stdout);
             return resolve();
         });
     });
@@ -54,8 +54,8 @@ function executeAWSCommand() {
 //build a Mustache template to inject with function data and metrics 
 //for monitoring and optimization 
 function renderTemplate() {
-    lambdaController.getAllFuncInfo()
-        .then(lambdaController.getInvocationInfo())
+    cloudniite.getAllFuncInfo()
+        .then(cloudniite.getInvocationInfo())
         .then(() => {
 
             var functionArray = [];
@@ -64,7 +64,7 @@ function renderTemplate() {
             var view = {
                 function: functionArray,
                 tagsArray: tagsArray,
-                rawTimeDurationData: JSON.stringify(lambdaController.allFunctionData),
+                rawTimeDurationData: JSON.stringify(cloudniite.allFunctionData),
                 totalFunctionCount: 0,
                 totalTagGroupCount: 0,
                 mostUsedCount: 0,
@@ -75,22 +75,22 @@ function renderTemplate() {
 
             //count the functions 
             (function (){
-                Object.keys(lambdaController.allFunctionData).forEach((f) => {
+                Object.keys(cloudniite.allFunctionData).forEach((f) => {
                     return view.totalFunctionCount += 1;
                 })
             })();
 
             //count the tag groups 
             (function(){
-                Object.keys(lambdaController.tagGroups).forEach((f) => {
+                Object.keys(cloudniite.tagGroups).forEach((f) => {
                     return view.totalTagGroupCount += 1;
                 })
             })();
 
             //calculate the slowest function here
             (function freqFunction(){
-                Object.keys(lambdaController.allFunctionData).forEach((funcName) => {
-                    var durationArr = lambdaController.allFunctionData[funcName].durationSeries;
+                Object.keys(cloudniite.allFunctionData).forEach((funcName) => {
+                    var durationArr = cloudniite.allFunctionData[funcName].durationSeries;
                     if (durationArr.length >= view.mostUsedCount){
                         view.mostUsedCount = durationArr.length;
                         view.mostUsedName = funcName;
@@ -105,7 +105,7 @@ function renderTemplate() {
             })();
 
             function tableStats(idx, shortHandFunc, array) {
-                var timeDuration = lambdaController.allFunctionData[shortHandFunc].durationSeries;
+                var timeDuration = cloudniite.allFunctionData[shortHandFunc].durationSeries;
                 for (var i = 0; i < timeDuration.length; i++) {
                     var date = new Date(timeDuration[i].date);
                     date = date.toUTCString();
@@ -119,14 +119,14 @@ function renderTemplate() {
                 array[idx] += `</table></div>`;
             }
 
-            lambdaController.functionList.Functions.forEach((func, idx) => {
+            cloudniite.functionList.Functions.forEach((func, idx) => {
                 var shortHandFunc = func.FunctionName
                 functionArray[idx] = `
             <button style = "margin-bottom: 2%;" class="functions" ${shortHandFunc}">
                 <b>Function Name</b>: ${shortHandFunc}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 <b> Tag Groups</b>: `;
-                for (var tagGroup in lambdaController.tagGroups) {
-                    if (lambdaController.tagGroups[tagGroup].includes(func.FunctionName)) {
+                for (var tagGroup in cloudniite.tagGroups) {
+                    if (cloudniite.tagGroups[tagGroup].includes(func.FunctionName)) {
                         functionArray[idx] += ` - ${tagGroup}`
                     }
                 }
@@ -143,10 +143,10 @@ function renderTemplate() {
             <div class="function-info-box">
                 <p>Function Data</p>
                 <ul>
-                   <li>Memory size: ${lambdaController.allFunctionData[shortHandFunc].MemorySize} MB</li>
-                    <li>Code size: ${lambdaController.allFunctionData[shortHandFunc].codeSize} MB</li>
-                    <li>Runtime environment: ${lambdaController.allFunctionData[shortHandFunc].runTimeEnv}</li>
-                    <li>Last Modified: ${new Date(lambdaController.allFunctionData[shortHandFunc].lastModified)}</li>
+                   <li>Memory size: ${cloudniite.allFunctionData[shortHandFunc].MemorySize} MB</li>
+                    <li>Code size: ${cloudniite.allFunctionData[shortHandFunc].codeSize} MB</li>
+                    <li>Runtime environment: ${cloudniite.allFunctionData[shortHandFunc].runTimeEnv}</li>
+                    <li>Last Modified: ${new Date(cloudniite.allFunctionData[shortHandFunc].lastModified)}</li>
                 </ul>
                </div>
                <div class="function-viz-outer">
@@ -163,9 +163,9 @@ function renderTemplate() {
             </div></div>`;
             });
 
-            Object.keys(lambdaController.tagGroups).forEach((tag, idx) => {
+            Object.keys(cloudniite.tagGroups).forEach((tag, idx) => {
                 tagsArray[idx] = (`<button style = "margin-bottom: 2%;" class="tags" id = "${tag}" ><b> Tag Groups</b>: ${tag} </button> <div style="display: none;">`);
-                lambdaController.tagGroups[tag].forEach((functionName) => {
+                cloudniite.tagGroups[tag].forEach((functionName) => {
                     var shortFunctionName = functionName;
                     tagsArray[idx] += `<button class = "tagFunction" style = "margin-top: 2%; border-radius: 4px;">${shortFunctionName}</button> 
                 <div class="function-data-outer" style=" display: none;"> 
@@ -180,10 +180,10 @@ function renderTemplate() {
                 <div class="function-info-box">
                 <p>Function Data</p>
                 <ul>
-                   <li>Memory size: ${lambdaController.allFunctionData[shortFunctionName].MemorySize} MB</li>
-                    <li>Code size: ${lambdaController.allFunctionData[shortFunctionName].codeSize} MB</li>
-                    <li>Runtime environment: ${lambdaController.allFunctionData[shortFunctionName].runTimeEnv}</li>
-                    <li>Last Modified: ${new Date(lambdaController.allFunctionData[shortFunctionName].lastModified)}</li>
+                   <li>Memory size: ${cloudniite.allFunctionData[shortFunctionName].MemorySize} MB</li>
+                    <li>Code size: ${cloudniite.allFunctionData[shortFunctionName].codeSize} MB</li>
+                    <li>Runtime environment: ${cloudniite.allFunctionData[shortFunctionName].runTimeEnv}</li>
+                    <li>Last Modified: ${new Date(cloudniite.allFunctionData[shortFunctionName].lastModified)}</li>
                 </ul>
                </div>
                <div class="function-viz-outer">
@@ -213,7 +213,7 @@ function precisionRound(number, precision) {
     return Math.round(number * factor) / factor;
 }
 
-lambdaController.getHtmlViz = function (req, res) {
+cloudniite.getHtmlViz = function (req, res) {
     res.send(this.htmlViz);
 }
 
@@ -237,9 +237,9 @@ function cloudWatchParams(funcName, metricName) {
     this.StartTime = 0
 }
 
-lambdaController.getAllFuncInfo = function (req, res) {
+cloudniite.getAllFuncInfo = function (req, res) {
     var newFunctions = this.functionList.Functions.map(func => {
-        //create new key inside allFunctionData object on the lambdaController
+        //create new key inside allFunctionData object on the cloudniite
         //and fill with function information from the functionList
         this.allFunctionData[func.FunctionName] = {
             durationSeries: [],
@@ -275,9 +275,9 @@ lambdaController.getAllFuncInfo = function (req, res) {
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
-lambdaController.getInvocationInfo = function () {
+cloudniite.getInvocationInfo = function () {
     var newFunctions = this.functionList.Functions.map(func => {
-        //create new key inside allFunctionData object on the lambdaController
+        //create new key inside allFunctionData object on the cloudniite
         //and fill with function information from the functionList
         this.allFunctionData[func.FunctionName].invocationSeries = [];
 
@@ -306,7 +306,7 @@ lambdaController.getInvocationInfo = function () {
         .catch((error) => { console.error(`FAILED: error retrieving data, ${error}`) });
 }
 
-lambdaController.getAwsFunctions = function (...rest) {
+cloudniite.getAwsFunctions = function (...rest) {
     const awsFunctionNames = [];
     rest.forEach((restFunc) => {
         if (this.allFunctions[restFunc]) {
@@ -330,7 +330,7 @@ function failedType(method, timer = null, tagGroup = "") {
     }
 }
 
-lambdaController.createTagGroup = function (tagGroup, ...rest) {
+cloudniite.createTagGroup = function (tagGroup, ...rest) {
     if (failedType('createTagGroup', null, tagGroup)) return;
     if (!(tagGroup in this.tagGroups)) {
         this.tagGroups[tagGroup] = this.getAwsFunctions(...rest);
@@ -339,7 +339,7 @@ lambdaController.createTagGroup = function (tagGroup, ...rest) {
     }
 };
 
-lambdaController.addToTagGroup = function (tagGroup, ...rest) {
+cloudniite.addToTagGroup = function (tagGroup, ...rest) {
     if (typeof tagGroup !== 'string') return console.error('FAILED at createTagGroup: First argument should be a string specifying the category');
     if (!(tagGroup in this.tagGroups)) {
         console.error("FAILED at addToTagGroup: Tag group doesn't exists");
@@ -355,7 +355,7 @@ function pullParams(funcName) {
         this.Payload = '{"source" : "Cloudniite-Warmup"}'
 };
 
-lambdaController.warmupFunctions = function (timer, ...rest) {
+cloudniite.warmupFunctions = function (timer, ...rest) {
     if (failedType('warmupFunctions', timer)) return;
     var functions = this.getAwsFunctions(...rest);
     const createfunc = () => {
@@ -382,7 +382,7 @@ lambdaController.warmupFunctions = function (timer, ...rest) {
     if (timer !== null && timer > 0) setInterval(() => { promiseCall(); }, (timer * 60000));
 }
 
-lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
+cloudniite.warmupTagGroup = function (timer = null, tagGroup) {
     if (typeof timer !== 'number' && timer !== null) return console.error(`FAILED at warmupTagGroup: First argument should be a number specifying the timer or null for single execution`);
     if (typeof tagGroup !== 'string') return console.error('FAILED at warmupTagGroup: First argument should be a string specifying the category');
     if (!(tagGroup in this.tagGroups)) return console.error(`FAILED at warmupTagGroup: ${tagGroup} is invalid`);
@@ -414,4 +414,4 @@ lambdaController.warmupTagGroup = function (timer = null, tagGroup) {
     if (timer !== null && timer > 0) setInterval(() => { promiseCall() }, (timer * 60000));
 }
 
-module.exports = lambdaController;
+module.exports = cloudniite;

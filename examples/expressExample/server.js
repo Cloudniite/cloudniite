@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const body = require('body-parser');
-const cloudniite = require('../../Src/index.js');
+const cloudniite = require('../../cloudniite/index.js');
 const app = express();
 
 cloudniite.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {

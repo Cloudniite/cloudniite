@@ -1,18 +1,19 @@
 const express = require('express');
 const path = require('path');
 const body = require('body-parser');
-const lambdaController = require('../../Library/index.js');
+const cloudniite = require('../../Library/index.js');
 const app = express();
 
-lambdaController.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
-    // lambdaController.warmupTagGroup(null, "#HelloWorld");
-    // lambdaController.warmupFunctions(0.1, "TestFunction4");
+cloudniite.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
+
+    // cloudniite.warmupTagGroup(null, "#HelloWorld");
+    // cloudniite.warmupFunctions(0.1, "TestFunction4");
 });
 
 
 //This is a custom route for specifically for development 
 //Go to this route to view all your tag groups and AWS Lambda function informations
-app.get('/getHtmlViz', lambdaController.getHtmlViz);
+app.get('/getHtmlViz', cloudniite.getHtmlViz);
 
 //Landing page routes
 app.get('/', (req, res) => {
@@ -31,12 +32,12 @@ app.get('/index.css', (req, res) => {
 //Signup and Login Page Routes
 app.get('/signup', (req, res) => {
     //Here you can warm up functions that are likely to be invoked when a user goes to this page
-    lambdaController.warmupTagGroup(null, "#HelloWorld");
+    cloudniite.warmupTagGroup(null, "#HelloWorld");
     res.sendFile(path.join(__dirname, './loginSignupPages/signupPage.html'));
 });
 
 app.get('/login', (req, res) => {
-    // lambdaController.warmupTagGroup(null, "#HelloWorld");
+    // cloudniite.warmupTagGroup(null, "#HelloWorld");
     res.sendFile(path.join(__dirname, './loginSignupPages/loginPage.html'));
 });
 

@@ -154,13 +154,17 @@ Go to the route on your port
 Change the period in the function cloudWatchParams inside ``` index.js ``` 
 
 data points will be collected at the end of each period
-```Period: num ``` Less than 60 
+
+Less than 60 ```Period: num ``` 
 * available for 3 hours
-Default: ```Period: 60 ``` (1 min)
+
+Default:(1 min) ```Period: 60 ``` 
 * are available for 15 days
-```Period: 300 ``` (5 min)
+
+(5 min) ```Period: 300 ``` 
 * available for 63 days
-```Period: 3600 ``` (1 hour)
+
+(1 hour) ```Period: 3600 ``` 
 * available for 455 days (15 months)
 
 ## Authors

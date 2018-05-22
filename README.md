@@ -1,4 +1,4 @@
-# [Cloudniite](https://cloudniite.com)&middot;[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![npm version](/cloudniite_shield.svg)](https://www.npmjs.com/package/cloudniite) [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/cloudniite)
+# [Cloudniite](https://cloudniite.com)&middot;[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)][![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/cloudniite)
 
 
 

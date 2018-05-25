@@ -47,7 +47,7 @@ Recommended to add ``` FunctionName: func ``` at the bottom of the function in t
 * exception: If you reuse templates to create multiple stacks, you must change or remove custom names from your template. 
 
 ###### example:
-``` jsx
+```yaml
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
@@ -153,23 +153,6 @@ app.get('/getHtmlViz', cloudniite.getHtmlViz);
 Go to the route on your port
 * URL format: port/getHtmlViz
 ###### example: ``` http://localhost:3000/getHtmlViz ```
-
-### Increase time range for Graphs in Visualizer and Cloudwatch
-Change the period in the function cloudWatchParams inside ``` index.js ``` 
-
-data points will be collected at the end of each period
-
-Less than 60 ```Period: num ``` 
-* available for 3 hours
-
-Default:(1 min) ```Period: 60 ``` 
-* are available for 15 days
-
-(5 min) ```Period: 300 ``` 
-* available for 63 days
-
-(1 hour) ```Period: 3600 ``` 
-* available for 455 days (15 months)
 
 ## Authors
 

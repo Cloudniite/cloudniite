@@ -1,6 +1,6 @@
 {
   "name": "cloudniite",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,6 @@
     "child_process": "^1.0.2",
     "fs": "0.0.1-security",
     "mustache": "^2.3.0",
-    "path": "^0.12.7",
-    "user": "0.0.0"
+    "path": "^0.12.7"
   }
 }

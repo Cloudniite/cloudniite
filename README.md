@@ -132,7 +132,7 @@ You can also warm up individuals functions
 * **null:** no interval
 
 ```jsx
-cloudniite.warmupFunctions(null,"functionName");; 
+cloudniite.warmupFunctions(null,"functionName"); 
 ```
 ##### Recomended:
 Create a tag group for all the lambda functions on a route and call the warmupTagGroup method as middleware!

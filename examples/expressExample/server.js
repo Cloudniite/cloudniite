@@ -5,11 +5,10 @@ const cloudniite = require('../../cloudniite/index.js');
 const app = express();
 
 cloudniite.configure('us-east-1','us-east-1:77063b48-4177-4e13-a3d7-50657c0c503e').then(() => {
-
+    cloudniite.createTagGroup("#HelloWorld", "TestFunction4", "TestFunction6");
     // cloudniite.warmupTagGroup(null, "#HelloWorld");
     // cloudniite.warmupFunctions(0.1, "TestFunction4");
 });
-
 
 //This is a custom route for specifically for development 
 //Go to this route to view all your tag groups and AWS Lambda function informations
@@ -28,7 +27,6 @@ app.get('/index.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.css'));
 });
 
-
 //Signup and Login Page Routes
 app.get('/signup', (req, res) => {
     //Here you can warm up functions that are likely to be invoked when a user goes to this page
@@ -46,12 +44,9 @@ app.get('/appMedia/guitar-stock.jpg', (req, res) => {
     res.sendFile(path.join(__dirname, './appMedia//guitar-stock.jpg'));
 });
 
-
 app.get('/loginSignup.css', (req, res) => {
     res.sendFile(path.join(__dirname, './loginSignupPages/loginSignup.css'));
 });
-
-
 
 app.listen(3000, () => {
     console.log("Listening on PORT");
